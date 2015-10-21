@@ -8,5 +8,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		new LwjglApplication(new BachelorGameServer(), config);
+		
+		config.title = "Bachelor game server";
 	}
 }
