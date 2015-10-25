@@ -120,16 +120,12 @@ public class ServerScreen implements Screen {
 				Gdx.app.exit();
 			}
 		});
-		
-		for(int i=0; i< 50; i++) {
-			addMessage("test"+i);
-			
-		}
 	}
 	
 	public void addMessage(String message) {
 		outputLabel.setText(outputLabel.getText()+"\n"+message);
-		table.layout();
+		scrollPane.layout();
+		scrollPane.setScrollPercentY(100);
 	}
 	
 	private void manageConsoleInput() {
@@ -150,7 +146,7 @@ public class ServerScreen implements Screen {
 		};
 		Network.register(server);
 		
-		server.addListener(new ServerListener());
+		server.addListener(new ServerListener(this));
 		try {
 			server.bind(Network.tcpPort, Network.udpPort);
 		} catch (IOException e) {

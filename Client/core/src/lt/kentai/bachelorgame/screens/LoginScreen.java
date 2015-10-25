@@ -128,6 +128,7 @@ public class LoginScreen implements Screen {
 			}
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				Log.debug("[CLIENT] Client closed.");
+				client.close();
 				Gdx.app.exit();
 			}
 		});
