@@ -9,6 +9,16 @@ public class Network {
 	
 	public static void register(EndPoint endPoint) {
 		Kryo kryo = endPoint.getKryo();
-		kryo.register(String[].class);
+		kryo.register(LoginRequest.class);
+		kryo.register(LoginResult.class);
+	}
+	
+	public static class LoginRequest {
+		public String username;
+	}
+	
+	public static class LoginResult {
+		public boolean success;
+		public String message;
 	}
 }
