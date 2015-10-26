@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Listener.ThreadedListener;
 import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.ClientListener;
@@ -29,6 +30,7 @@ public class LoginScreen implements Screen {
 	private Stage stage;
 	private Table table;
 	private Skin skin;
+	private boolean switchToMainMenu = false;
 	// Client stuff
 	private Client client;
 
@@ -52,6 +54,10 @@ public class LoginScreen implements Screen {
 		
 		stage.act(delta);
 		stage.draw();
+		
+		if(switchToMainMenu) {
+			mainClass.setScreen(new MainMenuScreen(batch, mainClass, client));
+		}
 	}
 
 	@Override
@@ -76,7 +82,6 @@ public class LoginScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		batch.dispose();
 		stage.dispose();
 		skin.dispose();
 	}
@@ -85,7 +90,7 @@ public class LoginScreen implements Screen {
 		table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);
-		//table.setDebug(true);  //Careful with this one, might cause memory leaks
+		table.setDebug(false);  //Careful with this one, might cause memory leaks
 		skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 		
 		table.row();
@@ -112,7 +117,6 @@ public class LoginScreen implements Screen {
 					LoginRequest login = new LoginRequest();
 					login.username = usernameTextField.getText();
 					client.sendTCP(login);
-					//mainClass.setScreen(new MainMenuScreen(batch, mainClass, client));
 				} else {
 					//Handle connection error
 				}
@@ -143,7 +147,7 @@ public class LoginScreen implements Screen {
 		client = new Client();
 		client.start();
 		Network.register(client);
-		client.addListener(new ClientListener(mainClass));
+		client.addListener(new ThreadedListener(new ClientListener(this)));
 		
 		try {
 			client.connect(10000, serverIP, Network.tcpPort, Network.udpPort);
@@ -153,6 +157,10 @@ public class LoginScreen implements Screen {
 			Log.error(e.getMessage());
 			return false;
 		}
+	}
+	
+	public void switchToMainMenuScreen() {
+		switchToMainMenu = true;
 	}
 
 }

@@ -93,7 +93,7 @@ public class ServerScreen implements Screen {
 		table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);
-		table.setDebug(true);  //Careful with this one, might cause memory leaks
+		table.setDebug(false);  //Careful with this one, might cause memory leaks
 		skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 		
 		table.row().width(Gdx.graphics.getWidth()).height(Gdx.graphics.getHeight() * 0.88f);
@@ -130,9 +130,26 @@ public class ServerScreen implements Screen {
 	
 	private void manageConsoleInput() {
 		String inputText = inputTextField.getText();
-		if(inputText != null && inputText.length() > 0 && inputText != "") {
-			addMessage(inputText);
-			inputTextField.setText("");
+		if(inputText == null || inputText.length() <= 0 || inputText == "") {
+			return;
+		}
+		addMessage(inputText);
+		inputTextField.setText("");
+		
+		//TODO: Make class which deals with command execution.
+		if(inputText.equals("exit")) {
+			server.stop();
+			Gdx.app.exit();
+		} else if(inputText.equals("lc")) {
+			if(server.getConnections().length > 0) {
+				for(Connection c : server.getConnections()) {
+					addMessage(c.toString());
+				}
+			} else {
+				addMessage("There are no connections at the moment.");
+			}
+		} else {
+			addMessage("Command not found: " + inputText + ".");
 		}
 	}
 	

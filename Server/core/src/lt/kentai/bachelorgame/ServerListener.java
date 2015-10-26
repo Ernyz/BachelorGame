@@ -30,20 +30,16 @@ public class ServerListener extends Listener {
 				loginResult.message = "Login successful!";
 				gameConnection.sendTCP(loginResult);
 				serverScreen.addMessage(loginRequest.username + " has successfully connected!");
+				gameConnection.name = loginRequest.username;
 			} else {
 				LoginResult loginResult = new LoginResult();
 				loginResult.success = false;
 				loginResult.message = "Invalid login data.";
 				gameConnection.sendTCP(loginResult);
-				gameConnection.close();//TODO debug this later
+				gameConnection.close();
 				serverScreen.addMessage(loginRequest.username + " did not connect.");
 			}
 		}
-	}
-	
-	@Override
-	public void connected(Connection connection) {
-		Log.info("[SERVER] Someone has connected. Connection ID: " + connection.getID());
 	}
 	
 	@Override
