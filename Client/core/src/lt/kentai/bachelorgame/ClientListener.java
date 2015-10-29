@@ -19,7 +19,6 @@ public class ClientListener extends Listener {
 		if(o instanceof LoginResult) {
 			LoginResult loginResult = (LoginResult)o;
 			if(loginResult.success) {
-				//TODO: change to MainMenuScreen
 				loginScreen.switchToMainMenuScreen();
 			} else {
 				//TODO: write failure msg to current screen

@@ -56,6 +56,7 @@ public class LoginScreen implements Screen {
 		stage.draw();
 		
 		if(switchToMainMenu) {
+			switchToMainMenu = false;
 			mainClass.setScreen(new MainMenuScreen(batch, mainClass, client));
 		}
 	}
@@ -142,7 +143,6 @@ public class LoginScreen implements Screen {
 	/**
 	 * @return true if connection was successful, false otherwise. */
 	private boolean setupNetworking(String serverIP) {
-		//TODO move networking stuff away
 		Log.set(Log.LEVEL_DEBUG);
 		client = new Client();
 		client.start();

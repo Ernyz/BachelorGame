@@ -143,7 +143,7 @@ public class ServerScreen implements Screen {
 		} else if(inputText.equals("lc")) {
 			if(server.getConnections().length > 0) {
 				for(Connection c : server.getConnections()) {
-					addMessage(c.toString());
+					addMessage(c.toString() + "; Player name: " + ((GameConnection)c).name);
 				}
 			} else {
 				addMessage("There are no connections at the moment.");
@@ -154,7 +154,6 @@ public class ServerScreen implements Screen {
 	}
 	
 	private void setupNetworking() {
-		// TODO move networking stuff away
 		Log.set(Log.LEVEL_NONE);
 		server = new Server() {
 			protected Connection newConnection() {
