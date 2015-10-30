@@ -2,8 +2,7 @@ package lt.kentai.bachelorgame;
 
 import com.esotericsoftware.minlog.Log;
 
-import lt.kentai.bachelorgame.Network.LoginRequest;
-import lt.kentai.bachelorgame.Network.LoginResult;
+import lt.kentai.bachelorgame.Network.*;
 import lt.kentai.bachelorgame.screens.ServerScreen;
 import lt.kentai.bachelorgame.screens.ServerScreen.GameConnection;
 
@@ -32,6 +31,16 @@ public class PacketHandler {
 			gameConnection.sendTCP(loginResult);
 			gameConnection.close();
 			serverScreen.addMessage(loginRequest.username + " did not connect.");
+		}
+	}
+	
+	public void handleMatchmaking(GameConnection gameConnection, Matchmaking m) {
+		if(m.entering) {
+			serverScreen.addMessage(gameConnection.name + " has entered matchmaking.");
+			serverScreen.getMatchmaker().addConnection(gameConnection);
+		} else {
+			serverScreen.addMessage(gameConnection.name + " has left matchmaking.");
+			serverScreen.getMatchmaker().removeConnection(gameConnection);
 		}
 	}
 	

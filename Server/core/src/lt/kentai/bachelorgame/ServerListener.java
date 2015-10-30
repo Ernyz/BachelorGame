@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.Network.LoginRequest;
+import lt.kentai.bachelorgame.Network.Matchmaking;
 import lt.kentai.bachelorgame.screens.ServerScreen;
 import lt.kentai.bachelorgame.screens.ServerScreen.GameConnection;
 
@@ -21,6 +22,9 @@ public class ServerListener extends Listener {
 		if(o instanceof LoginRequest) {
 			LoginRequest loginRequest = (LoginRequest) o;
 			packetHandler.handleLoginRequest(gameConnection, loginRequest);
+		} else if(o instanceof Matchmaking) {
+			Matchmaking m = (Matchmaking) o;
+			packetHandler.handleMatchmaking(gameConnection, m);
 		}
 	}
 	

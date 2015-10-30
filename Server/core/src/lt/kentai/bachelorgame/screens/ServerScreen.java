@@ -3,8 +3,8 @@ package lt.kentai.bachelorgame.screens;
 import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -20,6 +20,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
+import lt.kentai.bachelorgame.Matchmaker;
 import lt.kentai.bachelorgame.Network;
 import lt.kentai.bachelorgame.ServerListener;
 
@@ -32,11 +33,13 @@ public class ServerScreen implements Screen {
 	private Label outputLabel;
 	private ScrollPane scrollPane;
 	private TextField inputTextField;
-	// Server stuff
+	//Server stuff
 	private Server server;
+	private Matchmaker matchmaker;
 	
 	public ServerScreen(SpriteBatch batch) {
 		this.batch = batch;
+		matchmaker = new Matchmaker(server);
 	}
 
 	@Override
@@ -173,6 +176,10 @@ public class ServerScreen implements Screen {
 	
 	public static class GameConnection extends Connection {
 		public String name;
+	}
+
+	public Matchmaker getMatchmaker() {
+		return matchmaker;
 	}
 	
 }
