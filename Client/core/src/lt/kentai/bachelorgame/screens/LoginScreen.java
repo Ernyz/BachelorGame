@@ -147,7 +147,7 @@ public class LoginScreen implements Screen {
 		client = new Client();
 		client.start();
 		Network.register(client);
-		client.addListener(new ThreadedListener(new ClientListener(this)));
+		client.addListener(new ThreadedListener(new ClientListener()));
 		
 		try {
 			client.connect(10000, serverIP, Network.tcpPort, Network.udpPort);

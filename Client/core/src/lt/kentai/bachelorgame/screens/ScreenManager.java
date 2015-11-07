@@ -8,20 +8,29 @@ import lt.kentai.bachelorgame.GameClient;
 /**
  * Class for managing libgdx screens.
  * 
- * @author ernyz
+ * @author Ernyz
  */
 public class ScreenManager {
 	
+	private static Object currentScreen;
+	
 	public static void switchToLoginScreen(SpriteBatch batch, GameClient mainClass) {
-		mainClass.setScreen(new LoginScreen(batch, mainClass));
+		currentScreen = new LoginScreen(batch, mainClass);
+		mainClass.setScreen((LoginScreen) currentScreen);
 	}
 	
 	public static void switchToMainMenuScreen(SpriteBatch batch, GameClient mainClass, Client client) {
-		mainClass.setScreen(new MainMenuScreen(batch, mainClass, client));
+		currentScreen = new MainMenuScreen(batch, mainClass, client);
+		mainClass.setScreen((MainMenuScreen) currentScreen);
 	}
 	
 	public static void switchToLobbyScreen(SpriteBatch batch, GameClient mainClass, Client client) {
-		mainClass.setScreen(new LobbyScreen(batch, mainClass, client));
+		currentScreen = new LobbyScreen(batch, mainClass, client);	
+		mainClass.setScreen((LobbyScreen) currentScreen);
+	}
+
+	public static Object getCurrentScreen() {
+		return currentScreen;
 	}
 	
 }

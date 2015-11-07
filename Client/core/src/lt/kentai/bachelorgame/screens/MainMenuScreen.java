@@ -22,6 +22,7 @@ public class MainMenuScreen implements Screen {
 	private Client client;
 	
 	private boolean inMatchmaking = false;
+	private boolean switchToLobbyScreen = false;
 	
 	//GUI stuff
 	private Stage stage;
@@ -31,6 +32,7 @@ public class MainMenuScreen implements Screen {
 	
 	public MainMenuScreen(SpriteBatch batch, GameClient mainClass, Client client) {
 		this.batch = batch;
+		this.mainClass = mainClass;
 		this.client = client;
 	}
 	
@@ -56,6 +58,11 @@ public class MainMenuScreen implements Screen {
 		
 		stage.act(delta);
 		stage.draw();
+		
+		if(switchToLobbyScreen) {
+			switchToLobbyScreen = false;
+			ScreenManager.switchToLobbyScreen(batch, mainClass, client);
+		}
 	}
 
 	@Override
@@ -120,6 +127,10 @@ public class MainMenuScreen implements Screen {
 				Gdx.app.exit();
 			}
 		});
+	}
+	
+	public void switchToLobbyScreen() {
+		switchToLobbyScreen = true;
 	}
 
 }
