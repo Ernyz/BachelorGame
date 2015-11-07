@@ -57,7 +57,7 @@ public class LoginScreen implements Screen {
 		
 		if(switchToMainMenu) {
 			switchToMainMenu = false;
-			mainClass.setScreen(new MainMenuScreen(batch, mainClass, client));
+			ScreenManager.switchToMainMenuScreen(batch, mainClass, client);
 		}
 	}
 

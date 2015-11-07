@@ -12,6 +12,7 @@ public class Network {
 		kryo.register(LoginRequest.class);
 		kryo.register(LoginResult.class);
 		kryo.register(Matchmaking.class);
+		kryo.register(AcceptedToLobby.class);
 	}
 	
 	public static class LoginRequest {
@@ -27,5 +28,8 @@ public class Network {
 		/**
 		 * True if entering matchmaking, false if leaving. */
 		public boolean entering;
+	}
+	
+	public static class AcceptedToLobby {
 	}
 }

@@ -9,17 +9,17 @@ import lt.kentai.bachelorgame.screens.LoginScreen;
 
 public class ClientListener extends Listener {
 	
-	private LoginScreen loginScreen;
+	private LoginScreen currentScreen;
 	
-	public ClientListener(LoginScreen loginScreen) {
-		this.loginScreen = loginScreen;
+	public ClientListener(LoginScreen currentScreen) {
+		this.currentScreen = currentScreen;
 	}
 	
 	public void received(Connection c, Object o) {
 		if(o instanceof LoginResult) {
 			LoginResult loginResult = (LoginResult)o;
 			if(loginResult.success) {
-				loginScreen.switchToMainMenuScreen();
+				currentScreen.switchToMainMenuScreen();
 			} else {
 				//TODO: write failure msg to current screen
 				Log.info("[CLIENT]" + loginResult.message);
@@ -31,6 +31,8 @@ public class ClientListener extends Listener {
 			} else {
 				Log.info("Matchmaking left.");
 			}
+		} else if(o instanceof AcceptedToLobby) {
+			
 		}
 	}
 }

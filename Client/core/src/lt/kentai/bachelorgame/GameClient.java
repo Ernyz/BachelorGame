@@ -3,7 +3,7 @@ package lt.kentai.bachelorgame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import lt.kentai.bachelorgame.screens.LoginScreen;
+import lt.kentai.bachelorgame.screens.ScreenManager;
 
 public class GameClient extends Game {
 	private SpriteBatch batch;
@@ -11,7 +11,7 @@ public class GameClient extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		this.setScreen(new LoginScreen(batch, this));
+		ScreenManager.switchToLoginScreen(batch, this);
 	}
 
 	@Override

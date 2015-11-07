@@ -3,7 +3,7 @@ package lt.kentai.bachelorgame;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Server;
 
-import lt.kentai.bachelorgame.Network.Matchmaking;
+import lt.kentai.bachelorgame.Network.*;
 import lt.kentai.bachelorgame.screens.ServerScreen.GameConnection;
 
 public class Matchmaker {
@@ -27,7 +27,7 @@ public class Matchmaker {
 			GameConnection matchmakedConnection;
 			for(int i=0; i<teamSize*2; i++) {
 				matchmakedConnection = connectionsInMatchmaking.pop();
-				//TODO: send "accepted to lobby" or smth like that
+				matchmakedConnection.sendTCP(new AcceptedToLobby());
 			}
 		}
 	}
