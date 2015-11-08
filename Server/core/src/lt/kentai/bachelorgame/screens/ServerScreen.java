@@ -16,10 +16,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
+import lt.kentai.bachelorgame.AccountConnection;
+import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.Matchmaker;
 import lt.kentai.bachelorgame.Network;
 import lt.kentai.bachelorgame.ServerListener;
@@ -27,19 +30,23 @@ import lt.kentai.bachelorgame.ServerListener;
 public class ServerScreen implements Screen {
 	
 	private SpriteBatch batch;
+	
+	//GUI stuff
 	private Stage stage;
 	private Table table;
 	private Skin skin;
 	private Label outputLabel;
 	private ScrollPane scrollPane;
 	private TextField inputTextField;
+	
 	//Server stuff
 	private Server server;
 	private Matchmaker matchmaker;
+	private Array<Match> matchArray = new Array<Match>();
 	
 	public ServerScreen(SpriteBatch batch) {
 		this.batch = batch;
-		matchmaker = new Matchmaker(server);
+		matchmaker = new Matchmaker(server, matchArray);
 	}
 
 	@Override
@@ -91,7 +98,7 @@ public class ServerScreen implements Screen {
 		stage.dispose();
 		skin.dispose();
 	}
-
+	
 	private void setupUI() {
 		table = new Table();
 		table.setFillParent(true);
@@ -146,7 +153,7 @@ public class ServerScreen implements Screen {
 		} else if(inputText.equals("lc")) {
 			if(server.getConnections().length > 0) {
 				for(Connection c : server.getConnections()) {
-					addMessage(c.toString() + "; Player name: " + ((GameConnection)c).name);
+					addMessage(c.toString() + "; Player name: " + ((AccountConnection)c).name);
 				}
 			} else {
 				addMessage("There are no connections at the moment.");
@@ -160,7 +167,7 @@ public class ServerScreen implements Screen {
 		Log.set(Log.LEVEL_NONE);
 		server = new Server() {
 			protected Connection newConnection() {
-				return new GameConnection();
+				return new AccountConnection();
 			}
 		};
 		Network.register(server);
@@ -174,10 +181,6 @@ public class ServerScreen implements Screen {
 		server.start();
 	}
 	
-	public static class GameConnection extends Connection {
-		public String name;
-	}
-
 	public Matchmaker getMatchmaker() {
 		return matchmaker;
 	}

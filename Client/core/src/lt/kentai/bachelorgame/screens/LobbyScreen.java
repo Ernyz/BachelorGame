@@ -6,13 +6,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.GameClient;
 
@@ -21,12 +19,14 @@ public class LobbyScreen implements Screen {
 	private SpriteBatch batch;
 	private GameClient mainClass;
 	private Client client;
+	
 	private Table table;
 	private Stage stage;
 	private Skin skin;
 	private Label timerLabel;
+	private TextButton lockInBtn;
+
 	private float timer = 5f;
-	private TextButton textBtn;
 
 	public LobbyScreen(SpriteBatch batch, GameClient mainClass, Client client) {
 		this.batch = batch;
@@ -53,7 +53,8 @@ public class LobbyScreen implements Screen {
 		timer -= delta;
 		timerLabel.setText(MathUtils.floor(timer) + "");
 		if (timer <= 0) {
-			Log.info("Start the game");
+			//Start the game
+			switchToGameScreen();
 		}
 	}
 
@@ -97,14 +98,18 @@ public class LobbyScreen implements Screen {
 		final Label textLabel = new Label("Some text", skin);
 		table.add(textLabel);
 		table.row();
-		textBtn = new TextButton("Lock", skin);
-		table.add(textBtn);
+		lockInBtn = new TextButton("Lock in", skin);
+		table.add(lockInBtn);
 		table.row();
 
 	}
 
-	private void lockIn() {
-		// TODO
+	private void lockIn() {  //TODO: Call this function when lockIn button is pressed
+		switchToGameScreen();
 	}
 
+	public void switchToGameScreen() {
+		ScreenManager.switchToGameScreen(batch, mainClass, client);
+	}
+	
 }

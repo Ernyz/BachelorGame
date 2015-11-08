@@ -3,36 +3,45 @@ package lt.kentai.bachelorgame;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Server;
 
-import lt.kentai.bachelorgame.Network.*;
-import lt.kentai.bachelorgame.screens.ServerScreen.GameConnection;
+import lt.kentai.bachelorgame.Network.Matchmaking;
 
 public class Matchmaker {
 	
 	private Server server;
-	private Array<GameConnection> connectionsInMatchmaking;
-	private int teamSize = 1;
+	private Array<Match> matchArray;
+	private Array<AccountConnection> connectionsInMatchmaking;
 	
-	public Matchmaker(Server server) {
+	public Matchmaker(Server server, Array<Match> matchArray) {
 		this.server = server;
-		connectionsInMatchmaking = new Array<GameConnection>();
+		this.matchArray = matchArray;
+		connectionsInMatchmaking = new Array<AccountConnection>();
 	}
 	
-	public void addConnection(GameConnection c) {
+	public void addConnection(AccountConnection c) {
 		connectionsInMatchmaking.insert(0, c);
 		Matchmaking m = new Matchmaking();
 		m.entering = true;
 		c.sendTCP(m);
-		//Improve this logic later
-		if(connectionsInMatchmaking.size >= teamSize *2) {
-			GameConnection matchmakedConnection;
-			for(int i=0; i<teamSize*2; i++) {
-				matchmakedConnection = connectionsInMatchmaking.pop();
-				matchmakedConnection.sendTCP(new AcceptedToLobby());
-			}
+		
+		if(connectionsInMatchmaking.size >= Properties.TeamSize *2) {
+			createNewMatch();
 		}
 	}
+	
+	private void createNewMatch() {
+		AccountConnection matchmakedConnection;
+		Array<AccountConnection> matchmakedConnections = new Array<AccountConnection>();
+		for(int i=0; i<Properties.TeamSize*2; i++) {
+			matchmakedConnection = connectionsInMatchmaking.pop();
+			matchmakedConnections.add(matchmakedConnection);
+			//matchmakedConnection.sendTCP(new AcceptedToLobby());
+		}
+		
+		Match match = new Match(matchmakedConnections);
+		matchArray.add(match);
+	}
 
-	public void removeConnection(GameConnection c) {
+	public void removeConnection(AccountConnection c) {
 		connectionsInMatchmaking.removeValue(c, false);
 		Matchmaking m = new Matchmaking();
 		m.entering = false;

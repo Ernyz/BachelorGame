@@ -6,26 +6,35 @@ import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.Network.LoginRequest;
 import lt.kentai.bachelorgame.Network.Matchmaking;
+import lt.kentai.bachelorgame.Network.RequestForMatchInfo;
 import lt.kentai.bachelorgame.screens.ServerScreen;
-import lt.kentai.bachelorgame.screens.ServerScreen.GameConnection;
 
 public class ServerListener extends Listener {
 	
-	private PacketHandler packetHandler;
+	private AccountPacketHandler accountPacketHandler;
 	
 	public ServerListener(ServerScreen serverScreen) {
-		packetHandler = new PacketHandler(serverScreen);
+		accountPacketHandler = new AccountPacketHandler(serverScreen);
 	}
 	
 	public void received(Connection c, Object o) {
-		GameConnection gameConnection = (GameConnection) c;
-		if(o instanceof LoginRequest) {
-			LoginRequest loginRequest = (LoginRequest) o;
-			packetHandler.handleLoginRequest(gameConnection, loginRequest);
-		} else if(o instanceof Matchmaking) {
-			Matchmaking m = (Matchmaking) o;
-			packetHandler.handleMatchmaking(gameConnection, m);
-		}
+		//AccountConnection gameConnection = (AccountConnection) c;
+		AccountConnection accountConnection = null;
+//		GameConnection gameConnection = null;
+		if(c instanceof AccountConnection) {
+			accountConnection = (AccountConnection) c;
+			if(o instanceof LoginRequest) {
+				LoginRequest loginRequest = (LoginRequest) o;
+				accountPacketHandler.handleLoginRequest(accountConnection, loginRequest);
+			} else if(o instanceof Matchmaking) {
+				Matchmaking m = (Matchmaking) o;
+				accountPacketHandler.handleMatchmaking(accountConnection, m);
+			} else if(o instanceof RequestForMatchInfo) {
+				accountPacketHandler.handleMatchInfoRequest(accountConnection);
+			}
+		}/* else if(c instanceof GameConnection) {
+			gameConnection = (GameConnection) c;
+		}*/
 	}
 	
 	@Override

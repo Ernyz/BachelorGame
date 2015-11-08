@@ -28,6 +28,11 @@ public class ScreenManager {
 		currentScreen = new LobbyScreen(batch, mainClass, client);	
 		mainClass.setScreen((LobbyScreen) currentScreen);
 	}
+	
+	public static void switchToGameScreen(SpriteBatch batch, GameClient mainClass, Client client) {
+		currentScreen = new GameScreen(batch, mainClass, client);
+		mainClass.setScreen((GameScreen) currentScreen);
+	}
 
 	public static Object getCurrentScreen() {
 		return currentScreen;

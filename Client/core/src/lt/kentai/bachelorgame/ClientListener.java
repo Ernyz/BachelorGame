@@ -4,7 +4,11 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 
-import lt.kentai.bachelorgame.Network.*;
+import lt.kentai.bachelorgame.Network.AcceptedToLobby;
+import lt.kentai.bachelorgame.Network.LoginResult;
+import lt.kentai.bachelorgame.Network.MatchInfo;
+import lt.kentai.bachelorgame.Network.Matchmaking;
+import lt.kentai.bachelorgame.screens.GameScreen;
 import lt.kentai.bachelorgame.screens.LoginScreen;
 import lt.kentai.bachelorgame.screens.MainMenuScreen;
 import lt.kentai.bachelorgame.screens.ScreenManager;
@@ -15,10 +19,11 @@ public class ClientListener extends Listener {
 	}
 	
 	public void received(Connection c, Object o) {
+		System.out.println(c.getClass());
+		
 		if(o instanceof LoginResult) {
 			LoginResult loginResult = (LoginResult)o;
 			if(loginResult.success) {
-				//currentScreen.switchToMainMenuScreen();
 				if(ScreenManager.getCurrentScreen() instanceof LoginScreen) {
 					((LoginScreen) ScreenManager.getCurrentScreen()).switchToMainMenuScreen(); 
 				} else {
@@ -39,7 +44,12 @@ public class ClientListener extends Listener {
 			if(ScreenManager.getCurrentScreen() instanceof MainMenuScreen) {
 				((MainMenuScreen) ScreenManager.getCurrentScreen()).switchToLobbyScreen(); 
 			} else {
-				//TODO: Some errror or something. Warn about it
+				//TODO: Some error or something. Warn about it
+			}
+		} else if(o instanceof MatchInfo) {
+			MatchInfo matchInfo = (MatchInfo) o;
+			if(ScreenManager.getCurrentScreen() instanceof GameScreen) {
+				((GameScreen)ScreenManager.getCurrentScreen()).setInitializeMatch(matchInfo);
 			}
 		}
 	}
