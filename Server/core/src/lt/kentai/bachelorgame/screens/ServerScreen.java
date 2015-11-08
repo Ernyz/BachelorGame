@@ -153,7 +153,7 @@ public class ServerScreen implements Screen {
 		} else if(inputText.equals("lc")) {
 			if(server.getConnections().length > 0) {
 				for(Connection c : server.getConnections()) {
-					addMessage(c.toString() + "; Player name: " + ((AccountConnection)c).name);
+					addMessage(c.toString() + "; Player name: " + ((AccountConnection)c).connectionName);
 				}
 			} else {
 				addMessage("There are no connections at the moment.");

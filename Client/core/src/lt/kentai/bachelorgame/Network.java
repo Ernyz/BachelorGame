@@ -1,9 +1,11 @@
 package lt.kentai.bachelorgame;
 
+import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
 import lt.kentai.bachelorgame.Properties.Team;
+import lt.kentai.bachelorgame.model.server_data.ChampionData;
 
 public class Network {
 	public static final int tcpPort = 54555;
@@ -18,6 +20,9 @@ public class Network {
 		kryo.register(Properties.Team.class);
 		kryo.register(RequestForMatchInfo.class);
 		kryo.register(MatchInfo.class);
+		kryo.register(Array.class);
+		kryo.register(Object[].class);
+		kryo.register(ChampionData.class);
 	}
 	
 	public static class LoginRequest {
@@ -36,16 +41,25 @@ public class Network {
 	}
 	
 	public static class AcceptedToLobby {
+		//public final int matchId;
+		public int matchId;
 		public Team team;
+		public AcceptedToLobby() {}
+		public AcceptedToLobby(final int matchId) {
+			this.matchId = matchId;
+		}
 	}
 	
 	public static class RequestForMatchInfo {
+		//public final int matchId;
+		public int matchId;
+		public RequestForMatchInfo() {}
+		public RequestForMatchInfo(final int matchId) {
+			this.matchId = matchId;
+		}
 	}
 	
 	public static class MatchInfo {
-		public String name;
-		public Team team;
-		public float x;
-		public float y;
+		public Array<ChampionData> champions;
 	}
 }

@@ -19,8 +19,6 @@ public class ClientListener extends Listener {
 	}
 	
 	public void received(Connection c, Object o) {
-		System.out.println(c.getClass());
-		
 		if(o instanceof LoginResult) {
 			LoginResult loginResult = (LoginResult)o;
 			if(loginResult.success) {
@@ -42,7 +40,8 @@ public class ClientListener extends Listener {
 			}
 		} else if(o instanceof AcceptedToLobby) {
 			if(ScreenManager.getCurrentScreen() instanceof MainMenuScreen) {
-				((MainMenuScreen) ScreenManager.getCurrentScreen()).switchToLobbyScreen(); 
+				final int matchId = ((AcceptedToLobby) o).matchId;
+				((MainMenuScreen) ScreenManager.getCurrentScreen()).switchToLobbyScreen(matchId); 
 			} else {
 				//TODO: Some error or something. Warn about it
 			}

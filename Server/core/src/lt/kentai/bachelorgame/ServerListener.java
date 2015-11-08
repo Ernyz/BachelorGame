@@ -12,15 +12,15 @@ import lt.kentai.bachelorgame.screens.ServerScreen;
 public class ServerListener extends Listener {
 	
 	private AccountPacketHandler accountPacketHandler;
+	private ServerScreen serverScreen;
 	
 	public ServerListener(ServerScreen serverScreen) {
+		this.serverScreen = serverScreen;
 		accountPacketHandler = new AccountPacketHandler(serverScreen);
 	}
 	
 	public void received(Connection c, Object o) {
-		//AccountConnection gameConnection = (AccountConnection) c;
 		AccountConnection accountConnection = null;
-//		GameConnection gameConnection = null;
 		if(c instanceof AccountConnection) {
 			accountConnection = (AccountConnection) c;
 			if(o instanceof LoginRequest) {
@@ -30,11 +30,11 @@ public class ServerListener extends Listener {
 				Matchmaking m = (Matchmaking) o;
 				accountPacketHandler.handleMatchmaking(accountConnection, m);
 			} else if(o instanceof RequestForMatchInfo) {
-				accountPacketHandler.handleMatchInfoRequest(accountConnection);
+				RequestForMatchInfo matchInfoRequest = (RequestForMatchInfo) o;
+				Match match = serverScreen.getMatchmaker().getMatchById(matchInfoRequest.matchId);
+				accountPacketHandler.handleMatchInfoRequest(accountConnection, match);
 			}
-		}/* else if(c instanceof GameConnection) {
-			gameConnection = (GameConnection) c;
-		}*/
+		}
 	}
 	
 	@Override

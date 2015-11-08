@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array;
 
 import lt.kentai.bachelorgame.Network.AcceptedToLobby;
 import lt.kentai.bachelorgame.Properties.Team;
+import lt.kentai.bachelorgame.model.ChampionData;
 
 /**
  * Holds teams, map, minions, towers and all stuff related to a single match.
@@ -12,11 +13,15 @@ import lt.kentai.bachelorgame.Properties.Team;
  */
 public class Match {
 
+	private final int matchId;
+	
 	private Array<AccountConnection> blueTeam = new Array<AccountConnection>();
 	private Array<AccountConnection> redTeam = new Array<AccountConnection>();
+	private Array<ChampionData> champions = new Array<ChampionData>();
 	
-	public Match(Array<AccountConnection> matchmakedConnections) {
-		fillTeams(matchmakedConnections);
+	public Match(int matchId, Array<AccountConnection> matchmakedConnections) {
+		this.matchId = matchId;
+		fillTeams(matchmakedConnections);  //TODO: Maybe matchmaker should do this?..
 	}
 	
 	private void fillTeams(Array<AccountConnection> matchmakedConnections) {
@@ -27,30 +32,31 @@ public class Match {
 			redTeam.add(matchmakedConnections.pop());
 		}
 		
+		ChampionData champion;
 		for(AccountConnection c : blueTeam) {
 			c.team = Team.BLUE;
-			c.x = 0;
-			c.y = 0;
-			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby();
+			champion = new ChampionData(c.connectionName, c.team, 0, 0);
+			champions.add(champion);
+			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby(matchId);
 			acceptedToLobbyPacket.team = c.team;
 			c.sendTCP(acceptedToLobbyPacket);
 		}
 		for(AccountConnection c : redTeam) {
 			c.team = Team.RED;
-			c.x = 100;
-			c.y = 0;
-			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby();
+			champion = new ChampionData(c.connectionName, c.team, 100, 0);
+			champions.add(champion);
+			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby(matchId);
 			acceptedToLobbyPacket.team = c.team;
 			c.sendTCP(acceptedToLobbyPacket);
 		}
 	}
 
-	public Array<AccountConnection> getBlueTeam() {
-		return blueTeam;
+	public Array<ChampionData> getChampions() {
+		return champions;
 	}
 
-	public Array<AccountConnection> getRedTeam() {
-		return redTeam;
+	public int getMatchId() {
+		return matchId;
 	}
 	
 }

@@ -21,6 +21,13 @@ public class MainMenuScreen implements Screen {
 	private GameClient mainClass;
 	private Client client;
 	
+	/*
+	 * FIXME:
+	 * Match ID should not be held in main menu.
+	 * Use postRunnable to avoid storing this value in here.
+	 */
+	private int matchId;
+	
 	private boolean inMatchmaking = false;
 	private boolean switchToLobbyScreen = false;
 	
@@ -61,7 +68,7 @@ public class MainMenuScreen implements Screen {
 		
 		if(switchToLobbyScreen) {
 			switchToLobbyScreen = false;
-			ScreenManager.switchToLobbyScreen(batch, mainClass, client);
+			ScreenManager.switchToLobbyScreen(matchId, batch, mainClass, client);
 		}
 	}
 
@@ -129,7 +136,8 @@ public class MainMenuScreen implements Screen {
 		});
 	}
 	
-	public void switchToLobbyScreen() {
+	public void switchToLobbyScreen(final int matchId) {
+		this.matchId = matchId;
 		switchToLobbyScreen = true;
 	}
 

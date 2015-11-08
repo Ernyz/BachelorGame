@@ -28,24 +28,32 @@ public class Matchmaker {
 		}
 	}
 	
+	public void removeConnection(AccountConnection c) {
+		connectionsInMatchmaking.removeValue(c, false);
+		Matchmaking m = new Matchmaking();
+		m.entering = false;
+		c.sendTCP(m);
+	}
+	
 	private void createNewMatch() {
 		AccountConnection matchmakedConnection;
 		Array<AccountConnection> matchmakedConnections = new Array<AccountConnection>();
 		for(int i=0; i<Properties.TeamSize*2; i++) {
 			matchmakedConnection = connectionsInMatchmaking.pop();
 			matchmakedConnections.add(matchmakedConnection);
-			//matchmakedConnection.sendTCP(new AcceptedToLobby());
 		}
 		
-		Match match = new Match(matchmakedConnections);
+		Match match = new Match(0, matchmakedConnections);  //FIXME: GENERATE ID!
 		matchArray.add(match);
 	}
-
-	public void removeConnection(AccountConnection c) {
-		connectionsInMatchmaking.removeValue(c, false);
-		Matchmaking m = new Matchmaking();
-		m.entering = false;
-		c.sendTCP(m);
+	
+	public Match getMatchById(int id) {
+		for(Match m : matchArray) {
+			if(m.getMatchId() == id) {
+				return m;
+			}
+		}
+		return null;
 	}
 	
 }

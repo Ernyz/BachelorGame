@@ -13,6 +13,7 @@ import lt.kentai.bachelorgame.Network.MatchInfo;
 import lt.kentai.bachelorgame.Network.RequestForMatchInfo;
 import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.model.Entity;
+import lt.kentai.bachelorgame.model.server_data.ChampionData;
 
 /**
  * The actual game is rendered in this screen.
@@ -20,6 +21,8 @@ import lt.kentai.bachelorgame.model.Entity;
  * @author ernyz
  */
 public class GameScreen implements Screen {
+	
+	private final int matchId;  //FIXME: Something is not right. Check if default constructor can be called (it should not be available).
 	
 	private SpriteBatch batch;
 	private GameClient mainClass;
@@ -30,13 +33,14 @@ public class GameScreen implements Screen {
 	private boolean initializeMatch = false;
 	private boolean matchInitialized = false;
 	
-	public GameScreen(SpriteBatch batch, GameClient mainClass, Client client) {
+	public GameScreen(final int matchId, SpriteBatch batch, GameClient mainClass, Client client) {
+		this.matchId = matchId;
 		this.batch = batch;
 		this.mainClass = mainClass;
 		this.client = client;
 		
 		//Send request for server so he returns info about this match
-		RequestForMatchInfo requestInfo = new RequestForMatchInfo();
+		RequestForMatchInfo requestInfo = new RequestForMatchInfo(matchId);
 		client.sendTCP(requestInfo);
 	}
 
@@ -91,13 +95,23 @@ public class GameScreen implements Screen {
 	
 	public void initializeMatch() {
 		match = new Match();
-		Entity e = new Entity(matchInfo.x, matchInfo.y);
+		
+		for(ChampionData champion : matchInfo.champions) {
+			Entity e = new Entity(champion.getX(), champion.getY());
+			if(champion.getTeam() == Team.BLUE) {
+				e.setTexture(new Texture(Gdx.files.internal("champions/blueChampion.png")));
+			} else if(champion.getTeam() == Team.RED) {
+				e.setTexture(new Texture(Gdx.files.internal("champions/redChampion.png")));
+			}
+			match.getPlayerEntities().add(e);
+		}
+		/*Entity e = new Entity(matchInfo.x, matchInfo.y);
 		if(matchInfo.team == Team.BLUE) {
 			e.setTexture(new Texture(Gdx.files.internal("champions/blueChampion.png")));
 		} else if(matchInfo.team == Team.RED) {
 			e.setTexture(new Texture(Gdx.files.internal("champions/redChampion.png")));
 		}
-		match.getPlayerEntities().add(e);
+		match.getPlayerEntities().add(e);*/
 		
 		matchInitialized = true;
 	}

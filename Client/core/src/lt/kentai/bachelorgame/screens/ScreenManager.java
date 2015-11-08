@@ -24,13 +24,13 @@ public class ScreenManager {
 		mainClass.setScreen((MainMenuScreen) currentScreen);
 	}
 	
-	public static void switchToLobbyScreen(SpriteBatch batch, GameClient mainClass, Client client) {
-		currentScreen = new LobbyScreen(batch, mainClass, client);	
+	public static void switchToLobbyScreen(final int matchId, SpriteBatch batch, GameClient mainClass, Client client) {
+		currentScreen = new LobbyScreen(matchId, batch, mainClass, client);	
 		mainClass.setScreen((LobbyScreen) currentScreen);
 	}
 	
-	public static void switchToGameScreen(SpriteBatch batch, GameClient mainClass, Client client) {
-		currentScreen = new GameScreen(batch, mainClass, client);
+	public static void switchToGameScreen(final int matchId, SpriteBatch batch, GameClient mainClass, Client client) {
+		currentScreen = new GameScreen(matchId, batch, mainClass, client);
 		mainClass.setScreen((GameScreen) currentScreen);
 	}
 

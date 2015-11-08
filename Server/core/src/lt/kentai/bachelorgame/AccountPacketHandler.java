@@ -25,7 +25,7 @@ public class AccountPacketHandler {
 			loginResult.message = "Login successful!";
 			accountConnection.sendTCP(loginResult);
 			serverScreen.addMessage(loginRequest.username + " has successfully connected!");
-			accountConnection.name = loginRequest.username;
+			accountConnection.connectionName = loginRequest.username;
 		} else {
 			LoginResult loginResult = new LoginResult();
 			loginResult.success = false;
@@ -38,20 +38,17 @@ public class AccountPacketHandler {
 	
 	public void handleMatchmaking(AccountConnection accountConnection, Matchmaking m) {
 		if(m.entering) {
-			serverScreen.addMessage(accountConnection.name + " has entered matchmaking.");
+			serverScreen.addMessage(accountConnection.connectionName + " has entered matchmaking.");
 			serverScreen.getMatchmaker().addConnection(accountConnection);
 		} else {
-			serverScreen.addMessage(accountConnection.name + " has left matchmaking.");
+			serverScreen.addMessage(accountConnection.connectionName + " has left matchmaking.");
 			serverScreen.getMatchmaker().removeConnection(accountConnection);
 		}
 	}
 	
-	public void handleMatchInfoRequest(AccountConnection accountConnection) {
+	public void handleMatchInfoRequest(AccountConnection accountConnection, Match match) {
 		MatchInfo matchInfo = new MatchInfo();
-		matchInfo.name = accountConnection.name;
-		matchInfo.team = accountConnection.team;
-		matchInfo.x = accountConnection.x;
-		matchInfo.y = accountConnection.y;
+		matchInfo.champions = match.getChampions();
 		
 		accountConnection.sendTCP(matchInfo);
 	}

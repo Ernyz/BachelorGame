@@ -16,6 +16,8 @@ import lt.kentai.bachelorgame.GameClient;
 
 public class LobbyScreen implements Screen {
 
+	private final int matchId;
+	
 	private SpriteBatch batch;
 	private GameClient mainClass;
 	private Client client;
@@ -28,7 +30,8 @@ public class LobbyScreen implements Screen {
 
 	private float timer = 5f;
 
-	public LobbyScreen(SpriteBatch batch, GameClient mainClass, Client client) {
+	public LobbyScreen(final int matchId, SpriteBatch batch, GameClient mainClass, Client client) {
+		this.matchId = matchId;
 		this.batch = batch;
 		this.mainClass = mainClass;
 		this.client = client;
@@ -109,7 +112,7 @@ public class LobbyScreen implements Screen {
 	}
 
 	public void switchToGameScreen() {
-		ScreenManager.switchToGameScreen(batch, mainClass, client);
+		ScreenManager.switchToGameScreen(matchId, batch, mainClass, client);
 	}
 	
 }
