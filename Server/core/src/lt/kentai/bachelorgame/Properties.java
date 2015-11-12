@@ -7,6 +7,9 @@ public class Properties {
 		BLUE, RED
 	}
 	
+	public static int MapWidth = 50;
+	public static int MapHeight = 50;
+	
 	private Properties() {
 		
 	}

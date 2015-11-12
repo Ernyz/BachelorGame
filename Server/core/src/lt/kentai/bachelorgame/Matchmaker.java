@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Server;
 
 import lt.kentai.bachelorgame.Network.Matchmaking;
+import lt.kentai.bachelorgame.level_generator.LevelGenerator;
 
 public class Matchmaker {
 	
@@ -11,10 +12,14 @@ public class Matchmaker {
 	private Array<Match> matchArray;
 	private Array<AccountConnection> connectionsInMatchmaking;
 	
+	private LevelGenerator levelGenerator;
+	
 	public Matchmaker(Server server, Array<Match> matchArray) {
 		this.server = server;
 		this.matchArray = matchArray;
 		connectionsInMatchmaking = new Array<AccountConnection>();
+		
+		levelGenerator = new LevelGenerator();
 	}
 	
 	public void addConnection(AccountConnection c) {
@@ -44,6 +49,7 @@ public class Matchmaker {
 		}
 		
 		Match match = new Match(0, matchmakedConnections);  //FIXME: GENERATE ID!
+		match.setMap(levelGenerator.generateLevel());
 		matchArray.add(match);
 	}
 	

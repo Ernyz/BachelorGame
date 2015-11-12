@@ -19,6 +19,8 @@ public class Match {
 	private Array<AccountConnection> redTeam = new Array<AccountConnection>();
 	private Array<ChampionData> champions = new Array<ChampionData>();
 	
+	private char[][] map;
+	
 	public Match(int matchId, Array<AccountConnection> matchmakedConnections) {
 		this.matchId = matchId;
 		fillTeams(matchmakedConnections);  //TODO: Maybe matchmaker should do this?..
@@ -49,6 +51,10 @@ public class Match {
 			acceptedToLobbyPacket.team = c.team;
 			c.sendTCP(acceptedToLobbyPacket);
 		}
+	}
+	
+	public void setMap(char[][] map) {
+		this.map = map;
 	}
 
 	public Array<ChampionData> getChampions() {
