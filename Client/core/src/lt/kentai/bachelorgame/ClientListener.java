@@ -41,7 +41,8 @@ public class ClientListener extends Listener {
 		} else if(o instanceof AcceptedToLobby) {
 			if(ScreenManager.getCurrentScreen() instanceof MainMenuScreen) {
 				final int matchId = ((AcceptedToLobby) o).matchId;
-				((MainMenuScreen) ScreenManager.getCurrentScreen()).switchToLobbyScreen(matchId); 
+				final String[] championNames = ((AcceptedToLobby) o).championNames;
+				((MainMenuScreen) ScreenManager.getCurrentScreen()).switchToLobbyScreen(matchId, championNames); 
 			} else {
 				//TODO: Some error or something. Warn about it
 			}

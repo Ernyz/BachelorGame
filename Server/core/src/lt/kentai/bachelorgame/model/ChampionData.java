@@ -2,20 +2,31 @@ package lt.kentai.bachelorgame.model;
 
 import lt.kentai.bachelorgame.Properties.Team;
 
+/**
+ * Used to transfer champion related data between server and client and vice versa.
+ * 
+ * @author Ernyz
+ */
 public class ChampionData {
 	
 	private String accountName;
+	private String championName;
+	/**
+	 * Name of the connection to which this champion belongs to. */
+	private int connectionId;
 	private Team team;
 	private float x;
 	private float y;
+	private float speed;
 	
 	//TODO: See if there is a way to make only one constructor
 	public ChampionData() {
 		
 	}
 	
-	public ChampionData(String accountName, Team team, float x, float y) {
+	public ChampionData(String accountName, int connectionId, Team team, float x, float y) {
 		this.accountName = accountName;
+		this.connectionId = connectionId;
 		this.team = team;
 		this.x = x;
 		this.y = y;
@@ -51,6 +62,26 @@ public class ChampionData {
 
 	public void setY(float y) {
 		this.y = y;
+	}
+	
+	public float getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(float speed) {
+		this.speed = speed;
+	}
+
+	public int getConnectionId() {
+		return connectionId;
+	}
+
+	public String getChampionName() {
+		return championName;
+	}
+
+	public void setChampionName(String championName) {
+		this.championName = championName;
 	}
 	
 }

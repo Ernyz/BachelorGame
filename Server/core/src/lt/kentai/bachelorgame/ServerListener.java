@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 
+import lt.kentai.bachelorgame.Network.LockIn;
 import lt.kentai.bachelorgame.Network.LoginRequest;
 import lt.kentai.bachelorgame.Network.Matchmaking;
 import lt.kentai.bachelorgame.Network.RequestForMatchInfo;
@@ -20,20 +21,22 @@ public class ServerListener extends Listener {
 	}
 	
 	public void received(Connection c, Object o) {
-		AccountConnection accountConnection = null;
-		if(c instanceof AccountConnection) {
-			accountConnection = (AccountConnection) c;
-			if(o instanceof LoginRequest) {
-				LoginRequest loginRequest = (LoginRequest) o;
-				accountPacketHandler.handleLoginRequest(accountConnection, loginRequest);
-			} else if(o instanceof Matchmaking) {
-				Matchmaking m = (Matchmaking) o;
-				accountPacketHandler.handleMatchmaking(accountConnection, m);
-			} else if(o instanceof RequestForMatchInfo) {
-				RequestForMatchInfo matchInfoRequest = (RequestForMatchInfo) o;
-				Match match = serverScreen.getMatchmaker().getMatchById(matchInfoRequest.matchId);
-				accountPacketHandler.handleMatchInfoRequest(accountConnection, match);
-			}
+		AccountConnection accountConnection = (AccountConnection) c;
+		
+		if(o instanceof LoginRequest) {
+			LoginRequest loginRequest = (LoginRequest) o;
+			accountPacketHandler.handleLoginRequest(accountConnection, loginRequest);
+		} else if(o instanceof Matchmaking) {
+			Matchmaking m = (Matchmaking) o;
+			accountPacketHandler.handleMatchmaking(accountConnection, m);
+		} else if(o instanceof RequestForMatchInfo) {
+			RequestForMatchInfo matchInfoRequest = (RequestForMatchInfo) o;
+			Match match = serverScreen.getMatchmaker().getMatchById(matchInfoRequest.matchId);
+			accountPacketHandler.handleMatchInfoRequest(accountConnection, match);
+		} else if(o instanceof LockIn) {
+			LockIn lockInPacket = (LockIn) o;
+			Match match = serverScreen.getMatchmaker().getMatchById(lockInPacket.matchId);
+			match.lockInChampion(accountConnection, lockInPacket.championName);
 		}
 	}
 	
