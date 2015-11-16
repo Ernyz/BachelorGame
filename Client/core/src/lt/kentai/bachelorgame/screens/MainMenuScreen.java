@@ -28,6 +28,8 @@ public class MainMenuScreen implements Screen {
 	 */
 	private int matchId;
 	
+	private String[] championNames;
+	
 	private boolean inMatchmaking = false;
 	private boolean switchToLobbyScreen = false;
 	
@@ -68,7 +70,7 @@ public class MainMenuScreen implements Screen {
 		
 		if(switchToLobbyScreen) {
 			switchToLobbyScreen = false;
-			ScreenManager.switchToLobbyScreen(matchId, batch, mainClass, client);
+			ScreenManager.switchToLobbyScreen(matchId, championNames, batch, mainClass, client);
 		}
 	}
 
@@ -136,8 +138,9 @@ public class MainMenuScreen implements Screen {
 		});
 	}
 	
-	public void switchToLobbyScreen(final int matchId) {
+	public void switchToLobbyScreen(final int matchId, String[] championNames) {
 		this.matchId = matchId;
+		this.championNames = championNames;
 		switchToLobbyScreen = true;
 	}
 

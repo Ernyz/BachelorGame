@@ -8,6 +8,8 @@ import lt.kentai.bachelorgame.level_generator.LevelGenerator;
 
 public class Matchmaker {
 	
+	private int matchIdCounter = 0;
+	
 	private Server server;
 	private Array<Match> matchArray;
 	private Array<AccountConnection> connectionsInMatchmaking;
@@ -48,7 +50,8 @@ public class Matchmaker {
 			matchmakedConnections.add(matchmakedConnection);
 		}
 		
-		Match match = new Match(0, matchmakedConnections);  //FIXME: GENERATE ID!
+		Match match = new Match(matchIdCounter, matchmakedConnections);
+		matchIdCounter++;
 		match.setMap(levelGenerator.generateLevel());
 		matchArray.add(match);
 	}

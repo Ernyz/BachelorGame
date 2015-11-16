@@ -24,8 +24,8 @@ public class ScreenManager {
 		mainClass.setScreen((MainMenuScreen) currentScreen);
 	}
 	
-	public static void switchToLobbyScreen(final int matchId, SpriteBatch batch, GameClient mainClass, Client client) {
-		currentScreen = new LobbyScreen(matchId, batch, mainClass, client);	
+	public static void switchToLobbyScreen(final int matchId, String[] championNames, SpriteBatch batch, GameClient mainClass, Client client) {
+		currentScreen = new LobbyScreen(matchId, championNames, batch, mainClass, client);	
 		mainClass.setScreen((LobbyScreen) currentScreen);
 	}
 	

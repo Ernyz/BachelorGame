@@ -1,10 +1,14 @@
 package lt.kentai.bachelorgame.screens;
 
+import java.util.Currency;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -13,10 +17,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.esotericsoftware.kryonet.Client;
 
 import lt.kentai.bachelorgame.GameClient;
+import lt.kentai.bachelorgame.Network.LockIn;
 
 public class LobbyScreen implements Screen {
 
 	private final int matchId;
+	private final String[] championNames;
+	
+	private String selectedChampion = "";
 	
 	private SpriteBatch batch;
 	private GameClient mainClass;
@@ -28,10 +36,11 @@ public class LobbyScreen implements Screen {
 	private Label timerLabel;
 	private TextButton lockInBtn;
 
-	private float timer = 5f;
+	private float championSelectionTimer = 8f;
 
-	public LobbyScreen(final int matchId, SpriteBatch batch, GameClient mainClass, Client client) {
+	public LobbyScreen(final int matchId, String[] championNames, SpriteBatch batch, GameClient mainClass, Client client) {
 		this.matchId = matchId;
+		this.championNames = championNames;
 		this.batch = batch;
 		this.mainClass = mainClass;
 		this.client = client;
@@ -41,9 +50,8 @@ public class LobbyScreen implements Screen {
 	public void show() {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
+		
 		setupUI();
-
-		timerLabel.setText(MathUtils.floor(timer) + "");
 	}
 
 	@Override
@@ -53,11 +61,12 @@ public class LobbyScreen implements Screen {
 		stage.act(delta);
 		stage.draw();
 
-		timer -= delta;
-		timerLabel.setText(MathUtils.floor(timer) + "");
-		if (timer <= 0) {
+		championSelectionTimer -= delta;
+		timerLabel.setText(MathUtils.floor(championSelectionTimer) + "");
+		if (championSelectionTimer <= 0) {
+			//TODO: check if all the player have selected a champion.
 			//Start the game
-			switchToGameScreen();
+			lockIn();
 		}
 	}
 
@@ -88,31 +97,54 @@ public class LobbyScreen implements Screen {
 	}
 
 	private void setupUI() {
+		skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 		table = new Table();
-
 		table.setFillParent(true);
 		stage.addActor(table);
+		
 		table.setDebug(false);
+		
 		table.row();
-		skin = new Skin(Gdx.files.internal("ui/uiskin.json"));// temp TODO
-		timerLabel = new Label(timer + "", skin);
+		timerLabel = new Label(championSelectionTimer + "", skin);
 		table.add(timerLabel);
+		
 		table.row();
-		final Label textLabel = new Label("Some text", skin);
-		table.add(textLabel);
+		//List all the champions
+		for(String name : championNames) {
+			final TextButton championBtn = new TextButton(name, skin);
+			championBtn.addListener(new InputListener() {
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					return true;
+				}
+				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+					selectedChampion = championBtn.getText().toString();
+				}
+			});
+			table.add(championBtn);
+		}
+		
 		table.row();
 		lockInBtn = new TextButton("Lock in", skin);
+		lockInBtn.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				return true;
+			}
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				lockIn();
+			}
+		});
 		table.add(lockInBtn);
 		table.row();
 
+		timerLabel.setText(MathUtils.floor(championSelectionTimer) + "");
 	}
 
-	private void lockIn() {  //TODO: Call this function when lockIn button is pressed
-		switchToGameScreen();
-	}
-
-	public void switchToGameScreen() {
+	private void lockIn() {
+		LockIn lockInPacket = new LockIn();
+		lockInPacket.championName = selectedChampion;
+		lockInPacket.matchId = matchId;
+		client.sendTCP(lockInPacket);
 		ScreenManager.switchToGameScreen(matchId, batch, mainClass, client);
 	}
-	
+
 }

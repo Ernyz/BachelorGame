@@ -22,7 +22,9 @@ public class Network {
 		kryo.register(MatchInfo.class);
 		kryo.register(Array.class);
 		kryo.register(Object[].class);
+		kryo.register(String[].class);
 		kryo.register(ChampionData.class);
+		kryo.register(LockIn.class);
 	}
 	
 	public static class LoginRequest {
@@ -44,6 +46,7 @@ public class Network {
 		//public final int matchId;
 		public int matchId;
 		public Team team;
+		public String[] championNames;
 		public AcceptedToLobby() {}
 		public AcceptedToLobby(final int matchId) {
 			this.matchId = matchId;
@@ -61,5 +64,10 @@ public class Network {
 	
 	public static class MatchInfo {
 		public Array<ChampionData> champions;
+	}
+	
+	public static class LockIn {
+		public int matchId;
+		public String championName;
 	}
 }

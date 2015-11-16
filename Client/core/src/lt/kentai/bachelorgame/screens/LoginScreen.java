@@ -143,7 +143,7 @@ public class LoginScreen implements Screen {
 	/**
 	 * @return true if connection was successful, false otherwise. */
 	private boolean setupNetworking(String serverIP) {
-		Log.set(Log.LEVEL_DEBUG);
+		Log.set(Log.LEVEL_INFO);
 		client = new Client();
 		client.start();
 		Network.register(client);
