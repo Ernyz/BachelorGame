@@ -164,7 +164,7 @@ public class ServerScreen implements Screen {
 	}
 	
 	private void setupNetworking() {
-		Log.set(Log.LEVEL_NONE);
+		Log.set(Log.LEVEL_DEBUG);
 		server = new Server() {
 			protected Connection newConnection() {
 				return new AccountConnection();

@@ -3,6 +3,7 @@ package lt.kentai.bachelorgame;
 import com.badlogic.gdx.utils.Array;
 
 import lt.kentai.bachelorgame.Network.AcceptedToLobby;
+import lt.kentai.bachelorgame.Network.MatchReady;
 import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.model.ChampionData;
 import lt.kentai.bachelorgame.model.ChampionInfo;
@@ -18,7 +19,7 @@ public class Match {
 	
 	/* 
 	 * TODO: Should probably remove separation to teams,
-	 * since it only makes hard to iterate and gives no real convenience.
+	 * since it only makes it hard to iterate and gives no real convenience.
 	 */
 	private Array<AccountConnection> blueTeam = new Array<AccountConnection>();
 	private Array<AccountConnection> redTeam = new Array<AccountConnection>();
@@ -66,12 +67,32 @@ public class Match {
 //				cd.setChampionName(championName);
 //			}
 //		}
+		System.out.println("lock in " + championName);
 		for(int i = 0; i < champions.size; i++) {
 			if(champions.get(i).getConnectionId() == lockedInConnection.getID()) {
-				System.out.println(champions.get(i).getAccountName());
+//				System.out.println(champions.get(i).getAccountName());
 				champions.get(i).setChampionName(championName);
 			}
 		}
+		
+		if(ready()) {
+			for(AccountConnection c : blueTeam) {
+				c.sendTCP(new MatchReady());
+			}
+			for(AccountConnection c : redTeam) {
+				c.sendTCP(new MatchReady());
+			}
+		}
+	}
+	
+	public boolean ready() {
+		//TODO: Replace by single team or use server.sendAll()
+		for(int i = 0; i < champions.size; i++) {
+			if(champions.get(i).getChampionName() == null) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public void setMap(char[][] map) {

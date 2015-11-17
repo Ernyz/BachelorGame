@@ -7,6 +7,7 @@ import com.esotericsoftware.minlog.Log;
 import lt.kentai.bachelorgame.Network.AcceptedToLobby;
 import lt.kentai.bachelorgame.Network.LoginResult;
 import lt.kentai.bachelorgame.Network.MatchInfo;
+import lt.kentai.bachelorgame.Network.MatchReady;
 import lt.kentai.bachelorgame.Network.Matchmaking;
 import lt.kentai.bachelorgame.screens.GameScreen;
 import lt.kentai.bachelorgame.screens.LoginScreen;
@@ -50,6 +51,10 @@ public class ClientListener extends Listener {
 			MatchInfo matchInfo = (MatchInfo) o;
 			if(ScreenManager.getCurrentScreen() instanceof GameScreen) {
 				((GameScreen)ScreenManager.getCurrentScreen()).setInitializeMatch(matchInfo);
+			}
+		} else if(o instanceof MatchReady) {
+			if(ScreenManager.getCurrentScreen() instanceof GameScreen) {
+				((GameScreen)ScreenManager.getCurrentScreen()).setMatchReady();
 			}
 		}
 	}

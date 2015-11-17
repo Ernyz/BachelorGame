@@ -30,10 +30,12 @@ public class ServerListener extends Listener {
 			Matchmaking m = (Matchmaking) o;
 			accountPacketHandler.handleMatchmaking(accountConnection, m);
 		} else if(o instanceof RequestForMatchInfo) {
+			System.out.println("reguest for match info arrived to server");
 			RequestForMatchInfo matchInfoRequest = (RequestForMatchInfo) o;
 			Match match = serverScreen.getMatchmaker().getMatchById(matchInfoRequest.matchId);
 			accountPacketHandler.handleMatchInfoRequest(accountConnection, match);
 		} else if(o instanceof LockIn) {
+			System.out.println("locked in");
 			LockIn lockInPacket = (LockIn) o;
 			Match match = serverScreen.getMatchmaker().getMatchById(lockInPacket.matchId);
 			match.lockInChampion(accountConnection, lockInPacket.championName);

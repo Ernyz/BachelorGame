@@ -31,6 +31,7 @@ public class GameScreen implements Screen {
 	
 	private Match match;
 	MatchInfo matchInfo;
+	private boolean matchReady = false;
 	private boolean initializeMatch = false;
 	private boolean matchInitialized = false;
 	
@@ -43,9 +44,9 @@ public class GameScreen implements Screen {
 		this.mainClass = mainClass;
 		this.client = client;
 		
-		//Send request for server so he returns info about this match
-		RequestForMatchInfo requestInfo = new RequestForMatchInfo(matchId);
-		client.sendTCP(requestInfo);
+//		//Send request for server so he returns info about this match
+//		RequestForMatchInfo requestInfo = new RequestForMatchInfo(matchId);
+//		client.sendTCP(requestInfo);
 	}
 
 	@Override
@@ -58,6 +59,12 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		if(!matchReady) {
+			//Send request for server so he returns info about this match
+			RequestForMatchInfo requestInfo = new RequestForMatchInfo(matchId);
+			client.sendTCP(requestInfo);
+			return;
+		}
 		if(initializeMatch) initializeMatch();
 		if(!matchInitialized) return;
 		
@@ -134,6 +141,13 @@ public class GameScreen implements Screen {
 	public void setInitializeMatch(MatchInfo matchInfo) {
 		this.matchInfo = matchInfo;
 		initializeMatch = true;
+	}
+	
+	public void setMatchReady() {
+		matchReady = true;
+		//Send request for server so he returns info about this match
+		RequestForMatchInfo requestInfo = new RequestForMatchInfo(matchId);
+		client.sendTCP(requestInfo);
 	}
 	
 }

@@ -6,6 +6,7 @@ import lt.kentai.bachelorgame.Network.LoginRequest;
 import lt.kentai.bachelorgame.Network.LoginResult;
 import lt.kentai.bachelorgame.Network.MatchInfo;
 import lt.kentai.bachelorgame.Network.Matchmaking;
+import lt.kentai.bachelorgame.model.ChampionData;
 import lt.kentai.bachelorgame.screens.ServerScreen;
 
 public class AccountPacketHandler {
@@ -49,7 +50,14 @@ public class AccountPacketHandler {
 	public void handleMatchInfoRequest(AccountConnection accountConnection, Match match) {
 		MatchInfo matchInfo = new MatchInfo();
 		matchInfo.champions = match.getChampions();
-		
+		/*for(ChampionData c : match.getChampions()) {
+			System.out.println(c.getChampionName());
+		}*/
+		for(int i = 0; i < match.getChampions().size; i++) {
+			System.out.println(match.getChampions().get(i).getChampionName());
+		}
+		System.out.println("send match info to client");
+//		if(!match.ready()) return;
 		accountConnection.sendTCP(matchInfo);
 	}
 	

@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
+import lt.kentai.bachelorgame.Network.MatchReady;
 import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.model.ChampionData;
 
@@ -25,6 +26,7 @@ public class Network {
 		kryo.register(String[].class);
 		kryo.register(ChampionData.class);
 		kryo.register(LockIn.class);
+		kryo.register(MatchReady.class);
 	}
 	
 	public static class LoginRequest {
@@ -69,5 +71,8 @@ public class Network {
 	public static class LockIn {
 		public int matchId;
 		public String championName;
+	}
+	
+	public static class MatchReady {
 	}
 }
