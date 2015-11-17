@@ -27,6 +27,7 @@ public class Network {
 		kryo.register(ChampionData.class);
 		kryo.register(LockIn.class);
 		kryo.register(MatchReady.class);
+		kryo.register(MoveChampion.class);
 	}
 	
 	public static class LoginRequest {
@@ -74,5 +75,15 @@ public class Network {
 	}
 	
 	public static class MatchReady {
+	}
+	
+	public static class MoveChampion {
+		public float x = 0f;
+		public float y = 0f;
+		public MoveChampion() {}
+		public MoveChampion(float x, float y) {
+			this.x = x;
+			this.y = y;
+		}
 	}
 }

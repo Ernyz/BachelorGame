@@ -9,6 +9,7 @@ import lt.kentai.bachelorgame.Network.LoginResult;
 import lt.kentai.bachelorgame.Network.MatchInfo;
 import lt.kentai.bachelorgame.Network.MatchReady;
 import lt.kentai.bachelorgame.Network.Matchmaking;
+import lt.kentai.bachelorgame.Network.MoveChampion;
 import lt.kentai.bachelorgame.screens.GameScreen;
 import lt.kentai.bachelorgame.screens.LoginScreen;
 import lt.kentai.bachelorgame.screens.MainMenuScreen;
@@ -55,6 +56,11 @@ public class ClientListener extends Listener {
 		} else if(o instanceof MatchReady) {
 			if(ScreenManager.getCurrentScreen() instanceof GameScreen) {
 				((GameScreen)ScreenManager.getCurrentScreen()).setMatchReady();
+			}
+		} else if (o instanceof MoveChampion) {//XXX: hax
+			MoveChampion moveChampion = (MoveChampion) o;
+			if(ScreenManager.getCurrentScreen() instanceof GameScreen) {
+				((GameScreen)ScreenManager.getCurrentScreen()).movePlaya(moveChampion.x, moveChampion.y);
 			}
 		}
 	}

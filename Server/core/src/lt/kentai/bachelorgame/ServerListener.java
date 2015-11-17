@@ -1,5 +1,7 @@
 package lt.kentai.bachelorgame;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
+
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
@@ -7,6 +9,7 @@ import com.esotericsoftware.minlog.Log;
 import lt.kentai.bachelorgame.Network.LockIn;
 import lt.kentai.bachelorgame.Network.LoginRequest;
 import lt.kentai.bachelorgame.Network.Matchmaking;
+import lt.kentai.bachelorgame.Network.MoveChampion;
 import lt.kentai.bachelorgame.Network.RequestForMatchInfo;
 import lt.kentai.bachelorgame.screens.ServerScreen;
 
@@ -39,6 +42,10 @@ public class ServerListener extends Listener {
 			LockIn lockInPacket = (LockIn) o;
 			Match match = serverScreen.getMatchmaker().getMatchById(lockInPacket.matchId);
 			match.lockInChampion(accountConnection, lockInPacket.championName);
+		} else if (o instanceof MoveChampion) {
+			MoveChampion moveChampion = (MoveChampion) o;
+			//TODO: move this to packet handler
+			serverScreen.getServer().sendToAllExceptUDP(c.getID(), moveChampion);
 		}
 	}
 	

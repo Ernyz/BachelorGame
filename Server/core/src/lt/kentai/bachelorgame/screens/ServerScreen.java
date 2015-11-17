@@ -181,6 +181,11 @@ public class ServerScreen implements Screen {
 		server.start();
 	}
 	
+	//XXX: This might not be a good idea
+	public Server getServer() {
+		return server;
+	}
+	
 	public Matchmaker getMatchmaker() {
 		return matchmaker;
 	}

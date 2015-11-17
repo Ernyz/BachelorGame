@@ -12,6 +12,7 @@ import com.esotericsoftware.minlog.Log;
 import lt.kentai.bachelorgame.GameClient;
 import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.Network.MatchInfo;
+import lt.kentai.bachelorgame.Network.MoveChampion;
 import lt.kentai.bachelorgame.Network.RequestForMatchInfo;
 import lt.kentai.bachelorgame.model.Entity;
 import lt.kentai.bachelorgame.model.server_data.ChampionData;
@@ -48,6 +49,16 @@ public class GameScreen implements Screen {
 //		RequestForMatchInfo requestInfo = new RequestForMatchInfo(matchId);
 //		client.sendTCP(requestInfo);
 	}
+	
+	//XXX: remove this later
+	public void movePlaya(float x, float y) {
+		//player.moveBy(Gdx.graphics.getDeltaTime(), x, y);
+		for(int i = 0; i < match.getPlayerEntities().size; i++) {
+			if(!match.getPlayerEntities().get(i).equals(player)) {
+				match.getPlayerEntities().get(i).moveBy(Gdx.graphics.getDeltaTime(), x, y);
+			}
+		}
+	}
 
 	@Override
 	public void show() {
@@ -71,6 +82,19 @@ public class GameScreen implements Screen {
 		//XXX: Test
 		if(Gdx.input.isKeyPressed(Keys.W)) {
 			player.moveBy(delta, 0f, 1f);
+			client.sendUDP(new MoveChampion(0f, 1f));
+		}
+		if(Gdx.input.isKeyPressed(Keys.A)) {
+			player.moveBy(delta, -1f, 0f);
+			client.sendUDP(new MoveChampion(-1f, 0f));
+		}
+		if(Gdx.input.isKeyPressed(Keys.S)) {
+			player.moveBy(delta, 0f, -1f);
+			client.sendUDP(new MoveChampion(0f, -1f));
+		}
+		if(Gdx.input.isKeyPressed(Keys.D)) {
+			player.moveBy(delta, 1f, 0f);
+			client.sendUDP(new MoveChampion(1f, 0f));
 		}
 		
 		//TODO: move most of the stuff in this class to a proper game world class.
