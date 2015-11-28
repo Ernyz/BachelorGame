@@ -2,8 +2,8 @@ package lt.kentai.bachelorgame;
 
 import com.badlogic.gdx.utils.Array;
 
-import lt.kentai.bachelorgame.Network.Matchmaking;
-import lt.kentai.bachelorgame.level_generator.LevelGenerator;
+import lt.kentai.bachelorgame.level_generation.LevelGenerator;
+import lt.kentai.bachelorgame.networking.Network.Matchmaking;
 
 public class Matchmaker {
 	

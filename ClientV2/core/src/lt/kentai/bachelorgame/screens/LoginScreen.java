@@ -1,7 +1,5 @@
 package lt.kentai.bachelorgame.screens;
 
-import java.io.IOException;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,28 +13,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.kryonet.Listener.ThreadedListener;
 import com.esotericsoftware.minlog.Log;
 
-import lt.kentai.bachelorgame.ClientListener;
-import lt.kentai.bachelorgame.GameClient;
-import lt.kentai.bachelorgame.Network;
+import lt.kentai.bachelorgame.GameClientV2;
 import lt.kentai.bachelorgame.Network.LoginRequest;
 
 public class LoginScreen implements Screen {
 	
-	private SpriteBatch batch;
-	private GameClient mainClass;
 	private Stage stage;
 	private Table table;
 	private Skin skin;
-	private boolean switchToMainMenu = false;
 	// Client stuff
 	private Client client;
 
-	public LoginScreen(SpriteBatch batch, GameClient mainClass) {
-		this.batch = batch;
-		this.mainClass = mainClass;
+	public LoginScreen() {
+		this.client = GameClientV2.getNetworkingManager().getClient();
 	}
 	
 	@Override
@@ -54,11 +45,6 @@ public class LoginScreen implements Screen {
 		
 		stage.act(delta);
 		stage.draw();
-		
-		if(switchToMainMenu) {
-			switchToMainMenu = false;
-			ScreenManager.switchToMainMenuScreen(batch, mainClass, client);
-		}
 	}
 
 	@Override
@@ -100,12 +86,6 @@ public class LoginScreen implements Screen {
 		final TextField usernameTextField = new TextField("Player", skin);
 		table.add(usernameTextField);
 		
-		table.row();
-		final Label enterIpLabel = new Label("Enter server IP:", skin);
-		table.add(enterIpLabel);
-		final TextField ipTextField = new TextField("127.0.0.1", skin);
-		table.add(ipTextField);
-		
 		table.row().colspan(2);
 		final TextButton connectBtn = new TextButton("Connect!", skin);
 		connectBtn.addListener(new InputListener() {
@@ -113,14 +93,10 @@ public class LoginScreen implements Screen {
 				return true;
 			}
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				if(setupNetworking(ipTextField.getText())) {
-					//Try to connect
-					LoginRequest login = new LoginRequest();
-					login.username = usernameTextField.getText();
-					client.sendTCP(login);
-				} else {
-					//Handle connection error
-				}
+				//Try to connect
+				LoginRequest login = new LoginRequest();
+				login.username = usernameTextField.getText();
+				client.sendTCP(login);
 			}
 		});
 		table.add(connectBtn);
@@ -138,29 +114,6 @@ public class LoginScreen implements Screen {
 			}
 		});
 		table.add(exitBtn);
-	}
-	
-	/**
-	 * @return true if connection was successful, false otherwise. */
-	private boolean setupNetworking(String serverIP) {
-		Log.set(Log.LEVEL_DEBUG);
-		client = new Client();
-		client.start();
-		Network.register(client);
-		client.addListener(new ThreadedListener(new ClientListener()));
-		
-		try {
-			client.connect(10000, serverIP, Network.tcpPort, Network.udpPort);
-			return true;
-		} catch (IOException e) {
-			//e.printStackTrace();
-			Log.error(e.getMessage());
-			return false;
-		}
-	}
-	
-	public void switchToMainMenuScreen() {
-		switchToMainMenu = true;
 	}
 
 }

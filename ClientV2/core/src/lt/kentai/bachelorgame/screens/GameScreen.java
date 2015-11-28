@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.minlog.Log;
 
-import lt.kentai.bachelorgame.GameClient;
+import lt.kentai.bachelorgame.GameClientV2;
 import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.Network.MatchInfo;
 import lt.kentai.bachelorgame.Network.MoveChampion;
@@ -24,35 +23,30 @@ import lt.kentai.bachelorgame.model.server_data.ChampionData;
  */
 public class GameScreen implements Screen {
 	
-	private final int matchId;  //FIXME: Something is not right. Check if default constructor can be called (it should not be available).
+	private final int matchId;
 	
 	private SpriteBatch batch;
-	private GameClient mainClass;
 	private Client client;
 	
 	private Match match;
-	MatchInfo matchInfo;
-	private boolean matchReady = false;
-	private boolean initializeMatch = false;
+	private MatchInfo matchInfo;
 	private boolean matchInitialized = false;
 	
 	//XXX: test
 	private Entity player;
 	
-	public GameScreen(final int matchId, SpriteBatch batch, GameClient mainClass, Client client) {
+	public GameScreen(final int matchId, SpriteBatch batch) {
 		this.matchId = matchId;
 		this.batch = batch;
-		this.mainClass = mainClass;
-		this.client = client;
+		this.client = GameClientV2.getNetworkingManager().getClient();
 		
-//		//Send request for server so he returns info about this match
-//		RequestForMatchInfo requestInfo = new RequestForMatchInfo(matchId);
-//		client.sendTCP(requestInfo);
+		//Send request for server so he returns info about this match
+		RequestForMatchInfo requestInfo = new RequestForMatchInfo(matchId);
+		client.sendTCP(requestInfo);
 	}
 	
 	//XXX: remove this later
 	public void movePlaya(float x, float y) {
-		//player.moveBy(Gdx.graphics.getDeltaTime(), x, y);
 		for(int i = 0; i < match.getPlayerEntities().size; i++) {
 			if(!match.getPlayerEntities().get(i).equals(player)) {
 				match.getPlayerEntities().get(i).moveBy(Gdx.graphics.getDeltaTime(), x, y);
@@ -70,13 +64,6 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		if(!matchReady) {
-			//Send request for server so he returns info about this match
-//			RequestForMatchInfo requestInfo = new RequestForMatchInfo(matchId);
-//			client.sendTCP(requestInfo);
-			return;
-		}
-		if(initializeMatch) initializeMatch();
 		if(!matchInitialized) return;
 		
 		//XXX: Test
@@ -130,19 +117,17 @@ public class GameScreen implements Screen {
 		
 	}
 	
-	public void initializeMatch() {
+	public void initializeMatch(MatchInfo matchInfo) {
 		if(matchInitialized) return;
 		
+		this.matchInfo = matchInfo;
 		match = new Match();
-		
-		Log.info("initialize match called");
 		
 		for(ChampionData champion : matchInfo.champions) {
 			Entity e = new Entity(champion.getX(), champion.getY());
 			e.connectionId = champion.getConnectionId();
 			e.championName = champion.getChampionName();
-			e.setSpeed(champion.getSpeed());//FIXME speed
-			System.out.println("Champion name: " + e.championName + " " + e.getSpeed());
+			e.setSpeed(champion.getSpeed());
 			e.setTexture(new Texture(Gdx.files.internal("champions/"+e.championName+"/"+e.championName+".png")));
 			match.getPlayerEntities().add(e);
 		}
@@ -154,20 +139,6 @@ public class GameScreen implements Screen {
 		}
 		
 		matchInitialized = true;
-		initializeMatch = false;
-	}
-	
-	public void setInitializeMatch(MatchInfo matchInfo) {
-		this.matchInfo = matchInfo;
-		initializeMatch = true;
-	}
-	
-	public void setMatchReady() {
-		matchReady = true;
-		System.out.println(matchReady);
-		//Send request for server so he returns info about this match
-		RequestForMatchInfo requestInfo = new RequestForMatchInfo(matchId);
-		client.sendTCP(requestInfo);
 	}
 	
 }

@@ -2,11 +2,11 @@ package lt.kentai.bachelorgame;
 
 import com.badlogic.gdx.utils.Array;
 
-import lt.kentai.bachelorgame.Network.AcceptedToLobby;
-import lt.kentai.bachelorgame.Network.MatchReady;
 import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.model.ChampionData;
-import lt.kentai.bachelorgame.model.ChampionInfo;
+import lt.kentai.bachelorgame.model.ChampionsProperties;
+import lt.kentai.bachelorgame.networking.Network.AcceptedToLobby;
+import lt.kentai.bachelorgame.networking.Network.MatchReady;
 
 /**
  * Holds teams, map, minions, towers and all stuff related to a single match.
@@ -47,7 +47,7 @@ public class Match {
 			champions.add(champion);
 			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby(matchId);
 			acceptedToLobbyPacket.team = c.team;
-			acceptedToLobbyPacket.championNames = ChampionInfo.championNames;
+			acceptedToLobbyPacket.championNames = ChampionsProperties.championNames;
 			c.sendTCP(acceptedToLobbyPacket);
 		}
 		for(AccountConnection c : redTeam) {
@@ -56,7 +56,7 @@ public class Match {
 			champions.add(champion);
 			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby(matchId);
 			acceptedToLobbyPacket.team = c.team;
-			acceptedToLobbyPacket.championNames = ChampionInfo.championNames;
+			acceptedToLobbyPacket.championNames = ChampionsProperties.championNames;
 			c.sendTCP(acceptedToLobbyPacket);
 		}
 	}
@@ -64,27 +64,26 @@ public class Match {
 	public void lockInChampion(AccountConnection lockedInConnection, String championName) {
 		for(int i = 0; i < champions.size; i++) {
 			if(champions.get(i).getConnectionId() == lockedInConnection.getID()) {
-//				champions.get(i).setChampionName(championName);
 				setupChampion(champions.get(i), championName);
 			}
 		}
 		
 		if(ready()) {
 			for(AccountConnection c : blueTeam) {
-				c.sendTCP(new MatchReady());
+				c.sendTCP(new MatchReady(matchId));
 			}
 			for(AccountConnection c : redTeam) {
-				c.sendTCP(new MatchReady());
+				c.sendTCP(new MatchReady(matchId));
 			}
 		}
 	}
 	
 	private void setupChampion(ChampionData c, String name) {
 		c.setChampionName(name);
-		if(name == ChampionInfo.Champion1.championName) {
-			c.setSpeed(ChampionInfo.Champion1.speed);
-		} else if(name == ChampionInfo.Champion2.championName) {
-			c.setSpeed(ChampionInfo.Champion2.speed);
+		if(name.equals(ChampionsProperties.Champion1.championName)) {
+			c.setSpeed(ChampionsProperties.Champion1.speed);
+		} else if(name.equals(ChampionsProperties.Champion2.championName)) {
+			c.setSpeed(ChampionsProperties.Champion2.speed);
 		}
 	}
 	

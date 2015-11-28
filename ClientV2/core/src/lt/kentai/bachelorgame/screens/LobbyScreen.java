@@ -3,7 +3,6 @@ package lt.kentai.bachelorgame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -14,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.esotericsoftware.kryonet.Client;
 
-import lt.kentai.bachelorgame.GameClient;
+import lt.kentai.bachelorgame.GameClientV2;
 import lt.kentai.bachelorgame.Network.LockIn;
 
 public class LobbyScreen implements Screen {
@@ -24,8 +23,6 @@ public class LobbyScreen implements Screen {
 	
 	private String selectedChampion = "";
 	
-	private SpriteBatch batch;
-	private GameClient mainClass;
 	private Client client;
 	
 	private Table table;
@@ -36,12 +33,10 @@ public class LobbyScreen implements Screen {
 
 	private float championSelectionTimer = 8f;
 
-	public LobbyScreen(final int matchId, String[] championNames, SpriteBatch batch, GameClient mainClass, Client client) {
+	public LobbyScreen(final int matchId, String[] championNames) {
 		this.matchId = matchId;
 		this.championNames = championNames;
-		this.batch = batch;
-		this.mainClass = mainClass;
-		this.client = client;
+		this.client = GameClientV2.getNetworkingManager().getClient();
 	}
 
 	@Override
@@ -54,18 +49,19 @@ public class LobbyScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		stage.act(delta);
-		stage.draw();
-
+		
 		championSelectionTimer -= delta;
 		timerLabel.setText(MathUtils.floor(championSelectionTimer) + "");
 		if (championSelectionTimer <= 0) {
-			//TODO: check if all the player have selected a champion.
-			//Start the game
+			//TODO: check if all the player have selected a champion (on the server side of course).
+			
 			lockIn();
 		}
+		
+		stage.act(delta);
+		stage.draw();
 	}
 
 	@Override
@@ -142,7 +138,6 @@ public class LobbyScreen implements Screen {
 		lockInPacket.championName = selectedChampion;
 		lockInPacket.matchId = matchId;
 		client.sendTCP(lockInPacket);
-		ScreenManager.switchToGameScreen(matchId, batch, mainClass, client);
 	}
 
 }

@@ -1,12 +1,9 @@
 package lt.kentai.bachelorgame.screens;
 
-import java.io.IOException;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,12 +21,8 @@ import com.esotericsoftware.minlog.Log;
 import lt.kentai.bachelorgame.AccountConnection;
 import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.Matchmaker;
-import lt.kentai.bachelorgame.Network;
-import lt.kentai.bachelorgame.ServerListener;
 
 public class ServerScreen implements Screen {
-	
-	private SpriteBatch batch;
 	
 	//GUI stuff
 	private Stage stage;
@@ -44,8 +37,7 @@ public class ServerScreen implements Screen {
 	private Matchmaker matchmaker;
 	private Array<Match> matchArray = new Array<Match>();
 	
-	public ServerScreen(SpriteBatch batch) {
-		this.batch = batch;
+	public ServerScreen() {
 		matchmaker = new Matchmaker(matchArray);
 	}
 
@@ -55,8 +47,6 @@ public class ServerScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 		
 		setupUI();
-		
-		setupNetworking();
 	}
 
 	@Override
@@ -94,7 +84,6 @@ public class ServerScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		batch.dispose();
 		stage.dispose();
 		skin.dispose();
 	}
@@ -162,30 +151,7 @@ public class ServerScreen implements Screen {
 			addMessage("Command not found: " + inputText + ".");
 		}
 	}
-	
-	private void setupNetworking() {
-		Log.set(Log.LEVEL_DEBUG);
-		server = new Server() {
-			protected Connection newConnection() {
-				return new AccountConnection();
-			}
-		};
-		Network.register(server);
-		
-		server.addListener(new ServerListener(this));
-		try {
-			server.bind(Network.tcpPort, Network.udpPort);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		server.start();
-	}
-	
-	//XXX: This might not be a good idea
-	public Server getServer() {
-		return server;
-	}
-	
+
 	public Matchmaker getMatchmaker() {
 		return matchmaker;
 	}
