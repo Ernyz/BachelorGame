@@ -1,5 +1,7 @@
 package lt.kentai.bachelorgame.screens;
 
+import com.badlogic.gdx.Screen;
+
 import lt.kentai.bachelorgame.GameClientV2;
 
 public class ScreenManager {
@@ -41,6 +43,10 @@ public class ScreenManager {
 			gameScreen = new GameScreen(matchId, GameClientV2.getBatch());
 		}
 		mainClass.setScreen(gameScreen);
+	}
+	
+	public Screen getCurrentScreen() {
+		return mainClass.getScreen();
 	}
 
 	public LoginScreen getLoginScreen() {

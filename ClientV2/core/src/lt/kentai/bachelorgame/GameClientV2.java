@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.esotericsoftware.minlog.Log;
 
+import lt.kentai.bachelorgame.screens.LoginScreen;
 import lt.kentai.bachelorgame.screens.ScreenManager;
 
 public class GameClientV2 extends Game {
@@ -19,10 +20,18 @@ public class GameClientV2 extends Game {
 		
 		screenManager.switchToLoginScreen();
 		
-		if(networkingManager.init()) {  //TODO: Warn about success/failure.
+		if(networkingManager.init()) {
 			Log.info("Connected to server.");
+			if(GameClientV2.getScreenManager().getCurrentScreen() instanceof LoginScreen) {
+				LoginScreen loginScreen = (LoginScreen) GameClientV2.getScreenManager().getCurrentScreen();
+				loginScreen.setServerStatus("Server online");
+			}
 		} else {
 			Log.info("Could not connect to server.");
+			if(GameClientV2.getScreenManager().getCurrentScreen() instanceof LoginScreen) {
+				LoginScreen loginScreen = (LoginScreen) GameClientV2.getScreenManager().getCurrentScreen();
+				loginScreen.setServerStatus("Server offline");
+			}
 		}
 	}
 

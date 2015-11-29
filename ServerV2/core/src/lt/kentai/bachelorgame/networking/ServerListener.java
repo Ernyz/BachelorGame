@@ -23,6 +23,19 @@ public class ServerListener extends Listener {
 	}
 	
 	@Override
+	public void disconnected(Connection c) {
+		final AccountConnection accountConnection = (AccountConnection) c;
+		Gdx.app.postRunnable(new Runnable() {
+			public void run() {
+				//Remove player from matchmaking if in matchmaking phase
+				GameServerV2.getServerScreen().getMatchmaker().removeConnection(accountConnection);
+				//TODO: Remove player from lobby if in champion selection phase
+				//TODO: Warn other players if the game is in progress
+			}
+		});
+	}
+	
+	@Override
 	public void received(Connection c, Object o) {
 		//We know that all connections are account connections
 		final AccountConnection accountConnection = (AccountConnection) c;
@@ -46,7 +59,6 @@ public class ServerListener extends Listener {
 				loginResult.success = false;
 				loginResult.message = "Invalid login data.";
 				accountConnection.sendTCP(loginResult);
-				accountConnection.close();
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
 						GameServerV2.getServerScreen().addMessage(loginRequest.username + " did not connect.");

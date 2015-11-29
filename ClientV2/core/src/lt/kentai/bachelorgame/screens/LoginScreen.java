@@ -3,7 +3,6 @@ package lt.kentai.bachelorgame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,8 +22,11 @@ public class LoginScreen implements Screen {
 	private Stage stage;
 	private Table table;
 	private Skin skin;
+	private Label serverStatusLabel;
 	// Client stuff
 	private Client client;
+	private final float reconnectToServerInterval = 10f;
+	private float reconnectToServerTimer = reconnectToServerInterval;
 
 	public LoginScreen() {
 		this.client = GameClientV2.getNetworkingManager().getClient();
@@ -42,6 +44,16 @@ public class LoginScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		reconnectToServerTimer += delta;
+		if(reconnectToServerTimer >= reconnectToServerInterval) {
+			reconnectToServerTimer -= reconnectToServerInterval;
+			if(GameClientV2.getNetworkingManager().init()) {
+				setServerStatus("Server online");
+			} else {
+				setServerStatus("Server offline");
+			}
+		}
 		
 		stage.act(delta);
 		stage.draw();
@@ -80,6 +92,10 @@ public class LoginScreen implements Screen {
 		table.setDebug(false);  //Careful with this one, might cause memory leaks
 		skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 		
+		table.row().colspan(2);
+		serverStatusLabel = new Label("", skin);
+		table.add(serverStatusLabel);
+		
 		table.row();
 		final Label enterUsernameLaber = new Label("Enter username:", skin);
 		table.add(enterUsernameLaber);
@@ -114,6 +130,18 @@ public class LoginScreen implements Screen {
 			}
 		});
 		table.add(exitBtn);
+	}
+
+	public void setServerStatus(String serverStatus) {
+		serverStatusLabel.setText(serverStatus);
+	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public Skin getSkin() {
+		return skin;
 	}
 
 }

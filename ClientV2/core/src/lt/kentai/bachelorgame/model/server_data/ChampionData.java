@@ -19,7 +19,6 @@ public class ChampionData {
 	private float y;
 	private float speed;
 	
-	//TODO: See if there is a way to make only one constructor
 	public ChampionData() {
 		
 	}

@@ -23,7 +23,6 @@ public class ChampionData {
 		
 	}
 	
-	//XXX: Does x,y really have to be set in constructor?..
 	public ChampionData(String accountName, int connectionId, Team team, float x, float y) {
 		this.accountName = accountName;
 		this.connectionId = connectionId;

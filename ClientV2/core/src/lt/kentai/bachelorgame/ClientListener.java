@@ -11,6 +11,8 @@ import lt.kentai.bachelorgame.Network.MatchInfo;
 import lt.kentai.bachelorgame.Network.MatchReady;
 import lt.kentai.bachelorgame.Network.Matchmaking;
 import lt.kentai.bachelorgame.Network.MoveChampion;
+import lt.kentai.bachelorgame.screens.LoginScreen;
+import lt.kentai.bachelorgame.ui.LoginFailureDialog;
 
 public class ClientListener extends Listener {
 
@@ -30,8 +32,16 @@ public class ClientListener extends Listener {
 					}
 				});
 			} else {
-				//TODO: write failure msg to current screen
 				Log.info("[CLIENT]" + loginResult.message);
+				Gdx.app.postRunnable(new Runnable() {
+					public void run() {
+						if(GameClientV2.getScreenManager().getCurrentScreen() instanceof LoginScreen) {
+							LoginScreen loginScreen = (LoginScreen) GameClientV2.getScreenManager().getCurrentScreen();
+							LoginFailureDialog dialog = new LoginFailureDialog("Login failed", "Login data was incorrect. Please try again", loginScreen.getSkin());
+							dialog.show(loginScreen.getStage());
+						}
+					}
+				});
 			}
 		} else if(o instanceof Matchmaking) {
 			Matchmaking m = (Matchmaking) o;

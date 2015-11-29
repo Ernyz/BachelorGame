@@ -19,6 +19,8 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.AccountConnection;
+import lt.kentai.bachelorgame.ConsoleInputManager;
+import lt.kentai.bachelorgame.GameServerV2;
 import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.Matchmaker;
 
@@ -32,12 +34,15 @@ public class ServerScreen implements Screen {
 	private ScrollPane scrollPane;
 	private TextField inputTextField;
 	
+	private ConsoleInputManager consoleInputManager;
+	
 	//Server stuff
 	private Server server;
 	private Matchmaker matchmaker;
 	private Array<Match> matchArray = new Array<Match>();
 	
 	public ServerScreen() {
+		consoleInputManager = new ConsoleInputManager(this);
 		matchmaker = new Matchmaker(matchArray);
 	}
 
@@ -128,6 +133,8 @@ public class ServerScreen implements Screen {
 	}
 	
 	private void manageConsoleInput() {
+		if(server == null) server = GameServerV2.getNetworkingManager().getServer();
+		
 		String inputText = inputTextField.getText();
 		if(inputText == null || inputText.length() <= 0 || inputText == "") {
 			return;
@@ -135,21 +142,7 @@ public class ServerScreen implements Screen {
 		addMessage(inputText);
 		inputTextField.setText("");
 		
-		//TODO: Make class which deals with command execution.
-		if(inputText.equals("exit")) {
-			server.stop();
-			Gdx.app.exit();
-		} else if(inputText.equals("lc")) {
-			if(server.getConnections().length > 0) {
-				for(Connection c : server.getConnections()) {
-					addMessage(c.toString() + "; Player name: " + ((AccountConnection)c).connectionName);
-				}
-			} else {
-				addMessage("There are no connections at the moment.");
-			}
-		} else {
-			addMessage("Command not found: " + inputText + ".");
-		}
+		consoleInputManager.manageInput(server, inputText);
 	}
 
 	public Matchmaker getMatchmaker() {

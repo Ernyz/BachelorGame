@@ -17,10 +17,6 @@ public class Match {
 
 	private final int matchId;
 	
-	/* 
-	 * TODO: Should probably remove separation to teams,
-	 * since it only makes it hard to iterate and gives no real convenience.
-	 */
 	private Array<AccountConnection> blueTeam = new Array<AccountConnection>();
 	private Array<AccountConnection> redTeam = new Array<AccountConnection>();
 	private Array<ChampionData> champions = new Array<ChampionData>();
@@ -29,7 +25,7 @@ public class Match {
 	
 	public Match(int matchId, Array<AccountConnection> matchmakedConnections) {
 		this.matchId = matchId;
-		fillTeams(matchmakedConnections);  //TODO: Maybe matchmaker should do this?..
+		fillTeams(matchmakedConnections);
 	}
 	
 	private void fillTeams(Array<AccountConnection> matchmakedConnections) {
@@ -42,20 +38,18 @@ public class Match {
 		
 		ChampionData champion;
 		for(AccountConnection c : blueTeam) {
-			c.team = Team.BLUE;
-			champion = new ChampionData(c.connectionName, c.getID(), c.team, 0, 0);
+			champion = new ChampionData(c.connectionName, c.getID(), Team.BLUE, 0, 0);
 			champions.add(champion);
 			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby(matchId);
-			acceptedToLobbyPacket.team = c.team;
+			acceptedToLobbyPacket.team = Team.BLUE;
 			acceptedToLobbyPacket.championNames = ChampionsProperties.championNames;
 			c.sendTCP(acceptedToLobbyPacket);
 		}
 		for(AccountConnection c : redTeam) {
-			c.team = Team.RED;
-			champion = new ChampionData(c.connectionName, c.getID(), c.team, 100, 0);
+			champion = new ChampionData(c.connectionName, c.getID(), Team.RED, 100, 0);
 			champions.add(champion);
 			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby(matchId);
-			acceptedToLobbyPacket.team = c.team;
+			acceptedToLobbyPacket.team = Team.RED;
 			acceptedToLobbyPacket.championNames = ChampionsProperties.championNames;
 			c.sendTCP(acceptedToLobbyPacket);
 		}
@@ -88,7 +82,6 @@ public class Match {
 	}
 	
 	public boolean ready() {
-		//TODO: Replace by single team or use server.sendAll()
 		for(int i = 0; i < champions.size; i++) {
 			if(champions.get(i).getChampionName() == null) {
 				return false;

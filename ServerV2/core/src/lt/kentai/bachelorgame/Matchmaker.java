@@ -36,7 +36,9 @@ public class Matchmaker {
 		connectionsInMatchmaking.removeValue(c, false);
 		Matchmaking m = new Matchmaking();
 		m.entering = false;
-		c.sendTCP(m);
+		if(c != null) {
+			c.sendTCP(m);
+		}
 	}
 	
 	private void createNewMatch() {
@@ -60,6 +62,10 @@ public class Matchmaker {
 			}
 		}
 		return null;
+	}
+
+	public Array<AccountConnection> getConnectionsInMatchmaking() {
+		return connectionsInMatchmaking;
 	}
 	
 }
