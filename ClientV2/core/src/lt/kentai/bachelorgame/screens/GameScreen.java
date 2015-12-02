@@ -69,19 +69,19 @@ public class GameScreen implements Screen {
 		//XXX: Test
 		if(Gdx.input.isKeyPressed(Keys.W)) {
 			player.moveBy(delta, 0f, 1f);
-			client.sendUDP(new MoveChampion(0f, 1f));
+			client.sendUDP(new MoveChampion(matchId, 0f, 1f));
 		}
 		if(Gdx.input.isKeyPressed(Keys.A)) {
 			player.moveBy(delta, -1f, 0f);
-			client.sendUDP(new MoveChampion(-1f, 0f));
+			client.sendUDP(new MoveChampion(matchId, -1f, 0f));
 		}
 		if(Gdx.input.isKeyPressed(Keys.S)) {
 			player.moveBy(delta, 0f, -1f);
-			client.sendUDP(new MoveChampion(0f, -1f));
+			client.sendUDP(new MoveChampion(matchId, 0f, -1f));
 		}
 		if(Gdx.input.isKeyPressed(Keys.D)) {
 			player.moveBy(delta, 1f, 0f);
-			client.sendUDP(new MoveChampion(1f, 0f));
+			client.sendUDP(new MoveChampion(matchId, 1f, 0f));
 		}
 		
 		//TODO: move most of the stuff in this class to a proper game world class.

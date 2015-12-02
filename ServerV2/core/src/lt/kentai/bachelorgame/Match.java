@@ -90,6 +90,19 @@ public class Match {
 		return true;
 	}
 	
+	public void sendToAllExceptUDP(final int idToExclude, Object o) {
+		for(AccountConnection c : blueTeam) {
+			if(idToExclude != c.getID()) {
+				c.sendTCP(o);
+			}
+		}
+		for(AccountConnection c : redTeam) {
+			if(idToExclude != c.getID()) {
+				c.sendTCP(o);
+			}
+		}
+	}
+	
 	public void setMap(char[][] map) {
 		this.map = map;
 	}

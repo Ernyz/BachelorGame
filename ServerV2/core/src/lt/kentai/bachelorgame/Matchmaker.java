@@ -36,7 +36,7 @@ public class Matchmaker {
 		connectionsInMatchmaking.removeValue(c, false);
 		Matchmaking m = new Matchmaking();
 		m.entering = false;
-		if(c != null) {
+		if(c.isConnected()) {
 			c.sendTCP(m);
 		}
 	}

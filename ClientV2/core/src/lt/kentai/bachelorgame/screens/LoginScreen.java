@@ -45,13 +45,15 @@ public class LoginScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		reconnectToServerTimer += delta;
-		if(reconnectToServerTimer >= reconnectToServerInterval) {
-			reconnectToServerTimer -= reconnectToServerInterval;
-			if(GameClientV2.getNetworkingManager().init()) {
-				setServerStatus("Server online");
-			} else {
-				setServerStatus("Server offline");
+		if(!client.isConnected()) {
+			reconnectToServerTimer += delta;
+			if(reconnectToServerTimer >= reconnectToServerInterval) {
+				reconnectToServerTimer -= reconnectToServerInterval;
+				if(GameClientV2.getNetworkingManager().init()) {
+					setServerStatus("Server online");
+				} else {
+					setServerStatus("Server offline");
+				}
 			}
 		}
 		

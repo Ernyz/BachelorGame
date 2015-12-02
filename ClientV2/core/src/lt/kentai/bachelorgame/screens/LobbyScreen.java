@@ -55,7 +55,7 @@ public class LobbyScreen implements Screen {
 		championSelectionTimer -= delta;
 		timerLabel.setText(MathUtils.floor(championSelectionTimer) + "");
 		if (championSelectionTimer <= 0) {
-			//TODO: check if all the player have selected a champion (on the server side of course).
+			//TODO: check if all the players have selected a champion (on the server side of course).
 			
 			lockIn();
 		}

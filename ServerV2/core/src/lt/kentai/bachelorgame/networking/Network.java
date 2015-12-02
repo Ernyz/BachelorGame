@@ -86,8 +86,10 @@ public class Network {
 	public static class MoveChampion {
 		public float x = 0f;
 		public float y = 0f;
+		public int matchId;
 		public MoveChampion() {}
-		public MoveChampion(float x, float y) {
+		public MoveChampion(int matchId, float x, float y) {
+			this.matchId = matchId;
 			this.x = x;
 			this.y = y;
 		}

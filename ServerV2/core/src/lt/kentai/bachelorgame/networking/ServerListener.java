@@ -106,7 +106,7 @@ public class ServerListener extends Listener {
 			final MoveChampion moveChampion = (MoveChampion) o;
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
-					GameServerV2.getNetworkingManager().getServer().sendToAllExceptUDP(accountConnection.getID(), moveChampion);
+					GameServerV2.getServerScreen().getMatchmaker().getMatchById(moveChampion.matchId).sendToAllExceptUDP(accountConnection.getID(), moveChampion);
 				}
 			});
 		}
