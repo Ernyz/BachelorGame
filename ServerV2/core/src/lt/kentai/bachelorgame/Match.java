@@ -1,11 +1,14 @@
 package lt.kentai.bachelorgame;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.utils.Array;
 
 import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.model.ChampionData;
 import lt.kentai.bachelorgame.model.ChampionsProperties;
 import lt.kentai.bachelorgame.networking.Network.AcceptedToLobby;
+import lt.kentai.bachelorgame.networking.Network.ChampionSelectResponse;
 import lt.kentai.bachelorgame.networking.Network.MatchReady;
 
 /**
@@ -17,6 +20,7 @@ public class Match {
 
 	private final int matchId;
 	
+	private HashMap<Integer, Team> connectionIds = new HashMap<Integer, Team>();
 	private Array<AccountConnection> blueTeam = new Array<AccountConnection>();
 	private Array<AccountConnection> redTeam = new Array<AccountConnection>();
 	private Array<ChampionData> champions = new Array<ChampionData>();
@@ -33,7 +37,9 @@ public class Match {
 		
 		for(int i=0; i<Properties.TeamSize; i++) {
 			blueTeam.add(matchmakedConnections.pop());
+			connectionIds.put(blueTeam.get(i).getID(), Team.BLUE);
 			redTeam.add(matchmakedConnections.pop());
+			connectionIds.put(redTeam.get(i).getID(), Team.RED);
 		}
 		
 		ChampionData champion;
@@ -42,6 +48,7 @@ public class Match {
 			champions.add(champion);
 			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby(matchId);
 			acceptedToLobbyPacket.team = Team.BLUE;
+			acceptedToLobbyPacket.connectionIds = connectionIds;
 			acceptedToLobbyPacket.championNames = ChampionsProperties.championNames;
 			c.sendTCP(acceptedToLobbyPacket);
 		}
@@ -50,6 +57,7 @@ public class Match {
 			champions.add(champion);
 			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby(matchId);
 			acceptedToLobbyPacket.team = Team.RED;
+			acceptedToLobbyPacket.connectionIds = connectionIds;
 			acceptedToLobbyPacket.championNames = ChampionsProperties.championNames;
 			c.sendTCP(acceptedToLobbyPacket);
 		}
@@ -88,6 +96,33 @@ public class Match {
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * Gets called when player tries to select a champion in lobby. */
+	public void processChampionSelection(final int connectionId, String championName) {
+		//Check if champion is not taken yet
+		for(int i = 0; i < champions.size; i++) {
+			if(champions.get(i).getChampionName() != null && champions.get(i).getChampionName().equals(championName)) {
+				//Send negative response
+				sendToAllInTeamTCP(champions.get(i).getTeam(), new ChampionSelectResponse(connectionId, championName, false));
+				return;
+			}
+		}
+		//If champion is free, send confirmation to everyone IN THE TEAM
+		sendToAllInTeamTCP(connectionIds.get(connectionId), new ChampionSelectResponse(connectionId, championName, true));
+	}
+	
+	public void sendToAllInTeamTCP(Team team, Object o) {
+		if(team == Team.BLUE) {
+			for(AccountConnection c : blueTeam) {
+				c.sendTCP(o);
+			}
+		} else {
+			for(AccountConnection c : redTeam) {
+				c.sendTCP(o);
+			}
+		}
 	}
 	
 	public void sendToAllExceptUDP(final int idToExclude, Object o) {

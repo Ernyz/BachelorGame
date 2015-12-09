@@ -1,24 +1,35 @@
 package lt.kentai.bachelorgame.screens;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.GameClientV2;
+import lt.kentai.bachelorgame.Network.AcceptedToLobby;
+import lt.kentai.bachelorgame.Network.ChampionSelect;
+import lt.kentai.bachelorgame.Network.ChampionSelectResponse;
 import lt.kentai.bachelorgame.Network.LockIn;
+import lt.kentai.bachelorgame.Properties.Team;
 
 public class LobbyScreen implements Screen {
 
 	private final int matchId;
+	private final HashMap<Integer, Team> connectionIds;
 	private final String[] championNames;
 	
 	private String selectedChampion = "";
@@ -28,14 +39,23 @@ public class LobbyScreen implements Screen {
 	private Table table;
 	private Stage stage;
 	private Skin skin;
+	
+	private TextureAtlas championIconAtlas;
+	private Skin championIconSkin;
+	private Table allyChampionsTable;
+	private Table selectionTable;
+	private float selectionTableWidth = 0.55f;
+	private Table enemyChampionsTable;
+	
 	private Label timerLabel;
 	private TextButton lockInBtn;
 
-	private float championSelectionTimer = 8f;
+	private float championSelectionTimer = 100f;
 
-	public LobbyScreen(final int matchId, String[] championNames) {
-		this.matchId = matchId;
-		this.championNames = championNames;
+	public LobbyScreen(AcceptedToLobby lobbyInfo) {
+		this.matchId = lobbyInfo.matchId;
+		this.connectionIds = lobbyInfo.connectionIds;
+		this.championNames = lobbyInfo.championNames;
 		this.client = GameClientV2.getNetworkingManager().getClient();
 	}
 
@@ -92,13 +112,74 @@ public class LobbyScreen implements Screen {
 
 	private void setupUI() {
 		skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-		table = new Table();
+		table = new Table(skin);
 		table.setFillParent(true);
 		stage.addActor(table);
 		
-		table.setDebug(false);
+		championIconAtlas = new TextureAtlas("ui/champion_select/ChampionIcons.atlas");
+		championIconSkin = new Skin(championIconAtlas);
 		
-		table.row();
+		table.setDebug(true, true);
+		
+		/* 
+		 * Allied champion table
+		 */
+		allyChampionsTable = new Table(skin);
+		table.add(allyChampionsTable).width(Gdx.graphics.getWidth()*(1-selectionTableWidth)/2).height(Gdx.graphics.getHeight());
+		//TODO populate programmatically, hold references to icon slots
+		Image img = new Image(championIconSkin.getDrawable("ChampionIcon_Empty"));
+		allyChampionsTable.add(img);
+		
+		/*
+		 * Selection table
+		 */
+		selectionTable = new Table(skin);
+		table.add(selectionTable).width(Gdx.graphics.getWidth()*selectionTableWidth).height(Gdx.graphics.getHeight());
+		
+		selectionTable.row();
+		timerLabel = new Label(championSelectionTimer + "", skin);
+		selectionTable.add(timerLabel);
+		timerLabel.setText(MathUtils.floor(championSelectionTimer) + "");
+		
+		selectionTable.row();
+		for(final String name : championNames) {
+			final ImageButton championBtn = new ImageButton(championIconSkin.getDrawable("ChampionIcon_"+name));
+			championBtn.addListener(new InputListener() {
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					return true;
+				}
+				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+					//selectedChampion = name;
+					if(!selectedChampion.equals(name)) {  //XXX: Does not seem to work
+						client.sendTCP(new ChampionSelect(name, matchId));
+					}
+				}
+			});
+			selectionTable.add(championBtn);
+		}
+		
+		selectionTable.row();
+		lockInBtn = new TextButton("Lock in", skin);
+		lockInBtn.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				return true;
+			}
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				lockIn();
+			}
+		});
+		selectionTable.add(lockInBtn);
+		
+		/*
+		 * Enemy champions table
+		 */
+		enemyChampionsTable = new Table(skin);
+		table.add(enemyChampionsTable).width(Gdx.graphics.getWidth()*(1-selectionTableWidth)/2).height(Gdx.graphics.getHeight());
+		//TODO populate programmatically, hold references to icon slots
+		img = new Image(championIconSkin.getDrawable("ChampionIcon_Empty"));
+		enemyChampionsTable.add(img);
+		
+		/*table.row();
 		timerLabel = new Label(championSelectionTimer + "", skin);
 		table.add(timerLabel);
 		
@@ -130,7 +211,14 @@ public class LobbyScreen implements Screen {
 		table.add(lockInBtn);
 		table.row();
 
-		timerLabel.setText(MathUtils.floor(championSelectionTimer) + "");
+		timerLabel.setText(MathUtils.floor(championSelectionTimer) + "");*/
+	}
+	
+	public void selectChampion(ChampionSelectResponse response) {
+		if(response.success) {
+			selectedChampion = response.championName;
+			Log.info(response.championName + " selected by " + response.connectionId);
+		}
 	}
 
 	private void lockIn() {

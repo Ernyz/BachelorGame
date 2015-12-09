@@ -3,6 +3,7 @@ package lt.kentai.bachelorgame.screens;
 import com.badlogic.gdx.Screen;
 
 import lt.kentai.bachelorgame.GameClientV2;
+import lt.kentai.bachelorgame.Network.AcceptedToLobby;
 
 public class ScreenManager {
 
@@ -31,9 +32,9 @@ public class ScreenManager {
 		mainClass.setScreen(mainMenuScreen);
 	}
 	
-	public void switchToLobbyScreen(final int matchId, String[] championNames) {
+	public void switchToLobbyScreen(AcceptedToLobby lobbyInfo) {
 		if(lobbyScreen == null) {
-			lobbyScreen = new LobbyScreen(matchId, championNames);
+			lobbyScreen = new LobbyScreen(lobbyInfo);
 		}
 		mainClass.setScreen(lobbyScreen);
 	}

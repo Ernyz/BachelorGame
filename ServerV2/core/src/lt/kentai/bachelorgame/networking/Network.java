@@ -1,5 +1,7 @@
 package lt.kentai.bachelorgame.networking;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -18,6 +20,7 @@ public class Network {
 		kryo.register(LoginRequest.class);
 		kryo.register(LoginResult.class);
 		kryo.register(Matchmaking.class);
+		kryo.register(HashMap.class);
 		kryo.register(AcceptedToLobby.class);
 		kryo.register(Properties.Team.class);
 		kryo.register(RequestForMatchInfo.class);
@@ -28,6 +31,8 @@ public class Network {
 		kryo.register(ChampionData.class);
 		kryo.register(LockIn.class);
 		kryo.register(MatchReady.class);
+		kryo.register(ChampionSelect.class);
+		kryo.register(ChampionSelectResponse.class);
 		kryo.register(MoveChampion.class);
 	}
 	
@@ -47,9 +52,9 @@ public class Network {
 	}
 	
 	public static class AcceptedToLobby {
-		//public final int matchId;
 		public int matchId;
 		public Team team;
+		public HashMap<Integer, Team> connectionIds;
 		public String[] championNames;
 		public AcceptedToLobby() {}
 		public AcceptedToLobby(final int matchId) {
@@ -58,7 +63,6 @@ public class Network {
 	}
 	
 	public static class RequestForMatchInfo {
-		//public final int matchId;
 		public int matchId;
 		public RequestForMatchInfo() {}
 		public RequestForMatchInfo(final int matchId) {
@@ -77,10 +81,31 @@ public class Network {
 	
 	public static class MatchReady {
 		public int matchId;
-		public MatchReady() {};
+		public MatchReady() {}
 		public MatchReady(int matchId) {
 			this.matchId = matchId;
 		};
+	}
+	
+	public static class ChampionSelect {
+		public int matchId;
+		public String name;
+		public ChampionSelect() {}
+		public ChampionSelect(String name, int matchId) {
+			this.name = name;
+		}
+	}
+	
+	public static class ChampionSelectResponse {
+		public int connectionId;
+		public String championName;
+		public boolean success;
+		public ChampionSelectResponse() {}
+		public ChampionSelectResponse(final int connectionId, String championName, boolean success) {
+			this.connectionId = connectionId;
+			this.championName = championName;
+			this.success = success;
+		}
 	}
 	
 	public static class MoveChampion {

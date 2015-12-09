@@ -16,14 +16,14 @@ public class ChampionsProperties {
 	
 	//Blue one
 	public static class Champion1 {
-		public static final String championName = "Champion1";
+		public static final String championName = "Bob";
 		public static final float speed = 50f;
 	}
 	
 	//Red one
 	public static class Champion2 {
-		public static final String championName = "Champion2";
-		public static final float speed = 50f;
+		public static final String championName = "Gorbag";
+		public static final float speed = 60f;
 	}
 	
 }

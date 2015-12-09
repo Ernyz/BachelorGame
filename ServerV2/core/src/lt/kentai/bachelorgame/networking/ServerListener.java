@@ -8,6 +8,7 @@ import com.esotericsoftware.minlog.Log;
 import lt.kentai.bachelorgame.AccountConnection;
 import lt.kentai.bachelorgame.GameServerV2;
 import lt.kentai.bachelorgame.Match;
+import lt.kentai.bachelorgame.networking.Network.ChampionSelect;
 import lt.kentai.bachelorgame.networking.Network.LockIn;
 import lt.kentai.bachelorgame.networking.Network.LoginRequest;
 import lt.kentai.bachelorgame.networking.Network.LoginResult;
@@ -98,6 +99,14 @@ public class ServerListener extends Listener {
 					MatchInfo matchInfo = new MatchInfo();
 					matchInfo.champions = match.getChampions();
 					accountConnection.sendTCP(matchInfo);
+				}
+			});
+		} else if(o instanceof ChampionSelect) {
+			final int matchId = ((ChampionSelect) o).matchId;
+			final String name = ((ChampionSelect) o).name;
+			Gdx.app.postRunnable(new Runnable() {
+				public void run() {
+					GameServerV2.getServerScreen().getMatchmaker().getMatchById(matchId).processChampionSelection(accountConnection.getID(), name);
 				}
 			});
 		}

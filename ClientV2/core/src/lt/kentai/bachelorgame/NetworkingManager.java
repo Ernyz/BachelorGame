@@ -23,7 +23,7 @@ public class NetworkingManager {
 		try {
 			client.connect(10000, Network.serverIP, Network.tcpPort, Network.udpPort);
 		} catch(IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			Log.error(e.getMessage());
 			return false;
 		}

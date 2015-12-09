@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.Network.AcceptedToLobby;
+import lt.kentai.bachelorgame.Network.ChampionSelectResponse;
 import lt.kentai.bachelorgame.Network.LoginResult;
 import lt.kentai.bachelorgame.Network.MatchInfo;
 import lt.kentai.bachelorgame.Network.MatchReady;
@@ -55,7 +56,7 @@ public class ClientListener extends Listener {
 			Gdx.app.postRunnable(new Runnable() {
 				@Override
 				public void run() {
-					GameClientV2.getScreenManager().switchToLobbyScreen(lobbyInfo.matchId, lobbyInfo.championNames);
+					GameClientV2.getScreenManager().switchToLobbyScreen(lobbyInfo);
 				}
 			});
 		} else if(o instanceof MatchReady) {
@@ -70,6 +71,13 @@ public class ClientListener extends Listener {
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
 					GameClientV2.getScreenManager().getGameScreen().initializeMatch(matchInfo);
+				}
+			});
+		} else if(o instanceof ChampionSelectResponse) {
+			final ChampionSelectResponse response = (ChampionSelectResponse) o;
+			Gdx.app.postRunnable(new Runnable() {
+				public void run() {
+					GameClientV2.getScreenManager().getLobbyScreen().selectChampion(response);
 				}
 			});
 		}
