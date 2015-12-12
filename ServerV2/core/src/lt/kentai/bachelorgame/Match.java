@@ -103,13 +103,20 @@ public class Match {
 	public void processChampionSelection(final int connectionId, String championName) {
 		//Check if champion is not taken yet
 		for(int i = 0; i < champions.size; i++) {
-			if(champions.get(i).getChampionName() != null && champions.get(i).getChampionName().equals(championName)) {
+			if(champions.get(i).getChampionName() != null
+					&& champions.get(i).getChampionName().equals(championName)
+					&& champions.get(i).getTeam() == connectionIds.get(connectionId)) {  //This line allows same champions in opposing teams
 				//Send negative response
 				sendToAllInTeamTCP(champions.get(i).getTeam(), new ChampionSelectResponse(connectionId, championName, false));
 				return;
 			}
 		}
 		//If champion is free, send confirmation to everyone IN THE TEAM
+		for(int i = 0; i < champions.size; i++) {
+			if(champions.get(i).getConnectionId() == connectionId) {
+				champions.get(i).setChampionName(championName);
+			}
+		}
 		sendToAllInTeamTCP(connectionIds.get(connectionId), new ChampionSelectResponse(connectionId, championName, true));
 	}
 	

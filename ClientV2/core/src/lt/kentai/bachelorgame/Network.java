@@ -89,7 +89,6 @@ public class Network {
 	public static class ChampionSelect {
 		public int matchId;
 		public String name;
-		//TODO: finish - this gets sent to client, client returns confirmation if champion could really be selected
 		public ChampionSelect() {}
 		public ChampionSelect(String name, int matchId) {
 			this.name = name;
