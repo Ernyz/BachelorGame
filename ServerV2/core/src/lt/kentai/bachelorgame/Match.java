@@ -23,6 +23,7 @@ public class Match {
 	private HashMap<Integer, Team> connectionIds = new HashMap<Integer, Team>();
 	private Array<AccountConnection> blueTeam = new Array<AccountConnection>();
 	private Array<AccountConnection> redTeam = new Array<AccountConnection>();
+	private Array<Integer> lockedInConnections = new Array<Integer>();
 	private Array<ChampionData> champions = new Array<ChampionData>();
 	
 	private char[][] map;
@@ -67,6 +68,9 @@ public class Match {
 		for(int i = 0; i < champions.size; i++) {
 			if(champions.get(i).getConnectionId() == lockedInConnection.getID()) {
 				setupChampion(champions.get(i), championName);
+				if(!lockedInConnections.contains(lockedInConnection.getID(), true)) {
+					lockedInConnections.add(lockedInConnection.getID());
+				}
 			}
 		}
 		
@@ -90,12 +94,10 @@ public class Match {
 	}
 	
 	public boolean ready() {
-		for(int i = 0; i < champions.size; i++) {
-			if(champions.get(i).getChampionName() == null) {
-				return false;
-			}
+		if(lockedInConnections.size == Properties.TeamSize*2) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	/**
@@ -104,6 +106,7 @@ public class Match {
 		//Check if champion is not taken yet
 		for(int i = 0; i < champions.size; i++) {
 			if(champions.get(i).getChampionName() != null
+					&& !champions.get(i).getChampionName().equals("")
 					&& champions.get(i).getChampionName().equals(championName)
 					&& champions.get(i).getTeam() == connectionIds.get(connectionId)) {  //This line allows same champions in opposing teams
 				//Send negative response

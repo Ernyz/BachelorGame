@@ -67,5 +67,10 @@ public class Matchmaker {
 	public Array<AccountConnection> getConnectionsInMatchmaking() {
 		return connectionsInMatchmaking;
 	}
+
+	public Array<Match> getMatchArray() {
+		return matchArray;
+	}
+	
 	
 }

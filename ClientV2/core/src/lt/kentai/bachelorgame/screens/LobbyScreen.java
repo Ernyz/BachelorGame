@@ -164,7 +164,7 @@ public class LobbyScreen implements Screen {
 					return true;
 				}
 				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-					if(!selectedChampion.equals(name)) {  //XXX: Does not seem to work
+					if(!selectedChampion.equals(name)) {
 						client.sendTCP(new ChampionSelect(name, matchId));
 					}
 				}

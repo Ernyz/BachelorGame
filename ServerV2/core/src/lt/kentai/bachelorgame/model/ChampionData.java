@@ -10,7 +10,7 @@ import lt.kentai.bachelorgame.Properties.Team;
 public class ChampionData {
 	
 	private String accountName;
-	private String championName;  //TODO: Init this with empty string and change logic in Match accordingly.
+	private String championName;
 	/**
 	 * Name of the connection to which this champion belongs to. */
 	private int connectionId;

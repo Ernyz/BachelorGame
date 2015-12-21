@@ -19,22 +19,31 @@ public class ConsoleInputManager {
 			server.stop();
 			Gdx.app.exit();
 		} else if(inputText.equals("lc")) {
-			if(server.getConnections().length > 0) {
-				for(Connection c : server.getConnections()) {
-					serverScreen.addMessage(c.toString() + "; Player name: " + ((AccountConnection)c).connectionName);
-				}
-			} else {
-				serverScreen.addMessage("There are no connections at the moment.");
+			serverScreen.addMessage("Connections online: ");
+			for(Connection c : server.getConnections()) {
+				serverScreen.addMessage(c.toString() + ". Player name: " + ((AccountConnection)c).connectionName);
 			}
-		} else if(inputText.equals("lm")) {
+			serverScreen.addMessage("---");
+		} else if(inputText.equals("lmm")) {
 			serverScreen.addMessage("Connections in matchmaking:");
 			for(int i = 0; i < serverScreen.getMatchmaker().getConnectionsInMatchmaking().size; i++) {
 				serverScreen.addMessage(serverScreen.getMatchmaker().getConnectionsInMatchmaking().get(i).connectionName+" ID: "+serverScreen.getMatchmaker().getConnectionsInMatchmaking().get(i).getID());
 			}
 			serverScreen.addMessage("---");
+		} else if(inputText.equals("lm")) {
+			serverScreen.addMessage("Active matches("+serverScreen.getMatchmaker().getMatchArray().size+"):");
+			for(int i = 0; i < serverScreen.getMatchmaker().getMatchArray().size; i++) {
+				serverScreen.addMessage("Match: ID="+serverScreen.getMatchmaker().getMatchArray().get(i).getMatchId());
+			}
+			serverScreen.addMessage("---");
+		} else if(inputText.equals("help")) {
+			serverScreen.addMessage("List of commands:");
+			serverScreen.addMessage("lc - lists connections");
+			serverScreen.addMessage("lmm - lists connections in matchmaking");
+			serverScreen.addMessage("lm - lists matches");
+			serverScreen.addMessage("exit - exits the server");
 		} else {
 			serverScreen.addMessage("Command not found: " + inputText + ".");
 		}
 	}
-	
 }
