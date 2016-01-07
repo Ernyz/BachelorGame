@@ -32,7 +32,7 @@ public class Matchmaker {
 		}
 	}
 	
-	public void removeConnection(AccountConnection c) {
+	public void removeConnectionFromMatchmaking(AccountConnection c) {
 		connectionsInMatchmaking.removeValue(c, false);
 		Matchmaking m = new Matchmaking();
 		m.entering = false;
@@ -55,6 +55,11 @@ public class Matchmaker {
 		matchArray.add(match);
 	}
 	
+	public void destroyMatch(int matchId) {
+		Match match = getMatchById(matchId);
+		matchArray.removeValue(match, false);
+	}
+	
 	public Match getMatchById(int id) {
 		for(Match m : matchArray) {
 			if(m.getMatchId() == id) {
@@ -62,6 +67,17 @@ public class Matchmaker {
 			}
 		}
 		return null;
+	}
+	
+	public Match getMatchByConnectionId(final int playerId) {
+		Match match = null;
+		for(int i = 0; i < matchArray.size; i++) {
+			if(matchArray.get(i).hasConnection(playerId)) {
+				match = matchArray.get(i);
+			}
+		}
+		
+		return match;
 	}
 
 	public Array<AccountConnection> getConnectionsInMatchmaking() {

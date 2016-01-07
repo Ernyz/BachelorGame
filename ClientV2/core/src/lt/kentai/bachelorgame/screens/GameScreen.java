@@ -19,7 +19,7 @@ import lt.kentai.bachelorgame.model.server_data.ChampionData;
 /**
  * The actual game is rendered in this screen.
  * 
- * @author ernyz
+ * @author Ernyz
  */
 public class GameScreen implements Screen {
 	

@@ -26,11 +26,17 @@ public class ServerListener extends Listener {
 	@Override
 	public void disconnected(Connection c) {
 		final AccountConnection accountConnection = (AccountConnection) c;
+		final int connectionId = accountConnection.getID();
+		System.out.println(connectionId);
 		Gdx.app.postRunnable(new Runnable() {
 			public void run() {
 				//Remove player from matchmaking if in matchmaking phase
-				GameServerV2.getServerScreen().getMatchmaker().removeConnection(accountConnection);
-				//TODO: Remove player from lobby if in champion selection phase
+				GameServerV2.getServerScreen().getMatchmaker().removeConnectionFromMatchmaking(accountConnection);
+				//Remove player from lobby if in champion selection phase
+				final Match match = GameServerV2.getServerScreen().getMatchmaker().getMatchByConnectionId(accountConnection.getID());
+				if(match != null) {
+					GameServerV2.getServerScreen().getMatchmaker().destroyMatch(match.getMatchId());
+				}
 				//TODO: Warn other players if the game is in progress
 			}
 		});
@@ -79,7 +85,7 @@ public class ServerListener extends Listener {
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
 						GameServerV2.getServerScreen().addMessage(accountConnection.connectionName + " has left matchmaking.");
-						GameServerV2.getServerScreen().getMatchmaker().removeConnection(accountConnection);
+						GameServerV2.getServerScreen().getMatchmaker().removeConnectionFromMatchmaking(accountConnection);
 					}
 				});
 			}
@@ -103,6 +109,8 @@ public class ServerListener extends Listener {
 			});
 		} else if(o instanceof ChampionSelect) {
 			final int matchId = ((ChampionSelect) o).matchId;
+			System.out.println("Received ChampionSelect, id: " + matchId);
+			System.out.println(((ChampionSelect) o).matchId);
 			final String name = ((ChampionSelect) o).name;
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {

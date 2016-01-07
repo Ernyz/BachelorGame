@@ -57,6 +57,7 @@ public class LobbyScreen implements Screen {
 
 	public LobbyScreen(AcceptedToLobby lobbyInfo) {
 		this.matchId = lobbyInfo.matchId;
+		System.out.println("this.matchId = " + this.matchId);
 		this.connectionIds = lobbyInfo.connectionIds;
 		this.championNames = lobbyInfo.championNames;
 		this.client = GameClientV2.getNetworkingManager().getClient();
@@ -165,6 +166,7 @@ public class LobbyScreen implements Screen {
 				}
 				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 					if(!selectedChampion.equals(name)) {
+						System.out.println("Sending champ select id: " + matchId);
 						client.sendTCP(new ChampionSelect(name, matchId));
 					}
 				}

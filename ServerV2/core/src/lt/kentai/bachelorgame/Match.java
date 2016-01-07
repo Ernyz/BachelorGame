@@ -3,6 +3,7 @@ package lt.kentai.bachelorgame;
 import java.util.HashMap;
 
 import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.model.ChampionData;
@@ -103,6 +104,7 @@ public class Match {
 	/**
 	 * Gets called when player tries to select a champion in lobby. */
 	public void processChampionSelection(final int connectionId, String championName) {
+		Log.debug("ProcessChampionSelection: Match ID: " + matchId);
 		//Check if champion is not taken yet
 		for(int i = 0; i < champions.size; i++) {
 			if(champions.get(i).getChampionName() != null
@@ -146,6 +148,21 @@ public class Match {
 				c.sendTCP(o);
 			}
 		}
+	}
+	
+	public boolean hasConnection(final int connectionId) {
+		for(AccountConnection c : blueTeam) {
+			if(c.getID() == connectionId) {
+				return true;
+			}
+		}
+		for(AccountConnection c : redTeam) {
+			if(c.getID() == connectionId) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public void setMap(char[][] map) {

@@ -92,6 +92,7 @@ public class Network {
 		public ChampionSelect() {}
 		public ChampionSelect(String name, int matchId) {
 			this.name = name;
+			this.matchId = matchId;
 		}
 	}
 	
