@@ -25,17 +25,30 @@ public class ScreenManager {
 		mainClass.setScreen(loginScreen);
 	}
 	
-	public void switchToMainMenuScreen() {
+	public void switchToMainMenuScreen(boolean placePlayerInMatchmaking) {
 		if(mainMenuScreen == null) {
 			mainMenuScreen = new MainMenuScreen();
 		}
+		
 		mainClass.setScreen(mainMenuScreen);
+		if(placePlayerInMatchmaking) {
+			mainMenuScreen.reenterMatchmaking();
+		}
 	}
 	
 	public void switchToLobbyScreen(AcceptedToLobby lobbyInfo) {
-		if(lobbyScreen == null) {
-			lobbyScreen = new LobbyScreen(lobbyInfo);
+//		if(lobbyScreen == null) {
+//			System.out.println(lobbyScreen);
+//			lobbyScreen = new LobbyScreen(lobbyInfo);
+//		} else {
+//			lobbyScreen.dispose();
+//			System.out.println(lobbyScreen);
+//		}
+		//TODO: Doublecheck this shizzle
+		if(lobbyScreen != null) {
+			lobbyScreen.dispose();
 		}
+		lobbyScreen = new LobbyScreen(lobbyInfo);
 		mainClass.setScreen(lobbyScreen);
 	}
 	

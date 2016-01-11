@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
 
+import lt.kentai.bachelorgame.AccountConnection.ConnectionState;
 import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.model.ChampionData;
 import lt.kentai.bachelorgame.model.ChampionsProperties;
@@ -77,9 +78,11 @@ public class Match {
 		
 		if(ready()) {
 			for(AccountConnection c : blueTeam) {
+				c.connectionState = ConnectionState.IN_GAME;
 				c.sendTCP(new MatchReady(matchId));
 			}
 			for(AccountConnection c : redTeam) {
+				c.connectionState = ConnectionState.IN_GAME;
 				c.sendTCP(new MatchReady(matchId));
 			}
 		}
@@ -125,6 +128,19 @@ public class Match {
 		sendToAllInTeamTCP(connectionIds.get(connectionId), new ChampionSelectResponse(connectionId, championName, true));
 	}
 	
+	public void sendToAllTCP(Object o) {
+		for(AccountConnection c : blueTeam) {
+			if(c.isConnected()) {
+				c.sendTCP(o);
+			}
+		}
+		for(AccountConnection c : redTeam) {
+			if(c.isConnected()) {
+				c.sendTCP(o);
+			}
+		}
+	}
+	
 	public void sendToAllInTeamTCP(Team team, Object o) {
 		if(team == Team.BLUE) {
 			for(AccountConnection c : blueTeam) {
@@ -140,12 +156,12 @@ public class Match {
 	public void sendToAllExceptUDP(final int idToExclude, Object o) {
 		for(AccountConnection c : blueTeam) {
 			if(idToExclude != c.getID()) {
-				c.sendTCP(o);
+				c.sendUDP(o);
 			}
 		}
 		for(AccountConnection c : redTeam) {
 			if(idToExclude != c.getID()) {
-				c.sendTCP(o);
+				c.sendUDP(o);
 			}
 		}
 	}
@@ -175,6 +191,14 @@ public class Match {
 
 	public int getMatchId() {
 		return matchId;
+	}
+	
+	public Array<AccountConnection> getAllConnections() {
+		Array<AccountConnection> connections = new Array<AccountConnection>();
+		connections.addAll(blueTeam);
+		connections.addAll(redTeam);
+		
+		return connections;
 	}
 	
 }

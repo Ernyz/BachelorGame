@@ -20,7 +20,9 @@ public class NetworkingManager {
 		Log.set(Log.LEVEL_DEBUG);
 		server = new Server() {
 			protected Connection newConnection() {
-				return new AccountConnection();
+				AccountConnection ac = new AccountConnection(); 
+				ac.connectionState = AccountConnection.ConnectionState.IN_LOGIN;
+				return ac;
 			}
 		};
 		Network.register(server);

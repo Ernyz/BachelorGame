@@ -21,6 +21,8 @@ public class Network {
 		kryo.register(Matchmaking.class);
 		kryo.register(HashMap.class);
 		kryo.register(AcceptedToLobby.class);
+		kryo.register(PlayerLeftMatchmaking.class);
+		kryo.register(PlayerLeftGame.class);
 		kryo.register(Properties.Team.class);
 		kryo.register(RequestForMatchInfo.class);
 		kryo.register(MatchInfo.class);
@@ -59,6 +61,14 @@ public class Network {
 		public AcceptedToLobby(final int matchId) {
 			this.matchId = matchId;
 		}
+	}
+	
+	public static class PlayerLeftMatchmaking {
+		public int playerId;
+	}
+	
+	public static class PlayerLeftGame {
+		public int playerId;
 	}
 	
 	public static class RequestForMatchInfo {

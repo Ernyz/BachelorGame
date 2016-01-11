@@ -12,6 +12,8 @@ import lt.kentai.bachelorgame.Network.MatchInfo;
 import lt.kentai.bachelorgame.Network.MatchReady;
 import lt.kentai.bachelorgame.Network.Matchmaking;
 import lt.kentai.bachelorgame.Network.MoveChampion;
+import lt.kentai.bachelorgame.Network.PlayerLeftGame;
+import lt.kentai.bachelorgame.Network.PlayerLeftMatchmaking;
 import lt.kentai.bachelorgame.screens.LoginScreen;
 import lt.kentai.bachelorgame.ui.LoginFailureDialog;
 
@@ -29,7 +31,7 @@ public class ClientListener extends Listener {
 				Gdx.app.postRunnable(new Runnable() {
 					@Override
 					public void run() {
-						GameClientV2.getScreenManager().switchToMainMenuScreen();
+						GameClientV2.getScreenManager().switchToMainMenuScreen(false);
 					}
 				});
 			} else {
@@ -59,6 +61,15 @@ public class ClientListener extends Listener {
 					GameClientV2.getScreenManager().switchToLobbyScreen(lobbyInfo);
 				}
 			});
+		} else if(o instanceof PlayerLeftMatchmaking) {
+			Gdx.app.postRunnable(new Runnable() {
+				@Override
+				public void run() {
+					GameClientV2.getScreenManager().switchToMainMenuScreen(true);
+				}
+			});
+		} else if(o instanceof PlayerLeftGame) {
+			
 		} else if(o instanceof MatchReady) {
 			final int matchId = ((MatchReady) o).matchId;
 			Gdx.app.postRunnable(new Runnable() {

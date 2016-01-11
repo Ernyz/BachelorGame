@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.AccountConnection;
+import lt.kentai.bachelorgame.AccountConnection.ConnectionState;
 import lt.kentai.bachelorgame.GameServerV2;
 import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.networking.Network.ChampionSelect;
@@ -15,6 +16,7 @@ import lt.kentai.bachelorgame.networking.Network.LoginResult;
 import lt.kentai.bachelorgame.networking.Network.MatchInfo;
 import lt.kentai.bachelorgame.networking.Network.Matchmaking;
 import lt.kentai.bachelorgame.networking.Network.MoveChampion;
+import lt.kentai.bachelorgame.networking.Network.PlayerLeftGame;
 import lt.kentai.bachelorgame.networking.Network.RequestForMatchInfo;
 
 public class ServerListener extends Listener {
@@ -26,18 +28,37 @@ public class ServerListener extends Listener {
 	@Override
 	public void disconnected(Connection c) {
 		final AccountConnection accountConnection = (AccountConnection) c;
-		final int connectionId = accountConnection.getID();
-		System.out.println(connectionId);
+//		final int connectionId = accountConnection.getID();
 		Gdx.app.postRunnable(new Runnable() {
 			public void run() {
 				//Remove player from matchmaking if in matchmaking phase
-				GameServerV2.getServerScreen().getMatchmaker().removeConnectionFromMatchmaking(accountConnection);
-				//Remove player from lobby if in champion selection phase
-				final Match match = GameServerV2.getServerScreen().getMatchmaker().getMatchByConnectionId(accountConnection.getID());
-				if(match != null) {
-					GameServerV2.getServerScreen().getMatchmaker().destroyMatch(match.getMatchId());
+				if(accountConnection.connectionState == ConnectionState.IN_MATCHMAKING) {
+					GameServerV2.getServerScreen().getMatchmaker().removeConnectionFromMatchmaking(accountConnection);
 				}
-				//TODO: Warn other players if the game is in progress
+				//Remove player from lobby if in champion selection phase
+				if(accountConnection.connectionState == ConnectionState.IN_CHAMPION_SELECT) {
+					final Match match = GameServerV2.getServerScreen().getMatchmaker().getMatchByConnectionId(accountConnection.getID());
+					if(match != null) {
+						GameServerV2.getServerScreen().getMatchmaker().destroyMatch(match.getMatchId());
+					}
+				}
+				//Warn other players if the game is in progress
+				if(accountConnection.connectionState == ConnectionState.IN_GAME) {
+					//Send warning that player disconnected from the game
+					final Match match = GameServerV2.getServerScreen().getMatchmaker().getMatchByConnectionId(accountConnection.getID());
+					if(match != null) {
+						match.sendToAllTCP(new PlayerLeftGame());
+						int activeConnections = 0;
+						for(int i = 0; i < match.getAllConnections().size; i++) {
+							if(match.getAllConnections().get(i).isConnected()) {
+								activeConnections++;
+							}
+						}
+						if(activeConnections <= 0) {
+							GameServerV2.getServerScreen().getMatchmaker().destroyMatch(match.getMatchId());
+						}
+					}
+				}
 			}
 		});
 	}
@@ -56,6 +77,7 @@ public class ServerListener extends Listener {
 				loginResult.message = "Login successful!";
 				accountConnection.sendTCP(loginResult);
 				accountConnection.connectionName = loginRequest.username;
+				accountConnection.connectionState = ConnectionState.IN_MAIN_MENU;
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
 						GameServerV2.getServerScreen().addMessage(loginRequest.username + " has successfully connected!");
@@ -66,6 +88,7 @@ public class ServerListener extends Listener {
 				loginResult.success = false;
 				loginResult.message = "Invalid login data.";
 				accountConnection.sendTCP(loginResult);
+				accountConnection.connectionState = ConnectionState.IN_LOGIN;
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
 						GameServerV2.getServerScreen().addMessage(loginRequest.username + " did not connect.");
@@ -75,6 +98,7 @@ public class ServerListener extends Listener {
 		} else if(o instanceof Matchmaking) {
 			Matchmaking matchmaking = (Matchmaking) o;
 			if(matchmaking.entering) {
+				accountConnection.connectionState = ConnectionState.IN_MATCHMAKING;
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
 						GameServerV2.getServerScreen().addMessage(accountConnection.connectionName + " has entered matchmaking.");
@@ -82,6 +106,7 @@ public class ServerListener extends Listener {
 					}
 				});
 			} else {
+				accountConnection.connectionState = ConnectionState.IN_MAIN_MENU;
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
 						GameServerV2.getServerScreen().addMessage(accountConnection.connectionName + " has left matchmaking.");

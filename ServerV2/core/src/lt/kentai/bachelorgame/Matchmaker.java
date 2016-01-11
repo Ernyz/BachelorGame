@@ -2,8 +2,10 @@ package lt.kentai.bachelorgame;
 
 import com.badlogic.gdx.utils.Array;
 
+import lt.kentai.bachelorgame.AccountConnection.ConnectionState;
 import lt.kentai.bachelorgame.level_generation.LevelGenerator;
 import lt.kentai.bachelorgame.networking.Network.Matchmaking;
+import lt.kentai.bachelorgame.networking.Network.PlayerLeftMatchmaking;
 
 public class Matchmaker {
 	
@@ -46,6 +48,7 @@ public class Matchmaker {
 		Array<AccountConnection> matchmakedConnections = new Array<AccountConnection>();
 		for(int i=0; i<Properties.TeamSize*2; i++) {
 			matchmakedConnection = connectionsInMatchmaking.pop();
+			matchmakedConnection.connectionState = ConnectionState.IN_CHAMPION_SELECT;
 			matchmakedConnections.add(matchmakedConnection);
 		}
 		
@@ -57,6 +60,14 @@ public class Matchmaker {
 	
 	public void destroyMatch(int matchId) {
 		Match match = getMatchById(matchId);
+//		for(int i = 0; i < match.getAllConnections().size; i++) {
+//			match.getAllConnections()
+//		}
+		for(AccountConnection ac : match.getAllConnections()) {
+			if(ac.isConnected()) {
+				ac.sendTCP(new PlayerLeftMatchmaking());
+			}
+		}
 		matchArray.removeValue(match, false);
 	}
 	

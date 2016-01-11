@@ -35,6 +35,8 @@ public class MainMenuScreen implements Screen {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		
+		inMatchmaking = false;
+		
 		setupUI();
 	}
 
@@ -52,6 +54,16 @@ public class MainMenuScreen implements Screen {
 		
 		stage.act(delta);
 		stage.draw();
+	}
+	
+	/**
+	 * Should be called whenever player should be put into matchmaking after
+	 * returning to MainMenu screen. */
+	public void reenterMatchmaking() {
+		inMatchmaking = true;
+		Matchmaking m = new Matchmaking();
+		m.entering = true;
+		client.sendTCP(m);
 	}
 
 	@Override

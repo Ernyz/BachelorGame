@@ -57,7 +57,6 @@ public class LobbyScreen implements Screen {
 
 	public LobbyScreen(AcceptedToLobby lobbyInfo) {
 		this.matchId = lobbyInfo.matchId;
-		System.out.println("this.matchId = " + this.matchId);
 		this.connectionIds = lobbyInfo.connectionIds;
 		this.championNames = lobbyInfo.championNames;
 		this.client = GameClientV2.getNetworkingManager().getClient();
@@ -111,7 +110,7 @@ public class LobbyScreen implements Screen {
 
 	@Override
 	public void hide() {
-
+		
 	}
 
 	@Override
