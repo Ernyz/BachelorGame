@@ -1,6 +1,8 @@
 package lt.kentai.bachelorgame.level_generation;
 
 import lt.kentai.bachelorgame.Properties;
+import lt.kentai.bachelorgame.level_generation.Map.StandardMapGenerator;
+import lt.kentai.bachelorgame.level_generation.Map.components.MapComponents;
 
 /**
  * Contains all logic for generating level.
@@ -8,7 +10,8 @@ import lt.kentai.bachelorgame.Properties;
  * @author Ernyz
  */
 public class LevelGenerator {
-	
+
+	private StandardMapGenerator standardMapGenerator;
 	private char[][] map = new char[Properties.MapWidth][Properties.MapHeight];
 	
 	//Example:
@@ -16,10 +19,12 @@ public class LevelGenerator {
 	//private ForestMapGenerator forestMapGenerator;
 	
 	public LevelGenerator() {
-		
+//		standardMapGenerator = new StandardMapGenerator(20, 20, 10, 0.35, 300);
+//		standardMapGenerator = new StandardMapGenerator(20, 20, 10, 0.35, 300);
 	}
 
 	public char[][] generateLevel() {
+		map = MapComponents.base;
 		//Example:
 		//map = forestMapGenerator.generateMap();
 		

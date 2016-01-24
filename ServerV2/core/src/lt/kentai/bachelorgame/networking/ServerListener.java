@@ -129,6 +129,7 @@ public class ServerListener extends Listener {
 					Match match = GameServerV2.getServerScreen().getMatchmaker().getMatchById(matchId);
 					MatchInfo matchInfo = new MatchInfo();
 					matchInfo.champions = match.getChampions();
+					matchInfo.seed = match.getSeed();
 					accountConnection.sendTCP(matchInfo);
 				}
 			});

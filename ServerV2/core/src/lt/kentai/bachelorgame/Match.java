@@ -1,6 +1,7 @@
 package lt.kentai.bachelorgame;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
@@ -21,7 +22,8 @@ import lt.kentai.bachelorgame.networking.Network.MatchReady;
 public class Match {
 
 	private final int matchId;
-	
+	private int seed;
+
 	private float matchTimer = 0f;
 	
 	private enum MatchState {
@@ -38,6 +40,8 @@ public class Match {
 	private char[][] map;
 	
 	public Match(int matchId, Array<AccountConnection> matchmakedConnections) {
+//		seed = new Random().nextInt();
+		seed = -1;
 		this.matchId = matchId;
 		matchState = MatchState.SELECTING_CHAMPIONS;
 		fillTeams(matchmakedConnections);
@@ -243,5 +247,8 @@ public class Match {
 		
 		return connections;
 	}
-	
+
+	public int getSeed() {
+		return seed;
+	}
 }

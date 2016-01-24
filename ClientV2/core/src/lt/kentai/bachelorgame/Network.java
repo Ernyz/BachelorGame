@@ -78,9 +78,10 @@ public class Network {
 			this.matchId = matchId;
 		}
 	}
-	
+
 	public static class MatchInfo {
 		public Array<ChampionData> champions;
+		public int seed;
 	}
 	
 	public static class LockIn {

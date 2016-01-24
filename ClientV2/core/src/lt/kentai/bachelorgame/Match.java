@@ -12,6 +12,7 @@ import lt.kentai.bachelorgame.model.Entity;
 public class Match {
 	
 	private Array<Entity> playerEntities = new Array<Entity>();
+	private char[][] map;
 	
 	public Match() {
 		
@@ -20,5 +21,12 @@ public class Match {
 	public Array<Entity> getPlayerEntities() {
 		return playerEntities;
 	}
-	
+
+	public char[][] getMap() {
+		return map;
+	}
+
+	public void setMap(char[][] map) {
+		this.map = map;
+	}
 }

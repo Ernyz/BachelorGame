@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.esotericsoftware.kryonet.Client;
 
 import lt.kentai.bachelorgame.GameClientV2;
@@ -13,8 +14,11 @@ import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.Network.MatchInfo;
 import lt.kentai.bachelorgame.Network.MoveChampion;
 import lt.kentai.bachelorgame.Network.RequestForMatchInfo;
+import lt.kentai.bachelorgame.generators.Map.StandardMapGenerator;
 import lt.kentai.bachelorgame.model.Entity;
 import lt.kentai.bachelorgame.model.server_data.ChampionData;
+
+import java.awt.*;
 
 /**
  * The actual game is rendered in this screen.
@@ -137,7 +141,15 @@ public class GameScreen implements Screen {
 				player = e;
 			}
 		}
-		
+		StandardMapGenerator mapGenerator = new StandardMapGenerator(500  , 200, matchInfo.seed, 0.35, 300);
+
+		match.setMap(mapGenerator.generateMap());
+		for (int i = 0; i <match.getMap().length ; i++) {
+			for (int j = 0; j < match.getMap()[0].length; j++) {
+				System.out.print(match.getMap()[i][j]);
+			}
+			System.out.println();
+		}
 		matchInitialized = true;
 	}
 	
