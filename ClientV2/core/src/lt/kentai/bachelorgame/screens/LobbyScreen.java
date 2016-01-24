@@ -53,7 +53,7 @@ public class LobbyScreen implements Screen {
 	private Label timerLabel;
 	private TextButton lockInBtn;
 
-	private float championSelectionTimer = 100f;
+	private float championSelectionTimer = 20f;  //TODO Later on get this value from server
 
 	public LobbyScreen(AcceptedToLobby lobbyInfo) {
 		this.matchId = lobbyInfo.matchId;

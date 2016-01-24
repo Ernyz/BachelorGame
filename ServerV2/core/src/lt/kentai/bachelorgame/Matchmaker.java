@@ -23,6 +23,12 @@ public class Matchmaker {
 		levelGenerator = new LevelGenerator();
 	}
 	
+	public void updateMatches(float delta) {
+		for(Match m : matchArray) {
+			m.update(delta);
+		}
+	}
+	
 	public void addConnection(AccountConnection c) {
 		connectionsInMatchmaking.insert(0, c);
 		Matchmaking m = new Matchmaking();
@@ -60,9 +66,6 @@ public class Matchmaker {
 	
 	public void destroyMatch(int matchId) {
 		Match match = getMatchById(matchId);
-//		for(int i = 0; i < match.getAllConnections().size; i++) {
-//			match.getAllConnections()
-//		}
 		for(AccountConnection ac : match.getAllConnections()) {
 			if(ac.isConnected()) {
 				ac.sendTCP(new PlayerLeftMatchmaking());

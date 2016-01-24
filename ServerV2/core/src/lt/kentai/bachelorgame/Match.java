@@ -22,6 +22,13 @@ public class Match {
 
 	private final int matchId;
 	
+	private float matchTimer = 0f;
+	
+	private enum MatchState {
+		SELECTING_CHAMPIONS, PREPARING, LOADING, IN_GAME
+	}
+	private MatchState matchState;
+	
 	private HashMap<Integer, Team> connectionIds = new HashMap<Integer, Team>();
 	private Array<AccountConnection> blueTeam = new Array<AccountConnection>();
 	private Array<AccountConnection> redTeam = new Array<AccountConnection>();
@@ -32,7 +39,38 @@ public class Match {
 	
 	public Match(int matchId, Array<AccountConnection> matchmakedConnections) {
 		this.matchId = matchId;
+		matchState = MatchState.SELECTING_CHAMPIONS;
 		fillTeams(matchmakedConnections);
+		
+		Log.set(Log.LEVEL_INFO);
+	}
+	
+	public void update(float delta) {
+		matchTimer += delta;
+		
+		if(matchState == MatchState.IN_GAME) {
+			
+		} else if(matchState == MatchState.SELECTING_CHAMPIONS) {
+			if(matchTimer >= 20f) {
+				matchTimer = 0f;
+				matchState = MatchState.PREPARING;
+			}
+		} else if(matchState == MatchState.PREPARING) {
+			System.out.println(matchTimer + " " + matchState);
+			if(matchTimer >= 5f) {
+				Log.info("Checking if all are ready: " + ready());
+				if(ready()) {
+					sendMatchReady();
+					matchState = MatchState.LOADING;
+					matchTimer = 0f;
+				} else {
+					//TODO: disband the match
+					Log.info("People not ready");
+				}
+			}
+		} else if(matchState == MatchState.LOADING) {
+			
+		}
 	}
 	
 	private void fillTeams(Array<AccountConnection> matchmakedConnections) {
@@ -76,15 +114,20 @@ public class Match {
 			}
 		}
 		
-		if(ready()) {
-			for(AccountConnection c : blueTeam) {
-				c.connectionState = ConnectionState.IN_GAME;
-				c.sendTCP(new MatchReady(matchId));
-			}
-			for(AccountConnection c : redTeam) {
-				c.connectionState = ConnectionState.IN_GAME;
-				c.sendTCP(new MatchReady(matchId));
-			}
+		if(matchState != MatchState.PREPARING && ready()) {
+			matchTimer = 0f;
+			matchState = MatchState.PREPARING;
+		}
+	}
+	
+	private void sendMatchReady() {
+		for(AccountConnection c : blueTeam) {
+			c.connectionState = ConnectionState.IN_GAME;
+			c.sendTCP(new MatchReady(matchId));
+		}
+		for(AccountConnection c : redTeam) {
+			c.connectionState = ConnectionState.IN_GAME;
+			c.sendTCP(new MatchReady(matchId));
 		}
 	}
 	
