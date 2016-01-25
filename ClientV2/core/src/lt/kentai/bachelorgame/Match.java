@@ -11,11 +11,14 @@ import lt.kentai.bachelorgame.model.Entity;
  */
 public class Match {
 	
+	public final int matchId;
+	
+	private Entity player;
 	private Array<Entity> playerEntities = new Array<Entity>();
 	private char[][] map;
 	
-	public Match() {
-		
+	public Match(final int matchId) {
+		this.matchId = matchId;
 	}
 
 	public Array<Entity> getPlayerEntities() {
@@ -29,4 +32,13 @@ public class Match {
 	public void setMap(char[][] map) {
 		this.map = map;
 	}
+
+	public Entity getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Entity player) {
+		this.player = player;
+	}
+	
 }
