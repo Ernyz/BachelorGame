@@ -92,12 +92,12 @@ public class ClientListener extends Listener {
 				}
 			});
 		}
-		//XXX: Test part
+		
 		else if(o instanceof MoveChampion) {
 			final MoveChampion moveChampion = (MoveChampion) o;
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
-					GameClientV2.getScreenManager().getGameScreen().movePlaya(moveChampion.x, moveChampion.y);
+//					GameClientV2.getScreenManager().getGameScreen().movePlaya(moveChampion.x, moveChampion.y);
 				}
 			});
 		}

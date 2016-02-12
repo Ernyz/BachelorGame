@@ -40,13 +40,10 @@ public class Match {
 	private char[][] map;
 	
 	public Match(int matchId, Array<AccountConnection> matchmakedConnections) {
-//		seed = new Random().nextInt();
-		seed = -1;
+		seed = new Random().nextInt();
 		this.matchId = matchId;
 		matchState = MatchState.SELECTING_CHAMPIONS;
 		fillTeams(matchmakedConnections);
-		
-		Log.set(Log.LEVEL_INFO);
 	}
 	
 	public void update(float delta) {
@@ -62,7 +59,6 @@ public class Match {
 		} else if(matchState == MatchState.PREPARING) {
 			System.out.println(matchTimer + " " + matchState);
 			if(matchTimer >= 5f) {
-				Log.info("Checking if all are ready: " + ready());
 				if(ready()) {
 					sendMatchReady();
 					matchState = MatchState.LOADING;

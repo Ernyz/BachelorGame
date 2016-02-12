@@ -135,8 +135,6 @@ public class ServerListener extends Listener {
 			});
 		} else if(o instanceof ChampionSelect) {
 			final int matchId = ((ChampionSelect) o).matchId;
-			System.out.println("Received ChampionSelect, id: " + matchId);
-			System.out.println(((ChampionSelect) o).matchId);
 			final String name = ((ChampionSelect) o).name;
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
@@ -144,12 +142,12 @@ public class ServerListener extends Listener {
 				}
 			});
 		}
-		//XXX: Test part
+		
 		else if(o instanceof MoveChampion) {
 			final MoveChampion moveChampion = (MoveChampion) o;
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
-					GameServerV2.getServerScreen().getMatchmaker().getMatchById(moveChampion.matchId).sendToAllExceptUDP(accountConnection.getID(), moveChampion);
+//					GameServerV2.getServerScreen().getMatchmaker().getMatchById(moveChampion.matchId).sendToAllExceptUDP(accountConnection.getID(), moveChampion);
 				}
 			});
 		}

@@ -48,14 +48,13 @@ public class GameScreen implements Screen {
 		client.sendTCP(requestInfo);
 	}
 	
-	//XXX: remove this later
-	public void movePlaya(float x, float y) {
-		for(int i = 0; i < match.getPlayerEntities().size; i++) {
-			if(!match.getPlayerEntities().get(i).equals(match.getPlayer())) {
-				match.getPlayerEntities().get(i).moveBy(Gdx.graphics.getDeltaTime(), x, y);
-			}
-		}
-	}
+//	public void movePlaya(float x, float y) {
+//		for(int i = 0; i < match.getPlayerEntities().size; i++) {
+//			if(!match.getPlayerEntities().get(i).equals(match.getPlayer())) {
+//				match.getPlayerEntities().get(i).moveBy(Gdx.graphics.getDeltaTime(), x, y);
+//			}
+//		}
+//	}
 
 	@Override
 	public void show() {
@@ -114,7 +113,7 @@ public class GameScreen implements Screen {
 				match.setPlayer(e);
 			}
 		}
-		StandardMapGenerator mapGenerator = new StandardMapGenerator(500  , 200, matchInfo.seed, 0.35, 300);
+		StandardMapGenerator mapGenerator = new StandardMapGenerator(500, 200, matchInfo.seed, 0.35, 300);
 
 		match.setMap(mapGenerator.generateMap());
 //		for (int i = 0; i <match.getMap().length ; i++) {

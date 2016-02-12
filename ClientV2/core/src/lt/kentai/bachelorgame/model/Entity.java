@@ -1,6 +1,7 @@
 package lt.kentai.bachelorgame.model;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Represents an entity in the game world.
@@ -13,10 +14,10 @@ public class Entity {
 	private float x;
 	private float y;
 	
-	//XXX: Temp
 	public int connectionId;
 	public String championName;
 	private float speed;
+	private Vector2 velocity = new Vector2();
 	
 	public Entity(float x, float y) {
 		this.x = x;
@@ -55,10 +56,12 @@ public class Entity {
 		this.speed = speed;
 	}
 
-	//XXX: Test
-	public void moveBy(float delta, float x, float y) {
-		this.x += x * delta * speed;
-		this.y += y * delta * speed;
+	public Vector2 getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(Vector2 velocity) {
+		this.velocity = velocity;
 	}
 	
 }
