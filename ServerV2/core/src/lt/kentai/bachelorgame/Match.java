@@ -11,6 +11,7 @@ import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.model.ChampionData;
 import lt.kentai.bachelorgame.model.ChampionsProperties;
 import lt.kentai.bachelorgame.networking.Network.AcceptedToLobby;
+import lt.kentai.bachelorgame.networking.Network.AllLockedIn;
 import lt.kentai.bachelorgame.networking.Network.ChampionSelectResponse;
 import lt.kentai.bachelorgame.networking.Network.MatchReady;
 
@@ -55,9 +56,10 @@ public class Match {
 			if(matchTimer >= 20f) {
 				matchTimer = 0f;
 				matchState = MatchState.PREPARING;
+				sendToAllTCP(new AllLockedIn());  //XXX:Dublicated code
 			}
 		} else if(matchState == MatchState.PREPARING) {
-			System.out.println(matchTimer + " " + matchState);
+//			System.out.println(matchTimer + " " + matchState);
 			if(matchTimer >= 5f) {
 				if(ready()) {
 					sendMatchReady();
@@ -117,6 +119,7 @@ public class Match {
 		if(matchState != MatchState.PREPARING && ready()) {
 			matchTimer = 0f;
 			matchState = MatchState.PREPARING;
+			sendToAllTCP(new AllLockedIn());
 		}
 	}
 	

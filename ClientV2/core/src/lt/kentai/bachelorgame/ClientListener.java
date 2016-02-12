@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.Network.AcceptedToLobby;
+import lt.kentai.bachelorgame.Network.AllLockedIn;
 import lt.kentai.bachelorgame.Network.ChampionSelectResponse;
 import lt.kentai.bachelorgame.Network.LoginResult;
 import lt.kentai.bachelorgame.Network.MatchInfo;
@@ -70,6 +71,13 @@ public class ClientListener extends Listener {
 			});
 		} else if(o instanceof PlayerLeftGame) {
 			
+		} else if(o instanceof AllLockedIn) {
+			Gdx.app.postRunnable(new Runnable() {
+				@Override
+				public void run() {
+					GameClientV2.getScreenManager().getLobbyScreen().setChampionSelectionTimer(5f);
+				}
+			});
 		} else if(o instanceof MatchReady) {
 			final int matchId = ((MatchReady) o).matchId;
 			Gdx.app.postRunnable(new Runnable() {

@@ -24,6 +24,7 @@ public class Network {
 		kryo.register(AcceptedToLobby.class);
 		kryo.register(PlayerLeftMatchmaking.class);
 		kryo.register(PlayerLeftGame.class);
+		kryo.register(AllLockedIn.class);
 		kryo.register(Properties.Team.class);
 		kryo.register(RequestForMatchInfo.class);
 		kryo.register(MatchInfo.class);
@@ -70,6 +71,9 @@ public class Network {
 	
 	public static class PlayerLeftGame {
 		public int playerId;
+	}
+	
+	public static class AllLockedIn {
 	}
 	
 	public static class RequestForMatchInfo {

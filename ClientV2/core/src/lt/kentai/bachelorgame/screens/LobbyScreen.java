@@ -85,6 +85,7 @@ public class LobbyScreen implements Screen {
 		timerLabel.setText(MathUtils.floor(championSelectionTimer) + "");
 		if (championSelectionTimer <= 0) {
 			lockIn();
+			championSelectionTimer = 5f;
 		}
 		
 		stage.act(delta);
@@ -231,6 +232,10 @@ public class LobbyScreen implements Screen {
 			this.connectionId = connectionId;
 			this.team = team;
 		}
+	}
+
+	public void setChampionSelectionTimer(float championSelectionTimer) {
+		this.championSelectionTimer = championSelectionTimer;
 	}
 	
 }
