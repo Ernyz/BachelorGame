@@ -45,10 +45,11 @@ project(":core") {
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-	compile "com.esotericsoftware:kryo:3.0.1"
+        compile "com.esotericsoftware:kryo:3.0.1"
         compile ("com.esotericsoftware:kryonet:2.22.0-RC1") {
              exclude module : 'kryo'
         }
+        compile "mysql:mysql-connector-java:5.1.16"
     }
 }
 
