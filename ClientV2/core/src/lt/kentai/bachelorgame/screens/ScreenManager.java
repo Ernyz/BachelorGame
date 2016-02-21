@@ -3,7 +3,7 @@ package lt.kentai.bachelorgame.screens;
 import com.badlogic.gdx.Screen;
 
 import lt.kentai.bachelorgame.GameClientV2;
-import lt.kentai.bachelorgame.Network.AcceptedToLobby;
+import lt.kentai.bachelorgame.networking.Network.AcceptedToLobby;
 
 public class ScreenManager {
 

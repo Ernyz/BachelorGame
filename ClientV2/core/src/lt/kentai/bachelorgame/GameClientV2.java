@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.esotericsoftware.minlog.Log;
 
+import lt.kentai.bachelorgame.networking.NetworkingManager;
 import lt.kentai.bachelorgame.screens.LoginScreen;
 import lt.kentai.bachelorgame.screens.ScreenManager;
 

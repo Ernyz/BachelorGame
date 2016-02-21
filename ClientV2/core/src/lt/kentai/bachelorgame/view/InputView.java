@@ -6,7 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.esotericsoftware.kryonet.Client;
 
 import lt.kentai.bachelorgame.Match;
-import lt.kentai.bachelorgame.Network.MoveChampion;
+import lt.kentai.bachelorgame.networking.Network.MoveChampion;
 
 public class InputView implements InputProcessor {
 	

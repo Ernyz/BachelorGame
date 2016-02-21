@@ -1,20 +1,21 @@
-package lt.kentai.bachelorgame;
+package lt.kentai.bachelorgame.networking;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 
-import lt.kentai.bachelorgame.Network.AcceptedToLobby;
-import lt.kentai.bachelorgame.Network.AllLockedIn;
-import lt.kentai.bachelorgame.Network.ChampionSelectResponse;
-import lt.kentai.bachelorgame.Network.LoginResult;
-import lt.kentai.bachelorgame.Network.MatchInfo;
-import lt.kentai.bachelorgame.Network.MatchReady;
-import lt.kentai.bachelorgame.Network.Matchmaking;
-import lt.kentai.bachelorgame.Network.MoveChampion;
-import lt.kentai.bachelorgame.Network.PlayerLeftGame;
-import lt.kentai.bachelorgame.Network.PlayerLeftMatchmaking;
+import lt.kentai.bachelorgame.GameClientV2;
+import lt.kentai.bachelorgame.networking.Network.AcceptedToLobby;
+import lt.kentai.bachelorgame.networking.Network.AllLockedIn;
+import lt.kentai.bachelorgame.networking.Network.ChampionSelectResponse;
+import lt.kentai.bachelorgame.networking.Network.LoginResult;
+import lt.kentai.bachelorgame.networking.Network.MatchInfo;
+import lt.kentai.bachelorgame.networking.Network.MatchReady;
+import lt.kentai.bachelorgame.networking.Network.Matchmaking;
+import lt.kentai.bachelorgame.networking.Network.MoveChampion;
+import lt.kentai.bachelorgame.networking.Network.PlayerLeftGame;
+import lt.kentai.bachelorgame.networking.Network.PlayerLeftMatchmaking;
 import lt.kentai.bachelorgame.screens.LoginScreen;
 import lt.kentai.bachelorgame.ui.LoginFailureDialog;
 

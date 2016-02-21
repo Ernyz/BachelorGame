@@ -15,7 +15,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.GameClientV2;
-import lt.kentai.bachelorgame.Network.LoginRequest;
+import lt.kentai.bachelorgame.networking.Network.LoginRequest;
 
 public class LoginScreen implements Screen {
 	

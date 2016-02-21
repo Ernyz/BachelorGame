@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.esotericsoftware.kryonet.Client;
 
 import lt.kentai.bachelorgame.GameClientV2;
-import lt.kentai.bachelorgame.Network.Matchmaking;
+import lt.kentai.bachelorgame.networking.Network.Matchmaking;
 
 public class MainMenuScreen implements Screen {
 

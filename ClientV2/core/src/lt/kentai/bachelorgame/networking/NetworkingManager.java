@@ -1,4 +1,4 @@
-package lt.kentai.bachelorgame;
+package lt.kentai.bachelorgame.networking;
 
 import java.io.IOException;
 

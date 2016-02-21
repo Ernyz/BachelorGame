@@ -1,4 +1,4 @@
-package lt.kentai.bachelorgame;
+package lt.kentai.bachelorgame.networking;
 
 import java.util.HashMap;
 
@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
+import lt.kentai.bachelorgame.Properties;
 import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.model.server_data.ChampionData;
 import lt.kentai.bachelorgame.utils.UInt;

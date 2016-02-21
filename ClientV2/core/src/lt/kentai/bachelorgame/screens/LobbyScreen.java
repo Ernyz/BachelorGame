@@ -22,11 +22,11 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.GameClientV2;
-import lt.kentai.bachelorgame.Network.AcceptedToLobby;
-import lt.kentai.bachelorgame.Network.ChampionSelect;
-import lt.kentai.bachelorgame.Network.ChampionSelectResponse;
-import lt.kentai.bachelorgame.Network.LockIn;
 import lt.kentai.bachelorgame.Properties.Team;
+import lt.kentai.bachelorgame.networking.Network.AcceptedToLobby;
+import lt.kentai.bachelorgame.networking.Network.ChampionSelect;
+import lt.kentai.bachelorgame.networking.Network.ChampionSelectResponse;
+import lt.kentai.bachelorgame.networking.Network.LockIn;
 
 public class LobbyScreen implements Screen {
 
