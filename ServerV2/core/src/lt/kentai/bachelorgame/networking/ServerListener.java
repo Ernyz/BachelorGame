@@ -27,8 +27,10 @@ public class ServerListener extends Listener {
 	
 	@Override
 	public void disconnected(Connection c) {
+
 		final AccountConnection accountConnection = (AccountConnection) c;
 //		final int connectionId = accountConnection.getID();
+		System.out.println("Disc");
 		Gdx.app.postRunnable(new Runnable() {
 			public void run() {
 				//Remove player from matchmaking if in matchmaking phase
@@ -38,7 +40,15 @@ public class ServerListener extends Listener {
 				//Remove player from lobby if in champion selection phase
 				if(accountConnection.connectionState == ConnectionState.IN_CHAMPION_SELECT) {
 					final Match match = GameServerV2.getServerScreen().getMatchmaker().getMatchByConnectionId(accountConnection.getID());
+					System.out.println("match id:" + match.getMatchId());
 					if(match != null) {
+						System.out.println("destroy match : "+ match.getMatchId());
+
+						for(AccountConnection ac : match.getAllConnections()) {
+							if(ac.isConnected()) {
+								ac.sendTCP(new Network.PlayerLeftMatchmaking());
+							}
+						}
 						GameServerV2.getServerScreen().getMatchmaker().destroyMatch(match.getMatchId());
 					}
 				}
@@ -72,6 +82,8 @@ public class ServerListener extends Listener {
 			final LoginRequest loginRequest = (LoginRequest) o;
 			Log.info(loginRequest.username + " is trying to connect.");
 			if(loginRequest.username != "" && loginRequest.username != null) {
+				//DB check if exists
+
 				LoginResult loginResult = new LoginResult();
 				loginResult.success = true;
 				loginResult.message = "Login successful!";

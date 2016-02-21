@@ -19,9 +19,9 @@ public class ScreenManager {
 	}
 	
 	public void switchToLoginScreen() {
-		if(loginScreen != null) {
-			loginScreen.dispose();
-		}
+//		if(loginScreen != null) {
+//			loginScreen.dispose();
+//		}
 		loginScreen = new LoginScreen();
 		if(mainClass.getScreen() != null) {
 			mainClass.getScreen().dispose();
@@ -30,9 +30,9 @@ public class ScreenManager {
 	}
 	
 	public void switchToMainMenuScreen(boolean placePlayerInMatchmaking) {
-		if(mainMenuScreen != null) {
-			mainMenuScreen.dispose();
-		}
+//		if(mainMenuScreen != null) {
+//			mainMenuScreen.dispose();
+//		}
 		mainMenuScreen = new MainMenuScreen();
 		if(mainClass.getScreen() != null) {
 			mainClass.getScreen().dispose();
@@ -45,9 +45,9 @@ public class ScreenManager {
 	}
 	
 	public void switchToLobbyScreen(AcceptedToLobby lobbyInfo) {
-		if(lobbyScreen != null) {
-			lobbyScreen.dispose();
-		}
+//		if(lobbyScreen != null) {
+//			lobbyScreen.dispose();
+//		}
 		lobbyScreen = new LobbyScreen(lobbyInfo);
 		if(mainClass.getScreen() != null) {
 			mainClass.getScreen().dispose();
@@ -56,9 +56,9 @@ public class ScreenManager {
 	}
 	
 	public void switchToGameScreen(final int matchId) {
-		if(gameScreen != null) {
-			gameScreen.dispose();
-		}
+//		if(gameScreen != null) {
+//			gameScreen.dispose();
+//		}
 		gameScreen = new GameScreen(matchId, GameClientV2.getBatch());
 		if(mainClass.getScreen() != null) {
 			mainClass.getScreen().dispose();

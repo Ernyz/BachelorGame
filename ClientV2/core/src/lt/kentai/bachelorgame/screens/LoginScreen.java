@@ -99,11 +99,20 @@ public class LoginScreen implements Screen {
 		table.add(serverStatusLabel);
 		
 		table.row();
-		final Label enterUsernameLaber = new Label("Enter username:", skin);
-		table.add(enterUsernameLaber);
+		final Label enterUsernameLabel = new Label("Enter username:", skin);
+		table.add(enterUsernameLabel);
 		final TextField usernameTextField = new TextField("Player", skin);
 		table.add(usernameTextField);
-		
+
+		table.row();
+		final Label enterPasswordLabel = new Label("Enter password:", skin);
+		table.add(enterPasswordLabel);
+		final TextField passwordTextField = new TextField("", skin);
+		passwordTextField.setPasswordCharacter('*');
+		passwordTextField.setPasswordMode(true);
+		table.add(passwordTextField);
+
+
 		table.row().colspan(2);
 		final TextButton connectBtn = new TextButton("Connect!", skin);
 		connectBtn.addListener(new InputListener() {
@@ -112,6 +121,11 @@ public class LoginScreen implements Screen {
 			}
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				//Try to connect
+
+				//check if user exists db
+
+
+
 				LoginRequest login = new LoginRequest();
 				login.username = usernameTextField.getText();
 				client.sendTCP(login);

@@ -42,7 +42,6 @@ public class GameScreen implements Screen {
 		this.matchId = matchId;
 		this.batch = batch;
 		this.client = GameClientV2.getNetworkingManager().getClient();
-		
 		//Send request for server so he returns info about this match
 		RequestForMatchInfo requestInfo = new RequestForMatchInfo(matchId);
 		client.sendTCP(requestInfo);

@@ -66,11 +66,11 @@ public class Matchmaker {
 	
 	public void destroyMatch(int matchId) {
 		Match match = getMatchById(matchId);
-		for(AccountConnection ac : match.getAllConnections()) {
+		/*for(AccountConnection ac : match.getAllConnections()) {
 			if(ac.isConnected()) {
 				ac.sendTCP(new PlayerLeftMatchmaking());
 			}
-		}
+		}*/
 		matchArray.removeValue(match, false);
 	}
 	

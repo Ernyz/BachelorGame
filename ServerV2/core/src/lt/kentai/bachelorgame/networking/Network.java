@@ -24,6 +24,8 @@ public class Network {
 		kryo.register(AcceptedToLobby.class);
 		kryo.register(PlayerLeftMatchmaking.class);
 		kryo.register(PlayerLeftGame.class);
+		kryo.register(PlayerLeftLobby.class);
+		kryo.register(PlayerAFKCheckFail.class);
 		kryo.register(AllLockedIn.class);
 		kryo.register(Properties.Team.class);
 		kryo.register(RequestForMatchInfo.class);
@@ -31,6 +33,7 @@ public class Network {
 		kryo.register(Array.class);
 		kryo.register(Object[].class);
 		kryo.register(String[].class);
+		kryo.register(int[].class);
 		kryo.register(ChampionData.class);
 		kryo.register(LockIn.class);
 		kryo.register(MatchReady.class);
@@ -41,6 +44,7 @@ public class Network {
 	
 	public static class LoginRequest {
 		public String username;
+		public String password;
 	}
 	
 	public static class LoginResult {
@@ -72,7 +76,15 @@ public class Network {
 	public static class PlayerLeftGame {
 		public int playerId;
 	}
-	
+
+	public static class PlayerLeftLobby {
+		public int playerId;
+	}
+
+	public static class PlayerAFKCheckFail{
+		public int[] ids;
+	}
+
 	public static class AllLockedIn {
 	}
 	

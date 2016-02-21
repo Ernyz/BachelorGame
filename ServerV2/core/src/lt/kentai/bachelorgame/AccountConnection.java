@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 public class AccountConnection extends Connection {
 	public String connectionName;
+	public boolean lockedIn=false;
 	
 	public static enum ConnectionState {
 		IN_LOGIN,
