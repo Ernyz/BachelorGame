@@ -14,8 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import javafx.scene.control.Skin;
-import javafx.scene.control.TextField;
 import lt.kentai.bachelorgame.generators.test.MapTile;
 import map.StandardMapGenerator;
 

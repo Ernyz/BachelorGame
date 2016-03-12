@@ -10,12 +10,12 @@ import lt.kentai.bachelorgame.GameClientV2;
 import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.Network.MatchInfo;
 import lt.kentai.bachelorgame.Network.RequestForMatchInfo;
-import lt.kentai.bachelorgame.generators.Map.StandardMapGenerator;
 import lt.kentai.bachelorgame.model.Entity;
 import lt.kentai.bachelorgame.model.server_data.ChampionData;
 import lt.kentai.bachelorgame.test.MapTile;
 import lt.kentai.bachelorgame.view.InputView;
 import lt.kentai.bachelorgame.view.WorldRenderer;
+import map.StandardMapGenerator;
 
 /**
  * The actual game is rendered in this screen.

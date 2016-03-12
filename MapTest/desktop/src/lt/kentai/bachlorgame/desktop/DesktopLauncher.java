@@ -1,4 +1,4 @@
-package com.map.testing.desktop;
+package lt.kentai.bachlorgame.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;

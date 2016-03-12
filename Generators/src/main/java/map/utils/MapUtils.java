@@ -1,7 +1,7 @@
 package map.utils;
 
 
-import lt.kentai.bachelorgame.generators.Map.components.MapComponents;
+import map.components.MapComponents;
 
 public class MapUtils {
 

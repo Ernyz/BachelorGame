@@ -3,8 +3,6 @@ buildscript {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
-    dependencies {
-    }
 }
 
 allprojects {
@@ -52,6 +50,8 @@ project(":core") {
              exclude module : 'kryo'
         }
         compile "mysql:mysql-connector-java:5.1.16"
+
+        compile project(':Generators')
     }
 }
 

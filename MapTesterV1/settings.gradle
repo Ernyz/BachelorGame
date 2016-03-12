@@ -1,3 +1,0 @@
-include 'desktop', 'core'
-include ':Generators'
-project(':Generators').projectDir = new File('../Generators')
