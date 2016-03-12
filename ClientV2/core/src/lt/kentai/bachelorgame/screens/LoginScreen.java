@@ -11,10 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.GameClientV2;
+import lt.kentai.bachelorgame.networking.ClientWrapper;
 import lt.kentai.bachelorgame.networking.Network.LoginRequest;
 
 public class LoginScreen implements Screen {
@@ -24,12 +24,12 @@ public class LoginScreen implements Screen {
 	private Skin skin;
 	private Label serverStatusLabel;
 	// Client stuff
-	private Client client;
+	private ClientWrapper client;
 	private final float reconnectToServerInterval = 10f;
 	private float reconnectToServerTimer = reconnectToServerInterval;
 
 	public LoginScreen() {
-		this.client = GameClientV2.getNetworkingManager().getClient();
+		this.client = GameClientV2.getNetworkingManager().getClientWrapper();
 	}
 	
 	@Override

@@ -2,8 +2,8 @@ package lt.kentai.bachelorgame;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Server;
 
+import lt.kentai.bachelorgame.networking.ServerWrapper;
 import lt.kentai.bachelorgame.screens.ServerScreen;
 
 public class ConsoleInputManager {
@@ -14,13 +14,13 @@ public class ConsoleInputManager {
 		this.serverScreen = serverScreen;
 	}
 	
-	public void manageInput(Server server, String inputText) {
+	public void manageInput(ServerWrapper serverWrapper, String inputText) {
 		if(inputText.equals("exit")) {
-			server.stop();
+			serverWrapper.stop();
 			Gdx.app.exit();
 		} else if(inputText.equals("lc")) {
 			serverScreen.addMessage("Connections online: ");
-			for(Connection c : server.getConnections()) {
+			for(Connection c : serverWrapper.getConnections()) {
 				serverScreen.addMessage(c.toString() + ". Player name: " + ((AccountConnection)c).connectionName);
 			}
 			serverScreen.addMessage("---");

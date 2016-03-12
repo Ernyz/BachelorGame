@@ -2,26 +2,25 @@ package lt.kentai.bachelorgame.networking;
 
 import java.io.IOException;
 
-import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Listener.ThreadedListener;
 import com.esotericsoftware.minlog.Log;
 
 public class NetworkingManager {
 	
-	private Client client;
+	private ClientWrapper clientWrapper;
 	
 	public NetworkingManager() {
-		client = new Client();
+		clientWrapper = new ClientWrapper();
 	}
 	
 	public boolean init() {
 		Log.set(Log.LEVEL_DEBUG);
-		client.start();
-		Network.register(client);
-		client.addListener(new ThreadedListener(new ClientListener()));
+		clientWrapper.start();
+		Network.register(clientWrapper);
+		clientWrapper.addListener(new ThreadedListener(new ClientListener()));
 		
 		try {
-			client.connect(10000, Network.serverIP, Network.tcpPort, Network.udpPort);
+			clientWrapper.connect(10000, Network.serverIP, Network.tcpPort, Network.udpPort);
 		} catch(IOException e) {
 //			e.printStackTrace();
 			Log.error(e.getMessage());
@@ -31,8 +30,8 @@ public class NetworkingManager {
 		return true;
 	}
 
-	public Client getClient() {
-		return client;
+	public ClientWrapper getClientWrapper() {
+		return clientWrapper;
 	}
 	
 }

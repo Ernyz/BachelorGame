@@ -9,7 +9,6 @@ import com.esotericsoftware.kryonet.EndPoint;
 import lt.kentai.bachelorgame.Properties;
 import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.model.server_data.ChampionData;
-import lt.kentai.bachelorgame.utils.UInt;
 
 public class Network {
 	public static final String serverIP = "127.0.0.1";
@@ -18,7 +17,6 @@ public class Network {
 	
 	public static void register(EndPoint endPoint) {
 		Kryo kryo = endPoint.getKryo();
-		kryo.register(UInt.class);
 		kryo.register(PacketHeader.class);  //XXX: Check if this is really needed
 		kryo.register(LoginRequest.class);
 		kryo.register(LoginResult.class);
@@ -128,12 +126,12 @@ public class Network {
 	}
 	
 	public static abstract class PacketHeader {
-		public UInt sequenceNumber;
-		public UInt ack;
+		public int sequenceNumber;
+		public int ack;
 		public boolean ackBitfield[];
 		public PacketHeader() {
 		}
-		public PacketHeader(UInt sequenceNumber, UInt ack, boolean[] ackBitfield) {
+		public PacketHeader(int sequenceNumber, int ack, boolean[] ackBitfield) {
 			this.sequenceNumber = sequenceNumber;
 			this.ack = ack;
 			this.ackBitfield = ackBitfield;
@@ -150,7 +148,7 @@ public class Network {
 			this.x = x;
 			this.y = y;
 		}
-		public MoveChampion(UInt sequenceNumber, UInt ack, boolean[] ackBitfield,
+		public MoveChampion(int sequenceNumber, int ack, boolean[] ackBitfield,
 				int matchId, float x, float y) {
 			super(sequenceNumber, ack, ackBitfield);
 			this.matchId = matchId;

@@ -1,19 +1,16 @@
 package lt.kentai.bachelorgame.view;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Input.Keys;
-import com.esotericsoftware.kryonet.Client;
 
 import lt.kentai.bachelorgame.Match;
-import lt.kentai.bachelorgame.networking.Network.MoveChampion;
+import lt.kentai.bachelorgame.networking.ClientWrapper;
 
 public class InputView implements InputProcessor {
 	
-	private Client client;
+	private ClientWrapper client;
 	private Match match;
 	
-	public InputView(Client client, Match match) {
+	public InputView(ClientWrapper client, Match match) {
 		this.client = client;
 		this.match = match;
 	}
@@ -74,7 +71,5 @@ public class InputView implements InputProcessor {
 	public boolean scrolled(int amount) {
 		return false;
 	}
-
-	
 	
 }

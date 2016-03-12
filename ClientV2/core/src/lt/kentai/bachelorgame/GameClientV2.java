@@ -19,22 +19,16 @@ public class GameClientV2 extends Game {
 		screenManager = new ScreenManager(this);
 		networkingManager = new NetworkingManager();
 		
-		//screenManager.switchToLoginScreen();
-		
 		if(networkingManager.init()) {
 			Log.info("Connected to server.");
-//			if(GameClientV2.getScreenManager().getCurrentScreen() instanceof LoginScreen) {
-				screenManager.switchToLoginScreen();
-				LoginScreen loginScreen = (LoginScreen) GameClientV2.getScreenManager().getCurrentScreen();
-				loginScreen.setServerStatus("Server online");
-//			}
+			screenManager.switchToLoginScreen();
+			LoginScreen loginScreen = (LoginScreen) GameClientV2.getScreenManager().getCurrentScreen();
+			loginScreen.setServerStatus("Server online");
 		} else {
 			Log.info("Could not connect to server.");
-//			if(GameClientV2.getScreenManager().getCurrentScreen() instanceof LoginScreen) {
-				screenManager.switchToLoginScreen();
-				LoginScreen loginScreen = (LoginScreen) GameClientV2.getScreenManager().getCurrentScreen();
-				loginScreen.setServerStatus("Server offline");
-//			}
+			screenManager.switchToLoginScreen();
+			LoginScreen loginScreen = (LoginScreen) GameClientV2.getScreenManager().getCurrentScreen();
+			loginScreen.setServerStatus("Server offline");
 		}
 	}
 

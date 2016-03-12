@@ -14,6 +14,7 @@ import lt.kentai.bachelorgame.networking.Network.AcceptedToLobby;
 import lt.kentai.bachelorgame.networking.Network.AllLockedIn;
 import lt.kentai.bachelorgame.networking.Network.ChampionSelectResponse;
 import lt.kentai.bachelorgame.networking.Network.MatchReady;
+import lt.kentai.bachelorgame.networking.Network.PacketHeader;
 
 /**
  * Holds teams, map, minions, towers and all stuff related to a single match.
@@ -174,6 +175,7 @@ public class Match {
 		sendToAllInTeamTCP(connectionIds.get(connectionId), new ChampionSelectResponse(connectionId, championName, true));
 	}
 	
+	//TODO: Move these methods to ServerWrapper?..
 	public void sendToAllTCP(Object o) {
 		for(AccountConnection c : blueTeam) {
 			if(c.isConnected()) {
@@ -202,12 +204,14 @@ public class Match {
 	public void sendToAllExceptUDP(final int idToExclude, Object o) {
 		for(AccountConnection c : blueTeam) {
 			if(idToExclude != c.getID()) {
-				c.sendUDP(o);
+				//c.sendUDP(o);
+				GameServerV2.getNetworkingManager().getServerWrapper().sendUDP(c, (PacketHeader) o);
 			}
 		}
 		for(AccountConnection c : redTeam) {
 			if(idToExclude != c.getID()) {
-				c.sendUDP(o);
+				//c.sendUDP(o);
+				GameServerV2.getNetworkingManager().getServerWrapper().sendUDP(c, (PacketHeader) o);
 			}
 		}
 	}

@@ -14,17 +14,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Array;
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
-import lt.kentai.bachelorgame.AccountConnection;
 import lt.kentai.bachelorgame.ConsoleInputManager;
 import lt.kentai.bachelorgame.GameServerV2;
 import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.Matchmaker;
+import lt.kentai.bachelorgame.Properties;
+import lt.kentai.bachelorgame.networking.ServerWrapper;
 
 public class ServerScreen implements Screen {
+	
+	private float accumulator = 0f;
 	
 	//GUI stuff
 	private Stage stage;
@@ -37,7 +38,7 @@ public class ServerScreen implements Screen {
 	private ConsoleInputManager consoleInputManager;
 	
 	//Server stuff
-	private Server server;
+	private ServerWrapper serverWrapper;
 	private Matchmaker matchmaker;
 	private Array<Match> matchArray = new Array<Match>();
 	
@@ -56,8 +57,17 @@ public class ServerScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		matchmaker.updateMatches(delta);
+		accumulator += delta;
 		
+		while(accumulator >= Properties.FPS) {
+			matchmaker.updateMatches(delta);
+			
+			accumulator -= Properties.FPS;
+		}
+		
+		/*
+		 * Only rendering/input goes below
+		 */
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -135,7 +145,7 @@ public class ServerScreen implements Screen {
 	}
 	
 	private void manageConsoleInput() {
-		if(server == null) server = GameServerV2.getNetworkingManager().getServer();
+		if(serverWrapper == null) serverWrapper = GameServerV2.getNetworkingManager().getServerWrapper();
 		
 		String inputText = inputTextField.getText();
 		if(inputText == null || inputText.length() <= 0 || inputText == "") {
@@ -144,7 +154,7 @@ public class ServerScreen implements Screen {
 		addMessage(inputText);
 		inputTextField.setText("");
 		
-		consoleInputManager.manageInput(server, inputText);
+		consoleInputManager.manageInput(serverWrapper, inputText);
 	}
 
 	public Matchmaker getMatchmaker() {

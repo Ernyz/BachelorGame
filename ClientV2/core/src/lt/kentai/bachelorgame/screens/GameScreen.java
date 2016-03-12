@@ -1,20 +1,18 @@
 package lt.kentai.bachelorgame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.esotericsoftware.kryonet.Client;
 
 import lt.kentai.bachelorgame.GameClientV2;
 import lt.kentai.bachelorgame.Match;
+import lt.kentai.bachelorgame.Properties;
 import lt.kentai.bachelorgame.generators.Map.StandardMapGenerator;
 import lt.kentai.bachelorgame.model.Entity;
 import lt.kentai.bachelorgame.model.server_data.ChampionData;
+import lt.kentai.bachelorgame.networking.ClientWrapper;
 import lt.kentai.bachelorgame.networking.Network.MatchInfo;
-import lt.kentai.bachelorgame.networking.Network.MoveChampion;
 import lt.kentai.bachelorgame.networking.Network.RequestForMatchInfo;
 import lt.kentai.bachelorgame.view.InputView;
 import lt.kentai.bachelorgame.view.WorldRenderer;
@@ -29,7 +27,9 @@ public class GameScreen implements Screen {
 	private final int matchId;
 	
 	private SpriteBatch batch;
-	private Client client;
+	private ClientWrapper client;
+	
+	private float accumulator = 0f;
 	
 	private InputView inputView;
 	private WorldRenderer worldRenderer;
@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
 	public GameScreen(final int matchId, SpriteBatch batch) {
 		this.matchId = matchId;
 		this.batch = batch;
-		this.client = GameClientV2.getNetworkingManager().getClient();
+		this.client = GameClientV2.getNetworkingManager().getClientWrapper();
 		
 		//Send request for server so he returns info about this match
 		RequestForMatchInfo requestInfo = new RequestForMatchInfo(matchId);
@@ -64,6 +64,14 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		if(!matchInitialized) return;
+		
+		accumulator += delta;
+		while(accumulator >= Properties.FPS) {
+			//Game logic here
+			//...
+			
+			accumulator -= Properties.FPS;
+		}
 		
 		worldRenderer.render();
 	}

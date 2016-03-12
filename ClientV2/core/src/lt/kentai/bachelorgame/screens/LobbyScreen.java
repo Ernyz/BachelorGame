@@ -18,11 +18,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
-import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.GameClientV2;
 import lt.kentai.bachelorgame.Properties.Team;
+import lt.kentai.bachelorgame.networking.ClientWrapper;
 import lt.kentai.bachelorgame.networking.Network.AcceptedToLobby;
 import lt.kentai.bachelorgame.networking.Network.ChampionSelect;
 import lt.kentai.bachelorgame.networking.Network.ChampionSelectResponse;
@@ -37,7 +37,7 @@ public class LobbyScreen implements Screen {
 	private String selectedChampion = "";
 	private Array<Image> selectedChampionIcons;
 	
-	private Client client;
+	private ClientWrapper client;
 	
 	private Table table;
 	private Stage stage;
@@ -59,7 +59,7 @@ public class LobbyScreen implements Screen {
 		this.matchId = lobbyInfo.matchId;
 		this.connectionIds = lobbyInfo.connectionIds;
 		this.championNames = lobbyInfo.championNames;
-		this.client = GameClientV2.getNetworkingManager().getClient();
+		this.client = GameClientV2.getNetworkingManager().getClientWrapper();
 	}
 
 	@Override

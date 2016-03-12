@@ -14,6 +14,7 @@ import lt.kentai.bachelorgame.networking.Network.MatchInfo;
 import lt.kentai.bachelorgame.networking.Network.MatchReady;
 import lt.kentai.bachelorgame.networking.Network.Matchmaking;
 import lt.kentai.bachelorgame.networking.Network.MoveChampion;
+import lt.kentai.bachelorgame.networking.Network.PacketHeader;
 import lt.kentai.bachelorgame.networking.Network.PlayerLeftGame;
 import lt.kentai.bachelorgame.networking.Network.PlayerLeftMatchmaking;
 import lt.kentai.bachelorgame.screens.LoginScreen;
@@ -26,10 +27,33 @@ public class ClientListener extends Listener {
 	}
 	
 	public void received(Connection c, Object o) {
+		
+		if(o instanceof PacketHeader) {
+			final PacketHeader packet = (PacketHeader) o;
+			Gdx.app.postRunnable(new Runnable() {
+				@Override
+				public void run() {
+					ClientWrapper clientWrapper = GameClientV2.getNetworkingManager().getClientWrapper();
+					//Update remote sequence number
+					if(packet.sequenceNumber > clientWrapper.remoteSequenceNumber.getValue()) {
+						clientWrapper.remoteSequenceNumber.setValue(packet.sequenceNumber);
+					}
+					//Mark appropriate ackBitfield bit
+					int index = clientWrapper.remoteSequenceNumber.getValue() - packet.sequenceNumber -1;
+					if(-1 < index && index < clientWrapper.numberOfAcks) {
+						clientWrapper.ackBitfield[index] = true;
+					}
+					//TODO: Read received packet ackBitfield and decide what to do with lost packets
+					for(int i = 0; i < clientWrapper.numberOfAcks; i++) {
+						//packet.ackBitfield[i]
+					}
+				}
+			});
+		}
+		
 		if(o instanceof LoginResult) {
 			LoginResult loginResult = (LoginResult)o;
 			if(loginResult.success) {
-				//Switch to main menu screen
 				Gdx.app.postRunnable(new Runnable() {
 					@Override
 					public void run() {
