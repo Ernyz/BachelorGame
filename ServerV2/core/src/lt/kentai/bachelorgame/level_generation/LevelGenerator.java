@@ -1,8 +1,8 @@
 package lt.kentai.bachelorgame.level_generation;
 
 import lt.kentai.bachelorgame.Properties;
-import lt.kentai.bachelorgame.level_generation.Map.StandardMapGenerator;
-import lt.kentai.bachelorgame.level_generation.Map.components.MapComponents;
+import map.StandardMapGenerator;
+import map.components.MapComponents;
 
 /**
  * Contains all logic for generating level.
