@@ -17,13 +17,16 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import lt.kentai.bachelorgame.generators.test.MapTile;
 import map.StandardMapGenerator;
 
+import java.util.Date;
+
 public class SettingsScreen implements Screen {
     public StandardMapGenerator mapGen;
     Stage stage;
     Skin skin;
     Table table;
     TextButton generate;
-    private TextField seedTF, largestFutureTF, persistanceTF;
+    private TextField seedTF, largestFutureTF, persistanceTF,widthTF,heightTF ;
+    private Label timeTakenTF;
     private SpriteBatch batch;
     private OrthographicCamera cam;
     private Array<MapTile> mapTiles;
@@ -84,7 +87,22 @@ public class SettingsScreen implements Screen {
         persistanceTF = new TextField("0.3", skin);
         table.add(persistanceTF);
 
+        table.row();
+        Label widthL = new Label("Width", skin);
+        table.add(widthL);
+        table.row();
+        widthTF = new TextField("300", skin);
+        table.add(widthTF);
 
+        table.row();
+        Label heightL = new Label("Height", skin);
+        table.add(heightL);
+        table.row();
+        heightTF = new TextField("200", skin);
+        table.add(heightTF);
+
+        timeTakenTF = new Label("Time taken : ", skin);
+        System.ti
         generate = new TextButton("Generate map ", skin);
         generate.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -93,11 +111,16 @@ public class SettingsScreen implements Screen {
 
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 //generateMap
-                generateMap(300, 100, gV(seedTF), gVd(persistanceTF), gV(largestFutureTF));
+                Date start = new Date();
+                generateMap(gV(widthTF), gV(heightTF), gV(seedTF), gVd(persistanceTF), gV(largestFutureTF));
+                Date end = new Date();
+                timeTakenTF.setText("time taken : "+(end.getTime()-start.getTime())/1000);
             }
         });
         table.row();
         table.add(generate);
+        table.row();
+        table.add(timeTakenTF);
 
     }
 
@@ -189,15 +212,13 @@ public class SettingsScreen implements Screen {
             cam.translate(0, 3, 0);
         }
 
-        cam.zoom = MathUtils.clamp(cam.zoom, 0.1f, 100 / cam.viewportWidth);
+        cam.zoom = MathUtils.clamp(cam.zoom, 0.1f, 300 / cam.viewportWidth);
 
         float effectiveViewportWidth = cam.viewportWidth * cam.zoom;
         float effectiveViewportHeight = cam.viewportHeight * cam.zoom;
 
         cam.position.x = MathUtils.clamp(cam.position.x, effectiveViewportWidth / 2f, 300 - effectiveViewportWidth / 2f);
         cam.position.y = MathUtils.clamp(cam.position.y, effectiveViewportHeight / 2f, 300 - effectiveViewportHeight / 2f);
-        System.out.println("x "+ cam.position.x);
-        System.out.println("y "+ cam.position.y);
     }
 
     @Override

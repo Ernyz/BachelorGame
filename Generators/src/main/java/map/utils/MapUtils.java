@@ -49,7 +49,7 @@ public class MapUtils {
     private static void addBase(char[][] map, char[][] base, int x, int y) {
         for (int i = 0; i < base.length; i++) {
             for (int j = 0; j < base[0].length; j++) {
-                System.out.println("x+i :" + (x + i) + "j+y : " + (j + y));
+//                System.out.println("x+i :" + (x + i) + "j+y : " + (j + y));
                 map[x + i][j + y] = base[i][j];
             }
         }
