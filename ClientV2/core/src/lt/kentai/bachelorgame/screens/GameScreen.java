@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 
 import lt.kentai.bachelorgame.GameClientV2;
 import lt.kentai.bachelorgame.Match;
@@ -13,6 +14,7 @@ import lt.kentai.bachelorgame.model.Entity;
 import lt.kentai.bachelorgame.model.server_data.ChampionData;
 import lt.kentai.bachelorgame.networking.ClientWrapper;
 import lt.kentai.bachelorgame.networking.Network.MatchInfo;
+import lt.kentai.bachelorgame.networking.Network.PacketHeader;
 import lt.kentai.bachelorgame.networking.Network.RequestForMatchInfo;
 import lt.kentai.bachelorgame.view.InputView;
 import lt.kentai.bachelorgame.view.WorldRenderer;
@@ -67,8 +69,11 @@ public class GameScreen implements Screen {
 		
 		accumulator += delta;
 		while(accumulator >= Properties.FPS) {
-			//Game logic here
-			//...
+			/* Game logic goes here */
+			
+			//TODO Remake this so packets are added to existing ones
+			Array<PacketHeader> packets = client.jitterBuffer.tick();
+			System.out.println("Number of packets from buffer: " + packets.size);
 			
 			accumulator -= Properties.FPS;
 		}

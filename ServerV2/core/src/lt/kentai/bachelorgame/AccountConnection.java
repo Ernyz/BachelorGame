@@ -2,10 +2,13 @@ package lt.kentai.bachelorgame;
 
 import com.esotericsoftware.kryonet.Connection;
 
+import lt.kentai.bachelorgame.networking.PacketJitterBuffer;
 import lt.kentai.bachelorgame.utils.UInt;
 
 public class AccountConnection extends Connection {
 	public String connectionName;
+	
+	public PacketJitterBuffer packetJitterBuffer = new PacketJitterBuffer();
 	
 	public UInt localSequenceNumber = new UInt(0);
 	public UInt remoteSequenceNumber = new UInt(0);

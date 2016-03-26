@@ -7,6 +7,8 @@ import lt.kentai.bachelorgame.utils.UInt;
 
 public class ClientWrapper extends Client {
 	
+	public PacketJitterBuffer jitterBuffer = new PacketJitterBuffer();
+	
 	public UInt localSequenceNumber = new UInt(0);
 	public UInt remoteSequenceNumber = new UInt(0);
 	public int numberOfAcks = 32;

@@ -47,6 +47,8 @@ public class ClientListener extends Listener {
 					for(int i = 0; i < clientWrapper.numberOfAcks; i++) {
 						//packet.ackBitfield[i]
 					}
+					//Add this packet to jitter buffer
+					GameClientV2.getNetworkingManager().getClientWrapper().jitterBuffer.addPacket(packet);
 				}
 			});
 		}
