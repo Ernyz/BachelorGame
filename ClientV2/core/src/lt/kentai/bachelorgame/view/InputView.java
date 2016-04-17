@@ -20,6 +20,7 @@ public class InputView implements InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
+		System.out.println(keycode);
 //		if(Gdx.input.isKeyPressed(Keys.W)) {
 //			match.getPlayer().moveBy(delta, 0f, 1f);
 //			client.sendUDP(new MoveChampion(match.matchId, 0f, 1f));

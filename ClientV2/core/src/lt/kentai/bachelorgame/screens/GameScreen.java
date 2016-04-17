@@ -13,6 +13,7 @@ import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.Network.MatchInfo;
 import lt.kentai.bachelorgame.Network.MoveChampion;
 import lt.kentai.bachelorgame.Network.RequestForMatchInfo;
+import lt.kentai.bachelorgame.Properties;
 import lt.kentai.bachelorgame.generators.Map.StandardMapGenerator;
 import lt.kentai.bachelorgame.model.Entity;
 import lt.kentai.bachelorgame.model.server_data.ChampionData;
@@ -30,6 +31,8 @@ public class GameScreen implements Screen {
 	
 	private SpriteBatch batch;
 	private Client client;
+	
+	private float accumulator = 0f;
 	
 	private InputView inputView;
 	private WorldRenderer worldRenderer;
@@ -63,6 +66,12 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		if(!matchInitialized) return;
+		
+		accumulator += delta;
+		while(accumulator >= Properties.FPS) {
+			
+			accumulator -= Properties.FPS;
+		}
 		
 		worldRenderer.render();
 	}

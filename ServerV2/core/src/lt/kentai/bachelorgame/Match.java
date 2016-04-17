@@ -27,6 +27,7 @@ public class Match {
 	private int seed;
 
 	private float matchTimer = 0f;
+	private float accumulator = 0f;
 
 	private enum MatchState {
 		SELECTING_CHAMPIONS, PREPARING, LOADING, IN_GAME
@@ -51,7 +52,10 @@ public class Match {
 	public void update(float delta) {
 		matchTimer += delta;
 		if(matchState == MatchState.IN_GAME) {
-
+			accumulator += delta;
+			while(accumulator >= Properties.FPS) {
+				accumulator -= Properties.FPS;
+			}
 		} else if(matchState == MatchState.SELECTING_CHAMPIONS) {
 			if(matchTimer >= 20f) {
 				matchTimer = 0f;
