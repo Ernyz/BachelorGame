@@ -15,6 +15,7 @@ public class WorldRenderer {
 	private SpriteBatch batch;
 	private Match match;
 	private OrthographicCamera camera;
+	private HeadsUpDisplay headsUpDisplay;
 	
 	public WorldRenderer(SpriteBatch batch, Match match) {
 		this.batch = batch;
@@ -23,9 +24,11 @@ public class WorldRenderer {
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.setToOrtho(false);
 		camera.update();
+		
+		headsUpDisplay = new HeadsUpDisplay(match, batch);
 	}
 	
-	public void render() {
+	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -54,6 +57,8 @@ public class WorldRenderer {
 			batch.draw(e.getTexture(), e.getX(), e.getY());
 		}
 		batch.end();
+		
+		headsUpDisplay.updateAndRender(delta);
 		
 //		if(Gdx.input.isKeyPressed(Keys.W)) {
 //			camera.translate(0f, 5f);

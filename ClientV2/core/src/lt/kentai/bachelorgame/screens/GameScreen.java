@@ -95,11 +95,11 @@ public class GameScreen implements Screen {
 			accumulator -= Properties.FRAME_TIME;
 			
 			//XXX: Less jerky here
-			//worldRenderer.render();
+			//worldRenderer.render(delta);
 		}
 		
 		//XXX: Very jerky here
-		worldRenderer.render();
+		worldRenderer.render(delta);
 	}
 
 	@Override
