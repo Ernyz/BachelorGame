@@ -42,7 +42,8 @@ public class Network {
 		kryo.register(MatchReady.class);
 		kryo.register(ChampionSelect.class);
 		kryo.register(ChampionSelectResponse.class);
-		kryo.register(MoveChampion.class);
+		kryo.register(boolean[].class);
+		kryo.register(UserInput.class);
 	}
 	
 	public static class LoginRequest {
@@ -66,7 +67,8 @@ public class Network {
 		public Team team;
 		public HashMap<Integer, Team> connectionIds;
 		public String[] championNames;
-		public AcceptedToLobby() {}
+		public AcceptedToLobby() {
+		}
 		public AcceptedToLobby(final int matchId) {
 			this.matchId = matchId;
 		}
@@ -114,7 +116,7 @@ public class Network {
 		public MatchReady() {}
 		public MatchReady(int matchId) {
 			this.matchId = matchId;
-		};
+		}
 	}
 	
 	public static class ChampionSelect {
@@ -152,22 +154,13 @@ public class Network {
 		}
 	}
 	
-	public static class MoveChampion extends PacketHeader {
-		public float x = 0f;
-		public float y = 0f;
+	public static class UserInput {
 		public int matchId;
-		public MoveChampion() {}
-		public MoveChampion(int matchId, float x, float y) {
-			this.matchId = matchId;
-			this.x = x;
-			this.y = y;
+		public boolean[] input;
+		public UserInput() {
 		}
-		public MoveChampion(UInt sequenceNumber, UInt ack, boolean[] ackBitfield,
-				int matchId, float x, float y) {
-			super(sequenceNumber, ack, ackBitfield);
-			this.matchId = matchId;
-			this.x = x;
-			this.y = y;
+		public UserInput(int matchId, boolean[] input) {
+			this.input = input;
 		}
 	}
 }

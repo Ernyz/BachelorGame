@@ -14,7 +14,7 @@ public class Entity {
 	private float x;
 	private float y;
 	
-	public int connectionId;
+	public int connectionId;  //XXX: Connection ID? Minions won't need that...
 	public String championName;
 	private float speed;
 	private Vector2 velocity = new Vector2();

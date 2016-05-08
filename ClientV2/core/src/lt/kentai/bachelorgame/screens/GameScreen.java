@@ -3,16 +3,16 @@ package lt.kentai.bachelorgame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.GameClientV2;
 import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.Network.MatchInfo;
-import lt.kentai.bachelorgame.Network.MoveChampion;
 import lt.kentai.bachelorgame.Network.RequestForMatchInfo;
+import lt.kentai.bachelorgame.Network.UserInput;
 import lt.kentai.bachelorgame.Properties;
 import lt.kentai.bachelorgame.generators.Map.StandardMapGenerator;
 import lt.kentai.bachelorgame.model.Entity;
@@ -68,11 +68,37 @@ public class GameScreen implements Screen {
 		if(!matchInitialized) return;
 		
 		accumulator += delta;
-		while(accumulator >= Properties.FPS) {
+		while(accumulator >= Properties.FRAME_TIME) {
+			//TODO: Sample and execute input
+			boolean[] input = inputView.getInput();
+			Log.NONE();
+//			System.out.println(input[Keys.W]);
+			if(input[Keys.W]) {
+				match.getPlayer().getVelocity().y = 1;
+			} else if(input[Keys.S]) {
+				match.getPlayer().getVelocity().y = -1;
+			} else {
+				match.getPlayer().getVelocity().y = 0;
+			}
+			if(input[Keys.A]) {
+				match.getPlayer().getVelocity().x = -1;
+			} else if(input[Keys.D]) {
+				match.getPlayer().getVelocity().x = 1;
+			} else {
+				match.getPlayer().getVelocity().x = 0;
+			}
+			match.update(delta);
+			//TODO: Send input to server
+			client.sendUDP(new UserInput(matchId, input));
+			//TODO: Read received packets and update game state
 			
-			accumulator -= Properties.FPS;
+			accumulator -= Properties.FRAME_TIME;
+			
+			//XXX: Less jerky here
+			//worldRenderer.render();
 		}
 		
+		//XXX: Very jerky here
 		worldRenderer.render();
 	}
 

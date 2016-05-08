@@ -53,8 +53,8 @@ public class Match {
 		matchTimer += delta;
 		if(matchState == MatchState.IN_GAME) {
 			accumulator += delta;
-			while(accumulator >= Properties.FPS) {
-				accumulator -= Properties.FPS;
+			while(accumulator >= Properties.FRAME_TIME) {
+				accumulator -= Properties.FRAME_TIME;
 			}
 		} else if(matchState == MatchState.SELECTING_CHAMPIONS) {
 			if(matchTimer >= 20f) {

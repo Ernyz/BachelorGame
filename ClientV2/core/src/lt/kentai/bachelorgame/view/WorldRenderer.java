@@ -29,6 +29,11 @@ public class WorldRenderer {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		batch.setProjectionMatrix(camera.combined);
+		camera.position.x = match.getPlayer().getX() + match.getPlayer().getTexture().getWidth()/2;
+		camera.position.y = match.getPlayer().getY() + match.getPlayer().getTexture().getHeight()/2;
+		camera.update();
+		
 		batch.begin();
 		
 //		for(int x = 0; x < match.getMap().length; x++) {
@@ -49,7 +54,6 @@ public class WorldRenderer {
 			batch.draw(e.getTexture(), e.getX(), e.getY());
 		}
 		batch.end();
-		
 		
 //		if(Gdx.input.isKeyPressed(Keys.W)) {
 //			camera.translate(0f, 5f);

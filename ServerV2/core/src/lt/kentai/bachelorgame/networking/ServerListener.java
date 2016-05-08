@@ -15,9 +15,9 @@ import lt.kentai.bachelorgame.networking.Network.LoginRequest;
 import lt.kentai.bachelorgame.networking.Network.LoginResult;
 import lt.kentai.bachelorgame.networking.Network.MatchInfo;
 import lt.kentai.bachelorgame.networking.Network.Matchmaking;
-import lt.kentai.bachelorgame.networking.Network.MoveChampion;
 import lt.kentai.bachelorgame.networking.Network.PlayerLeftGame;
 import lt.kentai.bachelorgame.networking.Network.RequestForMatchInfo;
+import lt.kentai.bachelorgame.networking.Network.UserInput;
 
 public class ServerListener extends Listener {
 
@@ -153,17 +153,14 @@ public class ServerListener extends Listener {
 					GameServerV2.getServerScreen().getMatchmaker().getMatchById(matchId).processChampionSelection(accountConnection.getID(), name);
 				}
 			});
-		}
-		
-		else if(o instanceof MoveChampion) {
-			final MoveChampion moveChampion = (MoveChampion) o;
+		} else if(o instanceof UserInput) {
+			final int matchId = ((UserInput) o).matchId;
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
-//					GameServerV2.getServerScreen().getMatchmaker().getMatchById(moveChampion.matchId).sendToAllExceptUDP(accountConnection.getID(), moveChampion);
+					//GameServerV2.ge
 				}
 			});
 		}
-		
 	}
 	
 }
