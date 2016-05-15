@@ -58,7 +58,7 @@ public class WorldRenderer {
 		}
 		batch.end();
 		
-		headsUpDisplay.updateAndRender(delta);
+		//headsUpDisplay.updateAndRender(delta);
 		
 //		if(Gdx.input.isKeyPressed(Keys.W)) {
 //			camera.translate(0f, 5f);

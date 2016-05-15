@@ -33,6 +33,7 @@ public class GameScreen implements Screen {
 	private Client client;
 	
 	private float accumulator = 0f;
+	private int frameNumber = 0;  //TODO: make this uint
 	
 	private InputView inputView;
 	private WorldRenderer worldRenderer;
@@ -71,8 +72,6 @@ public class GameScreen implements Screen {
 		while(accumulator >= Properties.FRAME_TIME) {
 			//TODO: Sample and execute input
 			boolean[] input = inputView.getInput();
-			Log.NONE();
-//			System.out.println(input[Keys.W]);
 			if(input[Keys.W]) {
 				match.getPlayer().getVelocity().y = 1;
 			} else if(input[Keys.S]) {
@@ -89,7 +88,7 @@ public class GameScreen implements Screen {
 			}
 			match.update(delta);
 			//TODO: Send input to server
-			client.sendUDP(new UserInput(matchId, input));
+			client.sendUDP(new UserInput(frameNumber, matchId, input));
 			//TODO: Read received packets and update game state
 			
 			accumulator -= Properties.FRAME_TIME;
@@ -100,6 +99,8 @@ public class GameScreen implements Screen {
 		
 		//XXX: Very jerky here
 		worldRenderer.render(delta);
+		
+		frameNumber++;
 	}
 
 	@Override

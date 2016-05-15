@@ -167,10 +167,13 @@ public class Network {
 	
 	public static class UserInput {
 		public int matchId;
+		public int sequenceNumber;
 		public boolean[] input;
 		public UserInput() {
 		}
-		public UserInput(int matchId, boolean[] input) {
+		public UserInput(int matchId, int sequenceNumber, boolean[] input) {
+			this.matchId = matchId;
+			this.sequenceNumber = sequenceNumber;
 			this.input = input;
 		}
 	}
