@@ -101,7 +101,10 @@ public class GameScreen implements Screen {
 		//XXX: Very jerky here
 		worldRenderer.render(delta);
 		
-		frameNumber++;
+		frameNumber++;//TODO: check if this is enough to handle wrap around
+		if(frameNumber < 0) {
+			frameNumber = 0;
+		}
 	}
 
 	@Override
