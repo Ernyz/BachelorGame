@@ -88,7 +88,8 @@ public class GameScreen implements Screen {
 			}
 			match.update(delta);
 			//TODO: Send input to server
-			client.sendUDP(new UserInput(frameNumber, matchId, input));
+			
+			client.sendUDP(new UserInput(matchId, frameNumber, input));
 			//TODO: Read received packets and update game state
 			
 			accumulator -= Properties.FRAME_TIME;

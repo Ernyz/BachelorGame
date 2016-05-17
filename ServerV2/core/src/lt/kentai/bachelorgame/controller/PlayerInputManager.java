@@ -12,15 +12,12 @@ public class PlayerInputManager {
 		boolean[] input = userInput.input;
 		Entity player = null;
 		
-//		System.out.println(match);
-//		System.out.println(match.getChampions());
 		for(int i = 0; i < match.getChampions().size; i++) {
 			if(connectionId == match.getChampions().get(i).getConnectionId()) {
 				player = match.getChampions().get(i);
 			}
 		}
-//		System.out.println("Player: " + player);
-//		System.out.println(connectionId + " " + userInput.input[Keys.W] + " " + match.getMatchId());
+		
 		//Apply movement
 		if(input[Keys.W]) {
 			player.getVelocity().y = 1;

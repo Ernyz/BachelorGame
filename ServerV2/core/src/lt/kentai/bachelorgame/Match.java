@@ -68,7 +68,7 @@ public class Match {
 				
 				
 				entityUpdater.update(delta);
-				//System.out.println(champions.get(0).getX() + " " + champions.get(0).getY());
+//				System.out.println(champions.get(0).getX() + " " + champions.get(0).getY());
 			}
 		} else if(matchState == MatchState.SELECTING_CHAMPIONS) {
 			if(matchTimer >= 20f) {
