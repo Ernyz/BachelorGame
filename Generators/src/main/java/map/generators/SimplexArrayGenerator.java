@@ -18,7 +18,7 @@ public class SimplexArrayGenerator {
      * @param w              width
      * @param largestFeature Largest future
      * @param persistence    persistance
-     * @param seed           sekla :D
+     * @param seed           sekla
      * @return
      */
     public SimplexArrayGenerator(int h, int w, int largestFeature, int seed, double persistence) {
@@ -29,10 +29,9 @@ public class SimplexArrayGenerator {
         this.persistence = persistence;
     }
 
-    public double[][] getSimplexMap2() {
+    public double[][] getSimplexMap() {
         SimplexNoise simplexNoise = new SimplexNoise(largestFeature, persistence, seed);
         double[][] map = new double[h][w];
-
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
                 int x = (int) (xStart + i * ((XEnd - xStart) / h));
@@ -41,38 +40,5 @@ public class SimplexArrayGenerator {
             }
         }
         return (map);
-
-    }
-
-    public double getxStart() {
-        return xStart;
-    }
-
-    public void setxStart(double xStart) {
-        this.xStart = xStart;
-    }
-
-    public double getXEnd() {
-        return XEnd;
-    }
-
-    public void setXEnd(double XEnd) {
-        this.XEnd = XEnd;
-    }
-
-    public double getyStart() {
-        return yStart;
-    }
-
-    public void setyStart(double yStart) {
-        this.yStart = yStart;
-    }
-
-    public double getyEnd() {
-        return yEnd;
-    }
-
-    public void setyEnd(double yEnd) {
-        this.yEnd = yEnd;
     }
 }

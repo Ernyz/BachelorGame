@@ -20,12 +20,13 @@ public class WayGenerator {
         random = new Random(seed);
     }
 
-    public int[][] getWayMap(int times, double maxAmplitudeCoef, double minAmplitudeCoef) {
-        int[][] map = new int[height][width];
-        map = fillMapWithPoints(map, createArrayOfRandomlyPlacedPoints(times, height, maxAmplitudeCoef, minAmplitudeCoef));
-        return map;
+    public int[] getWayMap(int times, double maxAmplitudeCoef, double minAmplitudeCoef) {
+        return (createArrayOfRandomlyPlacedPoints(times, height, maxAmplitudeCoef, minAmplitudeCoef));
     }
 
+    public int[][] get2dMapFromPoints(int[] wayPoints) {
+        return fillMapWithPoints(wayPoints);
+    }
 
     public int[] createArrayOfRandomlyPlacedPoints(int iterationNr, int mapHeight, double maxAmplitude, double minAmplitude) {
 
@@ -53,7 +54,7 @@ public class WayGenerator {
                 } else if (i == 1) {
                     if (listOfPoints.get(1) > mapMidY - minA && listOfPoints.get(1) < mapMidY + minA) {
 
-                        newPoint = random.nextInt((int) (mapMidY * maxAmplitude));
+                        newPoint = random.nextInt(mapMidY + maxA);
                         newPoint *= getSign();
                         newPoint += mapMidY;
                         System.out.println(newPoint);
@@ -72,9 +73,9 @@ public class WayGenerator {
             }
 
         }
-
-
-        smoothenListOfWayPoints(listOfPoints, 0.8, 3);
+        System.out.println("JOJOJOJOJ");
+        printListOfIntegers(listOfPoints);
+        smoothenListOfWayPoints(listOfPoints, 3);
 
         printListOfIntegers(listOfPoints);
         int[] points = new int[listOfPoints.size()];
@@ -90,23 +91,22 @@ public class WayGenerator {
         return maxA / (i * i);
     }
 
-    private void smoothenListOfWayPoints(List<Integer> list, double coef, int times) {
-        printListOfIntegers(list);
+    private void smoothenListOfWayPoints(List<Integer> list, int times) {
         for (int q = 0; q < times; q++) {
             int size = list.size();
             for (int i = 1; i < size - 1; i += 2) {
-
                 int pB = list.get(i - 1);
                 int pN = list.get(i);
                 int pF = list.get(i + 1);
-                //TODO idet Coef
                 int m1 = Math.min(pB, pN) + (Math.max(pB, pN) - Math.min(pB, pN)) / 2;
                 int m2 = Math.min(pF, pN) + (Math.max(pF, pN) - Math.min(pF, pN)) / 2;
                 list.set(i, Math.abs(m1));
                 list.add(i + 1, Math.abs(m2));
                 size += 1;
             }
-//            printListOfIntegers(list);
+            System.out.println(q);
+            printListOfIntegers(list);
+
         }
 
     }
@@ -122,19 +122,21 @@ public class WayGenerator {
         System.out.println();
     }
 
-    private int[][] fillMapWithPoints(int[][] map, int[] points) {
-        double oneInterval = ((double) width - 20) / (double) (points.length - 1);
-        for (int i = 0; i < points.length - 1; i++) {
-            int startY = points[i];
-            int endY = points[i + 1];
-            float oneStepDisp = (float) (endY - startY) / (float) oneInterval;
-            for (double j = 0; j <= oneInterval; j++) {
+    private int[][] fillMapWithPoints(int[] wayPointsArray) {
+        int[][] map = new int[height][width];
+        double xInterval = ((double) width - 20) / (double) (wayPointsArray.length - 1);
+        for (int i = 0; i < wayPointsArray.length - 1; i++) {
+            int startY = wayPointsArray[i];
+            int endY = wayPointsArray[i + 1];
+            float oneStepDisp = (float) (endY - startY) / (float) xInterval;
+            for (double j = 0; j <= xInterval; j++) {
                 int tempY = (int) (startY + oneStepDisp * j);
-                widthenRoad(map, tempY, (int) ((double) i * (double) oneInterval + j + 10));
+                int tempX = (int) ((double) i * xInterval + j + 10);
+//                widthenRoad(map, tempY, tempX);
+                map[tempY][tempX] = 1;
             }
         }
         return map;
-
     }
 
     private void widthenRoad(int[][] map, int y, int x) {

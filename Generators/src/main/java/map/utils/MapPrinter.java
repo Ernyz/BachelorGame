@@ -13,7 +13,7 @@ public class MapPrinter {
         Date date = Calendar.getInstance().getTime();
         String fileName = filename + d2(date) + (createDateStamp ? Calendar.getInstance().getTimeInMillis() : "") + ".txt";
         try {
-            file = new PrintWriter(fileName, "UTF-8");
+            file = new PrintWriter("C:\\maps\\"+fileName, "UTF-8");
             for (int i = 0; i < map.length; i++) {
                 for (int j = 0; j < map[0].length; j++) {
                     file.print(map[i][j]);
@@ -74,11 +74,11 @@ public class MapPrinter {
 
         try {
             Date date = Calendar.getInstance().getTime();
-            file = new PrintWriter(filename + d2(date) + ".txt", "UTF-8");
+            file = new PrintWriter("C:\\maps\\"+filename + d2(date) + ".txt", "UTF-8");
 
             for (int i = 0; i < mapH; i++) {
                 for (int j = 0; j < mapW; j++) {
-                    file.print(map[i][j]);
+                    file.print(getSimbol(map[i][j]));
                 }
                 file.println();
             }
@@ -90,6 +90,12 @@ public class MapPrinter {
             file.close();
         }
 
+    }
+
+    private static char getSimbol(int i){
+        if (i==0){
+            return '.';
+        }else return '#';
     }
 
     public static void printDebugMapToFile(final int[][] map, final int mapW, final int mapH, final String filename) {

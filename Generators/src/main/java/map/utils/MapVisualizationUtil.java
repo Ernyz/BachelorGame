@@ -21,31 +21,28 @@ public class MapVisualizationUtil {
         return realMap;
     }
 
-    public static char[][] makeGroundCharMap(int h, int w, double[][] map) {
-        char[][] realMap = new char[h][w];
-        for (int x = 0; x < h; x++) {
-            for (int y = 0; y < w; y++) {
-                realMap[x][y] = getChar(map[x][y]);
+    public static char[][] makeGroundCharMap(double[][] map) {
+        char[][] charMap = new char[map.length][map[0].length];
+        for (int x = 0; x < map.length; x++) {
+            for (int y = 0; y < map[0].length; y++) {
+                charMap[x][y] = getChar(map[x][y]);
             }
         }
-        return realMap;
+        return charMap;
     }
 
-    private static char getChar(double d){
-        if(d<0.2){
-            return Constants.GRASS;
-        } else if(d<0.25){
-            return Constants.BUSH;
-        } else if(d<0.45){
-            return Constants.GRASS;
-        } else if(d<0.65){
+    private static char getChar(double d) {
+        if (d < 0.2) {
+            return Constants.WALL;
+        } else if (d < 0.25) {
             return Constants.DIRT;
-        } else if(d<0.85){
-            return Constants.WATER;
-        } else if(d==1) {
-            return Constants.MAIN_ROAD;
-        }else
-            return Constants.ICE;
-        }
-
+        } else if (d < 0.45) {
+            return Constants.WALL;
+        } else if (d < 0.65) {
+            return Constants.DIRT;
+        } else if (d < 0.85) {
+            return Constants.WALL;
+        } else
+            return Constants.DIRT;
+    }
 }

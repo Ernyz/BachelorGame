@@ -1,6 +1,7 @@
 package map.utils;
 
 
+import com.sun.prism.image.Coords;
 import map.components.MapComponents;
 
 public class MapUtils {
@@ -88,6 +89,11 @@ public class MapUtils {
             map[i][0] = Constants.WALL;
             map[i][map[0].length - 1] = Constants.WALL;
         }
+    }
+
+    public static char[][] printBossIntoMap(char[][] map, Coords bossCoord){
+        //TODO
+        return map;
     }
 
 }

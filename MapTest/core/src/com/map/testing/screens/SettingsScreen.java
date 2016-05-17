@@ -102,7 +102,6 @@ public class SettingsScreen implements Screen {
         table.add(heightTF);
 
         timeTakenTF = new Label("Time taken : ", skin);
-        System.ti
         generate = new TextButton("Generate map ", skin);
         generate.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -121,6 +120,19 @@ public class SettingsScreen implements Screen {
         table.add(generate);
         table.row();
         table.add(timeTakenTF);
+        table.row();
+        TextButton showCamps = new TextButton("ShowCamps", skin);
+        showCamps.addListener(new InputListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+
+            }
+        });
+
+        table.add(showCamps);
 
     }
 
@@ -194,10 +206,10 @@ public class SettingsScreen implements Screen {
 
     private void handleInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
-            cam.zoom += 0.1;
+            cam.zoom += 0.5;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.E)) {
-            cam.zoom -= 0.1;
+            cam.zoom -= 0.5;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             cam.translate(-3, 0, 0);
