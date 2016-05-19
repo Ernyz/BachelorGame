@@ -40,7 +40,7 @@ public class StandardMapGenerator {
 
 
         finalMap = MapUtils.paintRoad(MAP_WIDTH, MAP_HEIGHT, finalMap, way2dMap);
-        JungleCampsGenerator jungleCampsGenerator = new JungleCampsGenerator(finalMap, way2dMap);
+        JungleCampsGenerator jungleCampsGenerator = new JungleCampsGenerator(SEED,finalMap, way2dMap);
         finalMap = jungleCampsGenerator.addJungleCamps();
 
         MapUtils.addBases(finalMap);

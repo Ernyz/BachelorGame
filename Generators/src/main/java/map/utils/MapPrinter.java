@@ -11,7 +11,8 @@ public class MapPrinter {
         PrintWriter file = null;
         Date date = Calendar.getInstance().getTime();
         String fileName = filename + d2(date) + (createDateStamp ? Calendar.getInstance().getTimeInMillis() : "") + ".txt";
-        String fullFilePath ="/home/laurynas/bbd/maps/"+fileName;
+        String fullFilePath ="C:\\maps\\"+fileName;
+//        String fullFilePath ="/home/laurynas/bbd/maps/"+fileName;
 
         try {
             file = new PrintWriter(fullFilePath, "UTF-8");

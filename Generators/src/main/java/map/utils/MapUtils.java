@@ -4,6 +4,8 @@ package map.utils;
 import map.components.MapComponents;
 import map.model.Coords;
 
+import java.util.List;
+
 public class MapUtils {
 
     public static double[][] mergeMaps(int w, int h, double[][]... maps) {
@@ -92,7 +94,6 @@ public class MapUtils {
     }
 
     public static char[][] printBossIntoMap(char[][] map, Coords bossCoord) {
-        //TODO
         for (int y = bossCoord.y - 5; y < bossCoord.y + 5; y++) {
             for (int x = bossCoord.x - 5; x< bossCoord.x + 5; x++) {
                 map[y][x] = Constants.BOSS;
@@ -101,4 +102,17 @@ public class MapUtils {
         return map;
     }
 
+    public static char[][] printCampsIntoMap(char[][] groundMap, List<Coords> campsCoords) {
+
+        for (Coords campCoords: campsCoords){
+            for (int y = campCoords.y - 5; y < campCoords.y + 5; y++) {
+                for (int x = campCoords.x - 5; x< campCoords.x + 5; x++) {
+                    groundMap[y][x] = Constants.JUNGLE_CAMP;
+                }
+            }
+        }
+        return groundMap;
+
+
+    }
 }

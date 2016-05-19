@@ -19,7 +19,50 @@ public class TowersGenerator {
     }
 
     public List<Tower> getTowers() {
-        return getBlueTeamTowers();
+        return getTowers2();
+//        return getBlueTeamTowers();
+    }
+
+
+    private List<Tower> getTowers2() {
+        List<Tower> towers = new ArrayList<>();
+        double[][] array = new double[xWayLenght - 1][3];
+        int dx = 0;
+        int dy = wayMap[0];
+        double totalWayDist = 0;
+        for (int i = 1; i < xWayLenght; i++) {
+            int x = i * mapWidth / xWayLenght;
+            int y = wayMap[i];
+            double pt = Math.pow(x - dx, 2) + Math.pow(y - dy, 2);
+            dx = x;
+            dy = y;
+            double z = Math.sqrt(pt);
+            totalWayDist += z;
+            array[i - 1][0] = x;
+            array[i - 1][1] = y;
+            array[i - 1][2] = totalWayDist;
+        }
+
+        System.out.println(totalWayDist / 5);
+        for (int i = 1; i < 5; i++) {
+            for (int a = 0; a < xWayLenght - 1; a++) {
+                if (closeEnough(array[a][2], i * totalWayDist / 5)) {
+                    towers.add(new Tower((int) array[a][0], (int) array[a][1], Team.BLUE));
+                    break;
+                }
+            }
+        }
+
+
+        System.out.println(array);
+
+        return towers;
+
+
+    }
+
+    private boolean closeEnough(double a, double b) {
+        return Math.abs(a - b) < 10;
     }
 
     private List<Tower> getBlueTeamTowers() {
@@ -41,21 +84,16 @@ public class TowersGenerator {
 
             if (towerNr * disntanceBtwTowes < totalWayMom) {
                 if (towerNr < 3) {
-                    blueTeamTowers.add(new Tower((int)disntanceBtwTowes*towerNr, 0, Team.BLUE));
+                    blueTeamTowers.add(new Tower((int) disntanceBtwTowes * towerNr, 0, Team.BLUE));
                 } else {
-                    blueTeamTowers.add(new Tower((int)disntanceBtwTowes*towerNr, 0, Team.RED));
+                    blueTeamTowers.add(new Tower((int) disntanceBtwTowes * towerNr, 0, Team.RED));
                 }
-                if(towerNr == 4) break;
+                if (towerNr == 4) break;
                 towerNr++;
-
             }
-
         }
-
         System.out.println("total way lenght : " + totalWayDist);
         System.out.println(blueTeamTowers);
         return blueTeamTowers;
     }
-
-
 }

@@ -132,8 +132,8 @@ public class WayGenerator {
             for (double j = 0; j <= xInterval; j++) {
                 int tempY = (int) (startY + oneStepDisp * j);
                 int tempX = (int) ((double) i * xInterval + j + 10);
-//                widthenRoad(map, tempY, tempX);
-                map[tempY][tempX] = 1;
+                widthenRoad(map, tempY, tempX);
+//                map[tempY][tempX] = 1;
             }
         }
         return map;
