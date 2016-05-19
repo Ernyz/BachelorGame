@@ -1,19 +1,20 @@
 package map.utils;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.awt.*;
+import java.io.*;
 import java.util.Calendar;
 import java.util.Date;
 
 public class MapPrinter {
 
-    public static String printMapToFile(final String filename, final char[][] map, boolean createDateStamp) {
+    public static String printMapToFile(final String filename, final char[][] map, boolean createDateStamp)  {
         PrintWriter file = null;
         Date date = Calendar.getInstance().getTime();
         String fileName = filename + d2(date) + (createDateStamp ? Calendar.getInstance().getTimeInMillis() : "") + ".txt";
+        String fullFilePath ="/home/laurynas/bbd/maps/"+fileName;
+
         try {
-            file = new PrintWriter("C:\\maps\\"+fileName, "UTF-8");
+            file = new PrintWriter(fullFilePath, "UTF-8");
             for (int i = 0; i < map.length; i++) {
                 for (int j = 0; j < map[0].length; j++) {
                     file.print(map[i][j]);
@@ -26,7 +27,9 @@ public class MapPrinter {
             e.printStackTrace();
         } finally {
             file.close();
+
         }
+        DesktopApi.edit(new File(fullFilePath));
         return fileName;
 
     }
@@ -94,7 +97,7 @@ public class MapPrinter {
 
     private static char getSimbol(int i){
         if (i==0){
-            return '.';
+            return '=';
         }else return '#';
     }
 

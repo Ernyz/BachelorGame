@@ -30,19 +30,19 @@ public class StandardMapGenerator {
     public char[][] generateMap() {
         char[][] finalMap = new GroundGenerator(MAP_WIDTH, MAP_HEIGHT, LARGEST_FUTURE, PERSISTANCE, SEED).getGroundMap();
 
-        WayGenerator wayGenerator = new WayGenerator(MAP_WIDTH,MAP_HEIGHT,SEED);
+        WayGenerator wayGenerator = new WayGenerator(MAP_WIDTH, MAP_HEIGHT, SEED);
 
-        int[] wayMap = wayGenerator.getWayMap(3,0.9,0.3);
+        int[] wayMap = wayGenerator.getWayMap(3, 0.9, 0.3);
         int[][] way2dMap = wayGenerator.get2dMapFromPoints(wayMap);
 
-        TowersGenerator towersGenerator = new TowersGenerator(wayMap,MAP_WIDTH);
-        System.out.println("01i2-120dj1");
+        TowersGenerator towersGenerator = new TowersGenerator(wayMap, MAP_WIDTH);
         towersGenerator.getTowers();
-
-//        finalMap = new JungleCampsGenerator().addJungleCamps(finalMap,way2dMap);
 
 
         finalMap = MapUtils.paintRoad(MAP_WIDTH, MAP_HEIGHT, finalMap, way2dMap);
+        JungleCampsGenerator jungleCampsGenerator = new JungleCampsGenerator(finalMap, way2dMap);
+        finalMap = jungleCampsGenerator.addJungleCamps();
+
         MapUtils.addBases(finalMap);
 
 

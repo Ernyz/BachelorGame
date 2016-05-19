@@ -1,8 +1,8 @@
 package map.utils;
 
 
-import com.sun.prism.image.Coords;
 import map.components.MapComponents;
+import map.model.Coords;
 
 public class MapUtils {
 
@@ -91,8 +91,13 @@ public class MapUtils {
         }
     }
 
-    public static char[][] printBossIntoMap(char[][] map, Coords bossCoord){
+    public static char[][] printBossIntoMap(char[][] map, Coords bossCoord) {
         //TODO
+        for (int y = bossCoord.y - 5; y < bossCoord.y + 5; y++) {
+            for (int x = bossCoord.x - 5; x< bossCoord.x + 5; x++) {
+                map[y][x] = Constants.BOSS;
+            }
+        }
         return map;
     }
 
