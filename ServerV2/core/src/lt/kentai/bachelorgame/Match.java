@@ -1,24 +1,29 @@
 package lt.kentai.bachelorgame;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Logger;
 import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.AccountConnection.ConnectionState;
 import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.controller.EntityUpdater;
+import lt.kentai.bachelorgame.controller.PlayerInputManager;
 import lt.kentai.bachelorgame.model.ChampionData;
 import lt.kentai.bachelorgame.model.ChampionsProperties;
 import lt.kentai.bachelorgame.model.Entity;
+import lt.kentai.bachelorgame.networking.InputPacketManager;
 import lt.kentai.bachelorgame.networking.Network;
 import lt.kentai.bachelorgame.networking.Network.AcceptedToLobby;
 import lt.kentai.bachelorgame.networking.Network.AllLockedIn;
 import lt.kentai.bachelorgame.networking.Network.ChampionSelectResponse;
 import lt.kentai.bachelorgame.networking.Network.MatchReady;
+import lt.kentai.bachelorgame.networking.Network.PlayerState;
+import lt.kentai.bachelorgame.networking.Network.PlayerStateUpdate;
+import lt.kentai.bachelorgame.networking.Network.UserInput;
 
 /**
  * Holds teams, map, minions, towers and all stuff related to a single match.
@@ -30,6 +35,9 @@ public class Match {
 	private final int matchId;
 	private int seed;
 
+	private int frameCounter = 0;
+	private int timeStep = 6;
+	
 	private float matchTimer = 0f;
 	private float accumulator = 0f;
 
@@ -37,6 +45,8 @@ public class Match {
 		SELECTING_CHAMPIONS, PREPARING, LOADING, IN_GAME
 	}
 	private MatchState matchState;
+	
+	private InputPacketManager inputPacketManager = new InputPacketManager();
 
 	private HashMap<Integer, Team> connectionIds = new HashMap<Integer, Team>();
 	private Array<AccountConnection> blueTeam = new Array<AccountConnection>();
@@ -66,9 +76,32 @@ public class Match {
 			while(accumulator >= Properties.FRAME_TIME) {
 				accumulator -= Properties.FRAME_TIME;
 				
-				
 				entityUpdater.update(delta);
-//				System.out.println(champions.get(0).getX() + " " + champions.get(0).getY());
+				
+				frameCounter++;
+				if(frameCounter >= timeStep) {
+					frameCounter = 0;
+					//Time step code is executed here
+					//Apply user inputs
+					HashMap<Integer, Array<UserInput>> inputs = inputPacketManager.getDejitteredPackets();
+					for(Entry<Integer, Array<UserInput>> entry : inputs.entrySet()) {
+						Array<UserInput> userInput = entry.getValue();
+						System.out.println(userInput.size);
+						for(int i = 0; i < userInput.size; i++) {
+							PlayerInputManager.applyInput(entry.getKey(), userInput.get(i), this);
+						}
+						userInput.clear();
+					}
+					//Send updated positions to clients
+					Array<PlayerState> playerStates = new Array<PlayerState>();
+					for(int i = 0; i < champions.size; i++) {
+						playerStates.add(new PlayerState(champions.get(i).getConnectionId(), champions.get(i).getX(), champions.get(i).getY()));
+					}
+//					System.out.println(playerStates.get(0).x + " " + playerStates.get(0).y);
+//					System.out.println(playerStates.get(1).x + " " + playerStates.get(1).y);
+					System.out.println();
+					sendToAllUDP(new PlayerStateUpdate(playerStates));
+				}
 			}
 		} else if(matchState == MatchState.SELECTING_CHAMPIONS) {
 			if(matchTimer >= 20f) {
@@ -264,6 +297,15 @@ public class Match {
 			}
 		}
 	}
+	
+	public void sendToAllUDP(Object o) {
+		for(AccountConnection c : blueTeam) {
+			c.sendUDP(o);
+		}
+		for(AccountConnection c : redTeam) {
+			c.sendUDP(o);
+		}
+	}
 
 	public void sendToAllExceptUDP(final int idToExclude, Object o) {
 		for(AccountConnection c : blueTeam) {
@@ -299,6 +341,10 @@ public class Match {
 
 	public Array<ChampionData> getChampionDataArray() {
 		return championDataArray;
+	}
+
+	public InputPacketManager getInputPacketManager() {
+		return inputPacketManager;
 	}
 
 	public Array<Entity> getChampions() {

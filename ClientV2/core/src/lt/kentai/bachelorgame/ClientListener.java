@@ -1,10 +1,22 @@
 package lt.kentai.bachelorgame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
-import lt.kentai.bachelorgame.Network.*;
+
+import lt.kentai.bachelorgame.Network.AcceptedToLobby;
+import lt.kentai.bachelorgame.Network.AllLockedIn;
+import lt.kentai.bachelorgame.Network.ChampionSelectResponse;
+import lt.kentai.bachelorgame.Network.LoginResult;
+import lt.kentai.bachelorgame.Network.MatchInfo;
+import lt.kentai.bachelorgame.Network.MatchReady;
+import lt.kentai.bachelorgame.Network.Matchmaking;
+import lt.kentai.bachelorgame.Network.PlayerLeftGame;
+import lt.kentai.bachelorgame.Network.PlayerLeftMatchmaking;
+import lt.kentai.bachelorgame.Network.PlayerStateUpdate;
+import lt.kentai.bachelorgame.model.Entity;
 import lt.kentai.bachelorgame.screens.LoginScreen;
 import lt.kentai.bachelorgame.ui.LoginFailureDialog;
 
@@ -111,7 +123,23 @@ public class ClientListener extends Listener {
                     GameClientV2.getScreenManager().getLobbyScreen().selectChampion(response);
                 }
             });
+        } else if(o instanceof PlayerStateUpdate) {
+        	//XXX: temporary test
+        	final PlayerStateUpdate stateUpdate = (PlayerStateUpdate) o;
+        	Gdx.app.postRunnable(new Runnable() {
+				@Override
+				public void run() {
+					Array<Entity> entities = GameClientV2.getScreenManager().getGameScreen().getMatch().getPlayerEntities();
+					for(int i = 0; i < entities.size; i++) {
+						for(int j = 0; j < stateUpdate.playerStates.size; j++) {
+							if(entities.get(i).connectionId == stateUpdate.playerStates.get(j).connectionId) {
+								entities.get(i).setX(stateUpdate.playerStates.get(j).x);
+								entities.get(i).setY(stateUpdate.playerStates.get(j).y);
+							}
+						}
+					}
+				}
+			});
         }
     }
-
 }

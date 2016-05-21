@@ -167,5 +167,9 @@ public class GameScreen implements Screen {
 		inputView = new InputView(client, match);
 		Gdx.input.setInputProcessor(inputView);
 	}
+
+	public Match getMatch() {
+		return match;
+	}
 	
 }

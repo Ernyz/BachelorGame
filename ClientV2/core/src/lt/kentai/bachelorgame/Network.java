@@ -1,13 +1,14 @@
 package lt.kentai.bachelorgame;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
+
 import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.model.server_data.ChampionData;
 import lt.kentai.bachelorgame.utils.UInt;
-
-import java.util.HashMap;
 
 public class Network {
     public static final String serverIP = "127.0.0.1";
@@ -42,6 +43,8 @@ public class Network {
         kryo.register(ChampionSelectResponse.class);
         kryo.register(boolean[].class);
         kryo.register(UserInput.class);
+        kryo.register(PlayerState.class);
+		kryo.register(PlayerStateUpdate.class);
     }
 
     public static class LoginRequest {
@@ -175,6 +178,27 @@ public class Network {
 			this.matchId = matchId;
 			this.sequenceNumber = sequenceNumber;
 			this.input = input;
+		}
+	}
+	
+	public static class PlayerState {
+		public int connectionId;
+		public float x;
+		public float y;
+		public PlayerState() {
+		}
+		public PlayerState(int connectionid, float x, float y) {
+			this.connectionId = connectionid;
+			this.x = x;
+			this.y = y;
+		}
+	}
+	public static class PlayerStateUpdate {
+		public Array<PlayerState> playerStates;
+		public PlayerStateUpdate() {
+		}
+		public PlayerStateUpdate(Array<PlayerState> playerStates) {
+			this.playerStates = playerStates;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package lt.kentai.bachelorgame.networking;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.badlogic.gdx.utils.Array;
 
@@ -24,19 +25,28 @@ public class InputPacketManager {
 //	}
 	
 	public void addPacket(int connectionId, UserInput userInput) {
-		if(packets.get(connectionId).size >= 1) {
+		
+		if(packets.get(connectionId) != null) {
 			for(int i = 0; i < packets.get(connectionId).size; i++) {
 				if(isMoreRecent(userInput.sequenceNumber, packets.get(connectionId).get(i).sequenceNumber)) {
 					packets.get(connectionId).insert(i, userInput);
 					return;
 				}
 			}
+			packets.get(connectionId).add(userInput);
+		} else {
+			packets.put(connectionId, new Array<UserInput>());
+			packets.get(connectionId).add(userInput);
 		}
-		packets.get(connectionId).add(userInput);
 	}
 	
 	public HashMap<Integer, Array<UserInput>> getDejitteredPackets() {
-		//TODO: return packets 0-x
+		HashMap<Integer, Array<UserInput>> dejitteredPackets = packets;
+		for(Entry<Integer, Array<UserInput>> entry : packets.entrySet()) {
+//			entry.getValue().clear();
+		}
+		
+		return dejitteredPackets;
 	}
 	
 	/**

@@ -161,8 +161,10 @@ public class ServerListener extends Listener {
 			final UserInput userInput = (UserInput) o;
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
-					PlayerInputManager.applyInput(connectionId, userInput,
-							GameServerV2.getServerScreen().getMatchmaker().getMatchById(matchId));
+					//PlayerInputManager.applyInput(connectionId, userInput,
+					//		GameServerV2.getServerScreen().getMatchmaker().getMatchById(matchId));
+					GameServerV2.getServerScreen().getMatchmaker().getMatchById(matchId).
+						getInputPacketManager().addPacket(connectionId, userInput);
 				}
 			});
 		}

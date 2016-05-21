@@ -44,6 +44,8 @@ public class Network {
 		kryo.register(ChampionSelectResponse.class);
 		kryo.register(boolean[].class);
 		kryo.register(UserInput.class);
+		kryo.register(PlayerState.class);
+		kryo.register(PlayerStateUpdate.class);
 	}
 	
 	public static class LoginRequest {
@@ -141,7 +143,7 @@ public class Network {
 		}
 	}
 	
-	public static abstract class PacketHeader {
+	public static abstract class PacketHeader {//XXX:Remove this
 		public UInt sequenceNumber;
 		public UInt ack;
 		public boolean ackBitfield[];
@@ -164,6 +166,27 @@ public class Network {
 			this.matchId = matchId;
 			this.sequenceNumber = sequenceNumber;
 			this.input = input;
+		}
+	}
+	
+	public static class PlayerState {
+		public int connectionId;
+		public float x;
+		public float y;
+		public PlayerState() {
+		}
+		public PlayerState(int connectionid, float x, float y) {
+			this.connectionId = connectionid;
+			this.x = x;
+			this.y = y;
+		}
+	}
+	public static class PlayerStateUpdate {
+		public Array<PlayerState> playerStates;
+		public PlayerStateUpdate() {
+		}
+		public PlayerStateUpdate(Array<PlayerState> playerStates) {
+			this.playerStates = playerStates;
 		}
 	}
 }

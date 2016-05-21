@@ -8,6 +8,7 @@ import lt.kentai.bachelorgame.networking.Network.UserInput;
 
 public class PlayerInputManager {
 
+	//FIXME: Replace match with a champion onto which input is applied
 	public static void applyInput(int connectionId, UserInput userInput, Match match) {
 		boolean[] input = userInput.input;
 		Entity player = null;
