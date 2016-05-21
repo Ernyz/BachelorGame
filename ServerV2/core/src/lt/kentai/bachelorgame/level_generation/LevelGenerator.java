@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Random;
 
 import lt.kentai.bachelorgame.Properties;
+import map.StandardMapGenerator;
+import map.components.MapComponents;
 
 /**
  * Contains all logic for generating level.
@@ -20,7 +22,7 @@ public class LevelGenerator {
 	//private ForestMapGenerator forestMapGenerator;
 	
 	public LevelGenerator() {
-		standardMapGenerator = new StandardMapGenerator(20, 20, new Random(new Date().getTime()).nextInt(), 0.35, 300);
+		standardMapGenerator = new StandardMapGenerator(300, 200, new Random(new Date().getTime()).nextInt(), 0.35, 300);
 	}
 
 	public char[][] generateLevel() {

@@ -116,7 +116,7 @@ public class Match {
                     @Override
                     public void run() {
                         Network.PlayerAFKCheckFail afkCheckFail = new Network.PlayerAFKCheckFail();
-                        Array<Integer> l = new Array<>();
+                        Array<Integer> l = new Array<Integer>();
                         for (AccountConnection ac : getAllConnections()){
                             if(!ac.lockedIn){
                                 l.add(ac.getID());

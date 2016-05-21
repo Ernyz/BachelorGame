@@ -4,9 +4,7 @@ buildscript {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
-
         apply plugin: 'java'
-        compile project(':Generators')
     }
 }
 
@@ -33,8 +31,6 @@ allprojects {
 
 project(":desktop") {
     apply plugin: "java"
-
-
     dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
@@ -46,8 +42,6 @@ project(":desktop") {
 
 project(":core") {
     apply plugin: "java"
-
-
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
 	compile "com.esotericsoftware:kryo:3.0.1"
