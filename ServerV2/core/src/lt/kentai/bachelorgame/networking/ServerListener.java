@@ -7,6 +7,7 @@ import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.AccountConnection;
 import lt.kentai.bachelorgame.AccountConnection.ConnectionState;
+import lt.kentai.bachelorgame.controller.PlayerInputManager;
 import lt.kentai.bachelorgame.GameServerV2;
 import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.networking.Network.ChampionSelect;
@@ -15,9 +16,10 @@ import lt.kentai.bachelorgame.networking.Network.LoginRequest;
 import lt.kentai.bachelorgame.networking.Network.LoginResult;
 import lt.kentai.bachelorgame.networking.Network.MatchInfo;
 import lt.kentai.bachelorgame.networking.Network.Matchmaking;
-import lt.kentai.bachelorgame.networking.Network.MoveChampion;
 import lt.kentai.bachelorgame.networking.Network.PlayerLeftGame;
 import lt.kentai.bachelorgame.networking.Network.RequestForMatchInfo;
+import lt.kentai.bachelorgame.networking.Network.UserInput;
+import lt.kentai.bachelorgame.screens.ServerScreen;
 
 public class ServerListener extends Listener {
 
@@ -140,7 +142,7 @@ public class ServerListener extends Listener {
 				public void run() {
 					Match match = GameServerV2.getServerScreen().getMatchmaker().getMatchById(matchId);
 					MatchInfo matchInfo = new MatchInfo();
-					matchInfo.champions = match.getChampions();
+					matchInfo.champions = match.getChampionDataArray();
 					matchInfo.seed = match.getSeed();
 					accountConnection.sendTCP(matchInfo);
 				}
@@ -153,17 +155,19 @@ public class ServerListener extends Listener {
 					GameServerV2.getServerScreen().getMatchmaker().getMatchById(matchId).processChampionSelection(accountConnection.getID(), name);
 				}
 			});
-		}
-		
-		else if(o instanceof MoveChampion) {
-			final MoveChampion moveChampion = (MoveChampion) o;
+		} else if(o instanceof UserInput) {
+			final int connectionId = c.getID();
+			final int matchId = ((UserInput) o).matchId;
+			final UserInput userInput = (UserInput) o;
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
-//					GameServerV2.getServerScreen().getMatchmaker().getMatchById(moveChampion.matchId).sendToAllExceptUDP(accountConnection.getID(), moveChampion);
+					//PlayerInputManager.applyInput(connectionId, userInput,
+					//		GameServerV2.getServerScreen().getMatchmaker().getMatchById(matchId));
+					GameServerV2.getServerScreen().getMatchmaker().getMatchById(matchId).
+						getInputPacketManager().addPacket(connectionId, userInput);
 				}
 			});
 		}
-		
 	}
 	
 }

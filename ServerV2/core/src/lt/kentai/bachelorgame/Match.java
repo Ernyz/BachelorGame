@@ -1,6 +1,8 @@
 package lt.kentai.bachelorgame;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
@@ -8,13 +10,20 @@ import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.AccountConnection.ConnectionState;
 import lt.kentai.bachelorgame.Properties.Team;
+import lt.kentai.bachelorgame.controller.EntityUpdater;
+import lt.kentai.bachelorgame.controller.PlayerInputManager;
 import lt.kentai.bachelorgame.model.ChampionData;
 import lt.kentai.bachelorgame.model.ChampionsProperties;
+import lt.kentai.bachelorgame.model.Entity;
+import lt.kentai.bachelorgame.networking.InputPacketManager;
 import lt.kentai.bachelorgame.networking.Network;
 import lt.kentai.bachelorgame.networking.Network.AcceptedToLobby;
 import lt.kentai.bachelorgame.networking.Network.AllLockedIn;
 import lt.kentai.bachelorgame.networking.Network.ChampionSelectResponse;
 import lt.kentai.bachelorgame.networking.Network.MatchReady;
+import lt.kentai.bachelorgame.networking.Network.PlayerState;
+import lt.kentai.bachelorgame.networking.Network.PlayerStateUpdate;
+import lt.kentai.bachelorgame.networking.Network.UserInput;
 
 /**
  * Holds teams, map, minions, towers and all stuff related to a single match.
@@ -26,18 +35,27 @@ public class Match {
 	private final int matchId;
 	private int seed;
 
+	private int frameCounter = 0;
+	private int timeStep = 6;
+	
 	private float matchTimer = 0f;
+	private float accumulator = 0f;
 
 	private enum MatchState {
 		SELECTING_CHAMPIONS, PREPARING, LOADING, IN_GAME
 	}
 	private MatchState matchState;
+	
+	private InputPacketManager inputPacketManager = new InputPacketManager();
 
 	private HashMap<Integer, Team> connectionIds = new HashMap<Integer, Team>();
 	private Array<AccountConnection> blueTeam = new Array<AccountConnection>();
 	private Array<AccountConnection> redTeam = new Array<AccountConnection>();
 	private Array<Integer> lockedInConnections = new Array<Integer>();
-	private Array<ChampionData> champions = new Array<ChampionData>();
+	private Array<ChampionData> championDataArray = new Array<ChampionData>();
+	
+	private EntityUpdater entityUpdater;
+	private Array<Entity> champions = new Array<Entity>();
 
 	private char[][] map;
 
@@ -50,8 +68,41 @@ public class Match {
 
 	public void update(float delta) {
 		matchTimer += delta;
+		
+		Log.set(Log.LEVEL_NONE);
+		
 		if(matchState == MatchState.IN_GAME) {
-
+			accumulator += delta;
+			while(accumulator >= Properties.FRAME_TIME) {
+				accumulator -= Properties.FRAME_TIME;
+				
+				entityUpdater.update(delta);
+				
+				frameCounter++;
+				if(frameCounter >= timeStep) {
+					frameCounter = 0;
+					//Time step code is executed here
+					//Apply user inputs
+					HashMap<Integer, Array<UserInput>> inputs = inputPacketManager.getDejitteredPackets();
+					for(Entry<Integer, Array<UserInput>> entry : inputs.entrySet()) {
+						Array<UserInput> userInput = entry.getValue();
+						System.out.println(userInput.size);
+						for(int i = 0; i < userInput.size; i++) {
+							PlayerInputManager.applyInput(entry.getKey(), userInput.get(i), this);
+						}
+						userInput.clear();
+					}
+					//Send updated positions to clients
+					Array<PlayerState> playerStates = new Array<PlayerState>();
+					for(int i = 0; i < champions.size; i++) {
+						playerStates.add(new PlayerState(champions.get(i).getConnectionId(), champions.get(i).getX(), champions.get(i).getY()));
+					}
+//					System.out.println(playerStates.get(0).x + " " + playerStates.get(0).y);
+//					System.out.println(playerStates.get(1).x + " " + playerStates.get(1).y);
+					System.out.println();
+					sendToAllUDP(new PlayerStateUpdate(playerStates));
+				}
+			}
 		} else if(matchState == MatchState.SELECTING_CHAMPIONS) {
 			if(matchTimer >= 20f) {
 				matchTimer = 0f;
@@ -60,7 +111,7 @@ public class Match {
 			}
 		} else if(matchState == MatchState.PREPARING) {
 //			System.out.println(matchTimer + " " + matchState);
-            if(Properties.TeamSize*2!=lockedInConnections.size){
+            if(Properties.TeamSize*2!=lockedInConnections.size) {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
                     public void run() {
@@ -91,6 +142,7 @@ public class Match {
 					sendMatchReady();
 					matchState = MatchState.LOADING;
 					matchTimer = 0f;
+					initializeGame();
 				} else {
 					//TODO: disband the match
 					Log.info("People not ready");
@@ -98,7 +150,7 @@ public class Match {
 				}
 			}
 		} else if(matchState == MatchState.LOADING) {
-
+			matchState = MatchState.IN_GAME;
 		}
 	}
 
@@ -115,7 +167,7 @@ public class Match {
 		ChampionData champion;
 		for(AccountConnection c : blueTeam) {
 			champion = new ChampionData(c.connectionName, c.getID(), Team.BLUE, 0, 0);
-			champions.add(champion);
+			championDataArray.add(champion);
 			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby(matchId);
 			acceptedToLobbyPacket.team = Team.BLUE;
 			acceptedToLobbyPacket.connectionIds = connectionIds;
@@ -124,7 +176,7 @@ public class Match {
 		}
 		for(AccountConnection c : redTeam) {
 			champion = new ChampionData(c.connectionName, c.getID(), Team.RED, 100, 0);
-			champions.add(champion);
+			championDataArray.add(champion);
 			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby(matchId);
 			acceptedToLobbyPacket.team = Team.RED;
 			acceptedToLobbyPacket.connectionIds = connectionIds;
@@ -136,9 +188,9 @@ public class Match {
 	public void lockInChampion(AccountConnection lockedInConnection, String championName) {
 		if(championName == null || championName.equals(""))
             return;
-		for(int i = 0; i < champions.size; i++) {
-			if(champions.get(i).getConnectionId() == lockedInConnection.getID()) {
-				setupChampion(champions.get(i), championName);
+		for(int i = 0; i < championDataArray.size; i++) {
+			if(championDataArray.get(i).getConnectionId() == lockedInConnection.getID()) {
+				setupChampion(championDataArray.get(i), championName);
 				if(!lockedInConnections.contains(lockedInConnection.getID(), true)) {
 					lockedInConnections.add(lockedInConnection.getID());
                     lockedInConnection.lockedIn = true;
@@ -181,26 +233,41 @@ public class Match {
 		}
 		return false;
 	}
+	
+	private void initializeGame() {
+		//Create champion entities
+		//for(ChampionData c : championDataArray) {
+		for(int i = 0; i < championDataArray.size; i++) {
+			Entity e = new Entity(championDataArray.get(i).getAccountName(), championDataArray.get(i).getConnectionId(), championDataArray.get(i).getTeam(), championDataArray.get(i).getX(), championDataArray.get(i).getY());
+			e.setChampionName(championDataArray.get(i).getChampionName());/*TODO: move all this to a factory some day*/
+			e.setSpeed(championDataArray.get(i).getSpeed());
+			champions.add(e);
+		}
+		//TODO: make tiles
+		
+		//Initialize updater
+		entityUpdater = new EntityUpdater(champions);
+	}
 
 	/**
 	 * Gets called when player tries to select a champion in lobby. */
 	public void processChampionSelection(final int connectionId, String championName) {
 		Log.debug("ProcessChampionSelection: Match ID: " + matchId);
 		//Check if champion is not taken yet
-		for(int i = 0; i < champions.size; i++) {
-			if(champions.get(i).getChampionName() != null
-					&& !champions.get(i).getChampionName().equals("")
-					&& champions.get(i).getChampionName().equals(championName)
-					&& champions.get(i).getTeam() == connectionIds.get(connectionId)) {  //This line allows same champions in opposing teams
+		for(int i = 0; i < championDataArray.size; i++) {
+			if(championDataArray.get(i).getChampionName() != null
+					&& !championDataArray.get(i).getChampionName().equals("")
+					&& championDataArray.get(i).getChampionName().equals(championName)
+					&& championDataArray.get(i).getTeam() == connectionIds.get(connectionId)) {  //This line allows same champions in opposing teams
 				//Send negative response
-				sendToAllInTeamTCP(champions.get(i).getTeam(), new ChampionSelectResponse(connectionId, championName, false));
+				sendToAllInTeamTCP(championDataArray.get(i).getTeam(), new ChampionSelectResponse(connectionId, championName, false));
 				return;
 			}
 		}
 		//If champion is free, send confirmation to everyone IN THE TEAM
-		for(int i = 0; i < champions.size; i++) {
-			if(champions.get(i).getConnectionId() == connectionId) {
-				champions.get(i).setChampionName(championName);
+		for(int i = 0; i < championDataArray.size; i++) {
+			if(championDataArray.get(i).getConnectionId() == connectionId) {
+				championDataArray.get(i).setChampionName(championName);
 			}
 		}
 		sendToAllInTeamTCP(connectionIds.get(connectionId), new ChampionSelectResponse(connectionId, championName, true));
@@ -228,6 +295,15 @@ public class Match {
 			for(AccountConnection c : redTeam) {
 				c.sendTCP(o);
 			}
+		}
+	}
+	
+	public void sendToAllUDP(Object o) {
+		for(AccountConnection c : blueTeam) {
+			c.sendUDP(o);
+		}
+		for(AccountConnection c : redTeam) {
+			c.sendUDP(o);
 		}
 	}
 
@@ -263,7 +339,15 @@ public class Match {
 		this.map = map;
 	}
 
-	public Array<ChampionData> getChampions() {
+	public Array<ChampionData> getChampionDataArray() {
+		return championDataArray;
+	}
+
+	public InputPacketManager getInputPacketManager() {
+		return inputPacketManager;
+	}
+
+	public Array<Entity> getChampions() {
 		return champions;
 	}
 

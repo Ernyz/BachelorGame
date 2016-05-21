@@ -1,13 +1,14 @@
 package lt.kentai.bachelorgame;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
+
 import lt.kentai.bachelorgame.Properties.Team;
 import lt.kentai.bachelorgame.model.server_data.ChampionData;
 import lt.kentai.bachelorgame.utils.UInt;
-
-import java.util.HashMap;
 
 public class Network {
     public static final String serverIP = "127.0.0.1";
@@ -40,7 +41,10 @@ public class Network {
         kryo.register(MatchReady.class);
         kryo.register(ChampionSelect.class);
         kryo.register(ChampionSelectResponse.class);
-        kryo.register(MoveChampion.class);
+        kryo.register(boolean[].class);
+        kryo.register(UserInput.class);
+        kryo.register(PlayerState.class);
+		kryo.register(PlayerStateUpdate.class);
     }
 
     public static class LoginRequest {
@@ -55,8 +59,7 @@ public class Network {
 
     public static class Matchmaking {
         /**
-         * True if entering matchmaking, false if leaving.
-         */
+         * True if entering matchmaking, false if leaving. */
         public boolean entering;
     }
 
@@ -65,7 +68,6 @@ public class Network {
         public Team team;
         public HashMap<Integer, Team> connectionIds;
         public String[] championNames;
-
         public AcceptedToLobby() {
         }
 
@@ -123,8 +125,6 @@ public class Network {
         public MatchReady(int matchId) {
             this.matchId = matchId;
         }
-
-        ;
     }
 
     public static class ChampionSelect {
@@ -168,25 +168,37 @@ public class Network {
 		}
 	}
 	
-	public static class MoveChampion extends PacketHeader {
-        public float x = 0f;
-        public float y = 0f;
-        public int matchId;
-
-        public MoveChampion() {
-        }
-
-        public MoveChampion(int matchId, float x, float y) {
+	public static class UserInput {
+		public int matchId;
+		public int sequenceNumber;
+		public boolean[] input;
+		public UserInput() {
+		}
+		public UserInput(int matchId, int sequenceNumber, boolean[] input) {
 			this.matchId = matchId;
+			this.sequenceNumber = sequenceNumber;
+			this.input = input;
+		}
+	}
+	
+	public static class PlayerState {
+		public int connectionId;
+		public float x;
+		public float y;
+		public PlayerState() {
+		}
+		public PlayerState(int connectionid, float x, float y) {
+			this.connectionId = connectionid;
 			this.x = x;
 			this.y = y;
 		}
-		public MoveChampion(UInt sequenceNumber, UInt ack, boolean[] ackBitfield,
-				int matchId, float x, float y) {
-			super(sequenceNumber, ack, ackBitfield);
-            this.matchId = matchId;
-            this.x = x;
-            this.y = y;
-        }
-    }
+	}
+	public static class PlayerStateUpdate {
+		public Array<PlayerState> playerStates;
+		public PlayerStateUpdate() {
+		}
+		public PlayerStateUpdate(Array<PlayerState> playerStates) {
+			this.playerStates = playerStates;
+		}
+	}
 }

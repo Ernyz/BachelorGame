@@ -12,6 +12,7 @@ import lt.kentai.bachelorgame.screens.GameScreen;
 import lt.kentai.bachelorgame.test.MapTile;
 
 public class WorldRenderer {
+<<<<<<< HEAD
 
     private SpriteBatch batch;
     private Match match;
@@ -39,6 +40,36 @@ public class WorldRenderer {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
+=======
+	
+	private SpriteBatch batch;
+	private Match match;
+	private OrthographicCamera camera;
+	private HeadsUpDisplay headsUpDisplay;
+	
+	public WorldRenderer(SpriteBatch batch, Match match) {
+		this.batch = batch;
+		this.match = match;
+		
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.setToOrtho(false);
+		camera.update();
+		
+		headsUpDisplay = new HeadsUpDisplay(match, batch);
+	}
+	
+	public void render(float delta) {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		batch.setProjectionMatrix(camera.combined);
+		camera.position.x = match.getPlayer().getX() + match.getPlayer().getTexture().getWidth()/2;
+		camera.position.y = match.getPlayer().getY() + match.getPlayer().getTexture().getHeight()/2;
+		camera.update();
+		
+		batch.begin();
+		
+>>>>>>> 87de7c271e6710d3479106be9760c6d02e8b0dc0
 //		for(int x = 0; x < match.getMap().length; x++) {
 //			for(int y = 0; y < match.getMap()[0].length; y++) {
 //		for(int x = 0; x < 50; x++) {
@@ -52,6 +83,7 @@ public class WorldRenderer {
 //				}
 //			}
 //		}
+<<<<<<< HEAD
         for (int i = 0; i < visibleTiles.size; i++) {
             batch.draw(visibleTiles.get(i).texture, visibleTiles.get(i).x, visibleTiles.get(i).y);
         }
@@ -92,4 +124,27 @@ public class WorldRenderer {
             }
         }
     }
+=======
+		
+		for(Entity e : match.getPlayerEntities()) {
+			batch.draw(e.getTexture(), e.getX(), e.getY());
+		}
+		batch.end();
+		
+		//headsUpDisplay.updateAndRender(delta);
+		
+//		if(Gdx.input.isKeyPressed(Keys.W)) {
+//			camera.translate(0f, 5f);
+//		}
+//		if(Gdx.input.isKeyPressed(Keys.A)) {
+//			camera.translate(-5f, 0f);
+//		}
+//		if(Gdx.input.isKeyPressed(Keys.S)) {
+//			camera.translate(0f, -5f);
+//		}
+//		if(Gdx.input.isKeyPressed(Keys.D)) {
+//			camera.translate(5f, 0f);
+//		}
+	}
+>>>>>>> 87de7c271e6710d3479106be9760c6d02e8b0dc0
 }
