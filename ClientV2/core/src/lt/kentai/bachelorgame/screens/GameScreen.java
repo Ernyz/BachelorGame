@@ -5,8 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Client;
+
 import lt.kentai.bachelorgame.GameClientV2;
 import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.Network;
@@ -15,7 +15,6 @@ import lt.kentai.bachelorgame.Network.RequestForMatchInfo;
 import lt.kentai.bachelorgame.Properties;
 import lt.kentai.bachelorgame.model.Entity;
 import lt.kentai.bachelorgame.model.server_data.ChampionData;
-import lt.kentai.bachelorgame.test.MapTile;
 import lt.kentai.bachelorgame.view.InputView;
 import lt.kentai.bachelorgame.view.WorldRenderer;
 import map.StandardMapGenerator;
