@@ -1,12 +1,9 @@
 package lt.kentai.bachelorgame.level_generation;
 
-import lt.kentai.bachelorgame.Properties;
-import map.StandardMapGenerator;
-import map.components.MapComponents;
-
 import java.util.Date;
 import java.util.Random;
-import java.util.UUID;
+
+import lt.kentai.bachelorgame.Properties;
 
 /**
  * Contains all logic for generating level.
