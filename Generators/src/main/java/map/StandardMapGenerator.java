@@ -1,15 +1,16 @@
 package map;
 
 
+import map.dto.MapAndArray;
 import map.generators.GroundGenerator;
 import map.generators.JungleCampsGenerator;
 import map.generators.TowersGenerator;
 import map.generators.WayGenerator;
+import map.model.Vector;
 import map.utils.MapPrinter;
 import map.utils.MapUtils;
-import map.utils.MapVisualizationUtil;
 
-import java.io.PrintWriter;
+import java.util.List;
 
 public class StandardMapGenerator {
 
@@ -28,7 +29,9 @@ public class StandardMapGenerator {
     }
 
     public char[][] generateMap() {
-        char[][] finalMap = new GroundGenerator(MAP_WIDTH, MAP_HEIGHT, LARGEST_FUTURE, PERSISTANCE, SEED).getGroundMap();
+        MapAndArray mapAndArray = new GroundGenerator(MAP_WIDTH, MAP_HEIGHT, LARGEST_FUTURE, PERSISTANCE, SEED).getMapAndArray();
+        char[][] finalMap = mapAndArray.getChar2dmap();
+        List<Vector> campPotentialSpots = mapAndArray.getCoords();
 
         WayGenerator wayGenerator = new WayGenerator(MAP_WIDTH, MAP_HEIGHT, SEED);
 
@@ -40,7 +43,7 @@ public class StandardMapGenerator {
 
 
         finalMap = MapUtils.paintRoad(MAP_WIDTH, MAP_HEIGHT, finalMap, way2dMap);
-        JungleCampsGenerator jungleCampsGenerator = new JungleCampsGenerator(SEED,finalMap, way2dMap);
+        JungleCampsGenerator jungleCampsGenerator = new JungleCampsGenerator(SEED,finalMap, way2dMap, campPotentialSpots);
         finalMap = jungleCampsGenerator.addJungleCamps();
 
         MapUtils.addBases(finalMap);

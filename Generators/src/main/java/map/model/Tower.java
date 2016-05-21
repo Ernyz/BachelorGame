@@ -1,6 +1,6 @@
 package map.model;
 
-public class Tower extends Coords{
+public class Tower extends Vector {
     private Team team;
 
     public Tower(int x, int y, Team team) {

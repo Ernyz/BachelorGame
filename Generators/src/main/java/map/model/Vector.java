@@ -1,9 +1,9 @@
 package map.model;
 
-public class Coords {
+public class Vector {
     public int x, y;
 
-    public Coords(int x, int y) {
+    public Vector(int x, int y) {
         this.x = x;
         this.y = y;
     }

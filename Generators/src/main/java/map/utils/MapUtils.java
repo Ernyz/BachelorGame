@@ -2,7 +2,7 @@ package map.utils;
 
 
 import map.components.MapComponents;
-import map.model.Coords;
+import map.model.Vector;
 
 import java.util.List;
 
@@ -76,10 +76,14 @@ public class MapUtils {
     }
 
     public static boolean inRange(int x1, int y1, int x2, int y2, double distance) {
-        if (Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) < distance) {
+        if (Math.sqrt(Math.abs((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))) < distance) {
             return true;
         } else
             return false;
+    }
+
+    public static boolean inRange(Vector v1, Vector v2, double distance) {
+        return inRange(v1.x, v1.y, v2.x, v2.y, distance);
     }
 
     public static void surroundWithWalls(char[][] map) {
@@ -93,21 +97,22 @@ public class MapUtils {
         }
     }
 
-    public static char[][] printBossIntoMap(char[][] map, Coords bossCoord) {
+    public static char[][] printBossIntoMap(char[][] map, Vector bossCoord) {
         for (int y = bossCoord.y - 5; y < bossCoord.y + 5; y++) {
-            for (int x = bossCoord.x - 5; x< bossCoord.x + 5; x++) {
+            for (int x = bossCoord.x - 5; x < bossCoord.x + 5; x++) {
                 map[y][x] = Constants.BOSS;
             }
         }
         return map;
     }
 
-    public static char[][] printCampsIntoMap(char[][] groundMap, List<Coords> campsCoords) {
+    public static char[][] printCampsIntoMap(char[][] groundMap, List<Vector> campsCoords) {
 
-        for (Coords campCoords: campsCoords){
-            for (int y = campCoords.y - 5; y < campCoords.y + 5; y++) {
-                for (int x = campCoords.x - 5; x< campCoords.x + 5; x++) {
-                    groundMap[y][x] = Constants.JUNGLE_CAMP;
+        for (Vector campVector : campsCoords) {
+            for (int y = campVector.y - 5; y < campVector.y + 5; y++) {
+                for (int x = campVector.x - 5; x < campVector.x + 5; x++) {
+                    if (MapUtils.inRange(x, y, campVector.x, campVector.y, 5))
+                        groundMap[y][x] = Constants.JUNGLE_CAMP;
                 }
             }
         }
