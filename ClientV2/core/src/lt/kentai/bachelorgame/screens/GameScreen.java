@@ -152,7 +152,7 @@ public class GameScreen implements Screen {
 				match.setPlayer(e);
 			}
 		}
-		StandardMapGenerator mapGenerator = new StandardMapGenerator(500, 200, matchInfo.seed, 0.35, 300);
+		StandardMapGenerator mapGenerator = new StandardMapGenerator(300, 200, matchInfo.seed, 0.35, 300);
 
 		match.setMap(mapGenerator.generateMap());
 //		for (int i = 0; i <match.getMap().length ; i++) {
