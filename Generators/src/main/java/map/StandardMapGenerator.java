@@ -33,6 +33,7 @@ public class StandardMapGenerator {
         char[][] finalMap = mapAndArray.getChar2dmap();
         List<Vector> campPotentialSpots = mapAndArray.getCoords();
 
+
         WayGenerator wayGenerator = new WayGenerator(MAP_WIDTH, MAP_HEIGHT, SEED);
 
         int[] wayMap = wayGenerator.getWayMap(3, 0.9, 0.3);
