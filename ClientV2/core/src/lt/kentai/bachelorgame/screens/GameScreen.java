@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Client;
-
 import com.esotericsoftware.minlog.Log;
+
 import lt.kentai.bachelorgame.GameClientV2;
 import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.Network.MatchInfo;
@@ -22,7 +22,6 @@ import lt.kentai.bachelorgame.model.server_data.ChampionData;
 import lt.kentai.bachelorgame.view.InputView;
 import lt.kentai.bachelorgame.view.WorldRenderer;
 import map.StandardMapGenerator;
-import map.utils.Constants;
 
 /**
  * The actual game is rendered in this screen.
@@ -173,29 +172,6 @@ public class GameScreen implements Screen {
 
 		match.setMap(mapGenerator.generateMap());
 
-		Entity[][] mapEntities = new Entity[match.getMap()[0].length][match.getMap().length];
-		try {
-			for(int i = 0; i < match.getMap()[0].length; i++) {
-				for(int j = 0; j < match.getMap().length; j++) {
-					Entity entity = new Entity(i*10, j*10);
-					if(match.getMap()[i][j] == Constants.MAIN_ROAD) {
-						entity.setTexture(new Texture("tiles/road.png"));
-					} else if (match.getMap()[i][j] == Constants.WALL) {
-						entity.setTexture(new Texture("tiles/wall.png"));
-					} else if (match.getMap()[i][j] == Constants.TOWER) {
-						entity.setTexture(new Texture("tiles/tower.png"));
-					} else if (match.getMap()[i][j] == Constants.DIRT) {
-						entity.setTexture(new Texture("tiles/grass.png"));
-					} else {
-						entity.setTexture(new Texture("tiles/grass.png"));
-					}
-					mapEntities[i][j] = entity;
-				}
-			}
-		} catch (Exception e){
-			System.out.println(e);
-		}
-		match.setMapEntities(mapEntities);
 //		for (int i = 0; i <match.getMap().length ; i++) {
 //			for (int j = 0; j < match.getMap()[0].length; j++) {
 //				System.out.print(match.getMap()[i][j]);
