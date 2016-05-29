@@ -19,12 +19,6 @@ public class TowersGenerator {
     }
 
     public List<Tower> getTowers() {
-        return getTowers2();
-//        return getBlueTeamTowers();
-    }
-
-
-    private List<Tower> getTowers2() {
         List<Tower> towers = new ArrayList<>();
         double[][] array = new double[xWayLenght - 1][3];
         int dx = 0;

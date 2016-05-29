@@ -22,11 +22,11 @@ public class JungleCampsGenerator {
     int seed;
     Vector bossCoords;
 
-    public JungleCampsGenerator(int seed, char[][] groundMap, int[][] wayMap, List<Vector> campPotentialSpots) {
+    public JungleCampsGenerator(int seed, char[][] groundMap, int[][] wayMap, List<Vector> mapSpots) {
         this.groundMap = groundMap;
         this.wayMap = wayMap;
         this.seed = seed;
-        this.campPotentialSpots = campPotentialSpots;
+        this.campPotentialSpots = mapSpots;
         mapHight = groundMap.length;
         mapWidth = groundMap[0].length;
     }
