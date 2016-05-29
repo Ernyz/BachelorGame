@@ -173,7 +173,7 @@ public class GameScreen implements Screen {
 
 		match.setMap(mapGenerator.generateMap());
 
-		Entity[][] mapEntities = new Entity[match.getMap()[0].length][match.getMap().length];
+		/*Entity[][] mapEntities = new Entity[match.getMap()[0].length][match.getMap().length];
 		try {
 			for(int i = 0; i < match.getMap()[0].length; i++) {
 				for(int j = 0; j < match.getMap().length; j++) {
@@ -195,7 +195,8 @@ public class GameScreen implements Screen {
 		} catch (Exception e){
 			System.out.println(e);
 		}
-		match.setMapEntities(mapEntities);
+		match.setMapEntities(mapEntities);*/
+		
 //		for (int i = 0; i <match.getMap().length ; i++) {
 //			for (int j = 0; j < match.getMap()[0].length; j++) {
 //				System.out.print(match.getMap()[i][j]);

@@ -3,9 +3,12 @@ package lt.kentai.bachelorgame.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import lt.kentai.bachelorgame.Match;
 import lt.kentai.bachelorgame.model.Entity;
+import map.utils.Constants;
 
 public class WorldRenderer {
 
@@ -13,6 +16,11 @@ public class WorldRenderer {
     private Match match;
     private OrthographicCamera camera;
     private HeadsUpDisplay headsUpDisplay;
+    
+    Texture mainRoadTexture = new Texture("tiles/road.png");
+    Texture wallTexture = new Texture("tiles/wall.png");
+    Texture towerTexture = new Texture("tiles/wall.png");
+    Texture grassTexture = new Texture("tiles/grass.png");
 
     public WorldRenderer(SpriteBatch batch, Match match) {
         this.batch = batch;
@@ -68,6 +76,37 @@ public class WorldRenderer {
 //        		batch.draw(match.getMapEntities()[y][x].getTexture(), match.getMapEntities()[y][x].getX(), match.getMapEntities()[y][x].getY());
 //        	}
 //        }
+        
+        int range = 45;
+
+        int px = (int)Math.ceil(match.getPlayer().getX()/10);
+        int py = (int)Math.ceil(match.getPlayer().getY()/10);
+        
+        int startX = px-range < 0 ? 0 : px-range;
+        int startY = py-range < 0 ? 0 : py-range;
+        
+        int endX = px+range > match.getMap()[0].length ? match.getMap()[0].length : px+range;
+        int endY = py+range > match.getMap().length ? match.getMap().length : py+range;
+        
+        for(int y = startY; y <= endY; y++) {
+        	for(int x = startX; x <= endX; x++) {
+        		if(match.getMap()[x][y] == Constants.MAIN_ROAD) {
+        			batch.draw(mainRoadTexture, x*10, y*10);
+	      		}
+	        		else if (match.getMap()[x][y] == Constants.WALL) {
+	      			batch.draw(wallTexture, x*10, y*10);
+	      		}
+	        		else if (match.getMap()[x][y] == Constants.TOWER) {
+	      			batch.draw(towerTexture, x*10, y*10);
+	      		}
+	        		else if (match.getMap()[x][y] == Constants.DIRT) {
+	      			batch.draw(grassTexture, x*10, y*10);
+	      		}
+	        		else {
+	      			batch.draw(grassTexture, x*10, y*10);
+	      		}
+        	}
+        }
         
         /*for(int y = 0; y < match.getMapEntities().length; y++) {
         	for(int x = 0; x < match.getMapEntities()[0].length; x++) {
