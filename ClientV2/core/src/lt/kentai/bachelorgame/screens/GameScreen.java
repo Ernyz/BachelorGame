@@ -70,15 +70,15 @@ public class GameScreen implements Screen {
 		Log.set(Log.LEVEL_NONE);
 		accumulator += delta;
 		while(accumulator >= Properties.FRAME_TIME) {
-			//TODO: Sample and execute input
+			//Sample and execute input
 			boolean[] input = inputView.getInput();
 			UserInput userInput = new UserInput(matchId, frameNumber, input);
 			match.executeInput(userInput);
 			match.update(delta);
-			//TODO: Send input to server
+			//Send input to server
 			client.sendUDP(userInput);
 			sentPackets.add(userInput);
-			//TODO: Read received packets and update game state
+			//Read received packets and update game state
 			applyServerState();
 			
 			accumulator -= Properties.FRAME_TIME;
@@ -175,10 +175,10 @@ public class GameScreen implements Screen {
 
 		Entity[][] mapEntities = new Entity[match.getMap()[0].length][match.getMap().length];
 		try {
-			for (int i = 0; i < match.getMap()[0].length; i++) {
-				for (int j = 0; j < match.getMap().length; j++) {
+			for(int i = 0; i < match.getMap()[0].length; i++) {
+				for(int j = 0; j < match.getMap().length; j++) {
 					Entity entity = new Entity(i*10, j*10);
-					if (match.getMap()[i][j] == Constants.MAIN_ROAD) {
+					if(match.getMap()[i][j] == Constants.MAIN_ROAD) {
 						entity.setTexture(new Texture("tiles/road.png"));
 					} else if (match.getMap()[i][j] == Constants.WALL) {
 						entity.setTexture(new Texture("tiles/wall.png"));
@@ -186,12 +186,13 @@ public class GameScreen implements Screen {
 						entity.setTexture(new Texture("tiles/tower.png"));
 					} else if (match.getMap()[i][j] == Constants.DIRT) {
 						entity.setTexture(new Texture("tiles/grass.png"));
-					}else
-					entity.setTexture(new Texture("tiles/grass.png"));
+					} else {
+						entity.setTexture(new Texture("tiles/grass.png"));
+					}
 					mapEntities[i][j] = entity;
 				}
 			}
-		}catch (Exception e){
+		} catch (Exception e){
 			System.out.println(e);
 		}
 		match.setMapEntities(mapEntities);

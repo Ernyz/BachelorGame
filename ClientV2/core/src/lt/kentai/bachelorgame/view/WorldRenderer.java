@@ -35,7 +35,7 @@ public class WorldRenderer {
         camera.update();
 
         batch.begin();
-        int w = Gdx.graphics.getWidth()/2;
+        /*int w = Gdx.graphics.getWidth()/2;
 
         int startX = (int) (match.getPlayer().getX()/10 - 20 < 0 ? 0 : match.getPlayer().getX()/10 - 20);
         int endX = (int) (match.getPlayer().getX()/10 + 20 > match.getMap().length ? match.getMap().length : match.getPlayer().getY()/10 + 20);//TODO
@@ -50,7 +50,34 @@ public class WorldRenderer {
             }
         }catch (Exception e){
             System.out.println(e);
-        }
+        }*/
+        
+//        int range = 8;
+//        
+//        int px = (int)Math.ceil(match.getPlayer().getX()/10);
+//        int py = (int)Math.ceil(match.getPlayer().getY()/10);
+//        
+//        int startX = px-range < 0 ? 0 : px-range;
+//        int startY = py-range < 0 ? 0 : py-range;
+//        
+//        int endX = px+range > match.getMapEntities()[0].length ? match.getMapEntities()[0].length : px+range;
+//        int endY = py+range > match.getMapEntities().length ? match.getMapEntities().length : py+range;
+//        
+//        for(int y = startY; y <= endY; y++) {
+//        	for(int x = startX; x <= endX; x++) {
+//        		batch.draw(match.getMapEntities()[y][x].getTexture(), match.getMapEntities()[y][x].getX(), match.getMapEntities()[y][x].getY());
+//        	}
+//        }
+        
+        /*for(int y = 0; y < match.getMapEntities().length; y++) {
+        	for(int x = 0; x < match.getMapEntities()[0].length; x++) {
+        		float dx = (float)Math.abs(x - Math.ceil(match.getPlayer().getX()/10));
+        		float dy = (float)Math.abs(y - Math.ceil(match.getPlayer().getY()/10));
+            	if(Math.sqrt(dx*dx + dy*dy) <= 8) {
+            		batch.draw(match.getMapEntities()[y][x].getTexture(), match.getMapEntities()[y][x].getX(), match.getMapEntities()[y][x].getY());
+            	}
+            }
+        }*/
 
         for (Entity e : match.getPlayerEntities()) {
             batch.draw(e.getTexture(), e.getX(), e.getY());
@@ -58,18 +85,5 @@ public class WorldRenderer {
         batch.end();
 
         //headsUpDisplay.updateAndRender(delta);
-
-//		if(Gdx.input.isKeyPressed(Keys.W)) {
-//			camera.translate(0f, 5f);
-//		}
-//		if(Gdx.input.isKeyPressed(Keys.A)) {
-//			camera.translate(-5f, 0f);
-//		}
-//		if(Gdx.input.isKeyPressed(Keys.S)) {
-//			camera.translate(0f, -5f);
-//		}
-//		if(Gdx.input.isKeyPressed(Keys.D)) {
-//			camera.translate(5f, 0f);
-//		}
     }
 }

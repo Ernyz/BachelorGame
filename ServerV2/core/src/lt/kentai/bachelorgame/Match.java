@@ -92,7 +92,7 @@ public class Match {
 						}
 						userInput.clear();
 					}
-					//System.out.println(inputPacketManager.getDejitteredPackets().get(1).size);
+					
 					//Send updated positions to clients
 					Array<PlayerState> playerStates = new Array<PlayerState>();
 					for(int i = 0; i < champions.size; i++) {
@@ -109,7 +109,6 @@ public class Match {
 				sendToAllTCP(new AllLockedIn());  //XXX:Dublicated code
 			}
 		} else if(matchState == MatchState.PREPARING) {
-//			System.out.println(matchTimer + " " + matchState);
             if(Properties.TeamSize*2!=lockedInConnections.size) {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override

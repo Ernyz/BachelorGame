@@ -55,7 +55,6 @@ public class Match {
 		this.player = player;
 	}
 	
-	//XXX: Testing. Rename to "executeInput"?
 	public void update(float delta) {
 		matchTimer += delta;
 		
