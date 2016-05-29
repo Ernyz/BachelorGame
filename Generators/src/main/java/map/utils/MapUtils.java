@@ -1,6 +1,4 @@
 package map.utils;
-
-
 import map.components.MapComponents;
 import map.model.Vector;
 
@@ -57,7 +55,6 @@ public class MapUtils {
             }
         }
     }
-
 
     public static char[][] reverseMap(char[][] map) {
         char[][] reverse = new char[map.length][];

@@ -29,5 +29,4 @@ public class MapComponents {
             {w,w,w,w,w,w,w,w,w,w}
     };
 
-
 }

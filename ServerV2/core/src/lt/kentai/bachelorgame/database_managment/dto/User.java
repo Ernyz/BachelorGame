@@ -2,7 +2,7 @@ package lt.kentai.bachelorgame.database_managment.dto;
 
 public class User {
 
-    private String id;
+    private long id;
     private String username;
     private String password;
     private String email;
@@ -10,18 +10,24 @@ public class User {
     public User() {
     }
 
-    public User(String id, String username, String password, String email) {
+    public User(long id, String username, String password, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
     }
 
-    public String getId() {
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

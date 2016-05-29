@@ -8,29 +8,22 @@ import java.util.List;
 import java.util.Random;
 
 public class WayGenerator {
-
     private int width;
     private int height;
     private Random random;
-
-
     public WayGenerator(int width, int height, long seed) {
         this.width = width;
         this.height = height;
         random = new Random(seed);
     }
-
     public int[] getWayMap(int times, double maxAmplitudeCoef, double minAmplitudeCoef) {
         return (createArrayOfRandomlyPlacedPoints(times, height, maxAmplitudeCoef, minAmplitudeCoef));
     }
-
     public int[][] get2dMapFromPoints(int[] wayPoints) {
         return fillMapWithPoints(wayPoints);
     }
 
     public int[] createArrayOfRandomlyPlacedPoints(int iterationNr, int mapHeight, double maxAmplitude, double minAmplitude) {
-
-
         int mapMidY = mapHeight / 2;
 
         int maxA = (int) ((double) mapMidY * maxAmplitude);
@@ -71,9 +64,7 @@ public class WayGenerator {
                     listOfPoints.add(j * 2 + 1, midPointY);
                 }
             }
-
         }
-        System.out.println("JOJOJOJOJ");
         printListOfIntegers(listOfPoints);
         smoothenListOfWayPoints(listOfPoints, 3);
 
@@ -82,9 +73,7 @@ public class WayGenerator {
         for (int i = 0; i < listOfPoints.size(); i++) {
             points[i] = listOfPoints.get(i);
         }
-
         return points;
-
     }
 
     private int getDisplaicement(int i, int maxA) {
@@ -104,11 +93,7 @@ public class WayGenerator {
                 list.add(i + 1, Math.abs(m2));
                 size += 1;
             }
-            System.out.println(q);
-            printListOfIntegers(list);
-
         }
-
     }
 
     private int getSign() {
@@ -154,8 +139,6 @@ public class WayGenerator {
             }
         }
     }
-
-
     public int setupY(int y, int roadW) {
         if (y + roadW > height) {
             int t = y + roadW - height;

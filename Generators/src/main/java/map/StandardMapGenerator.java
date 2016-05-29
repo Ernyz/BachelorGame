@@ -52,12 +52,6 @@ public class StandardMapGenerator {
 
         MapUtils.surroundWithWalls(finalMap);
 
-//        MapPrinter.printMapToFile("map", finalMap, true);
-//        try {
-////            Desktop.getDesktop().open(new File("C:\\Users\\Laurynas\\Documents\\TestingPorp\\" + MapPrinter.printMapToFile("generated map-", finalMap, true)));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         return finalMap;
     }
 }

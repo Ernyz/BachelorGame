@@ -2,7 +2,6 @@ package map.generators;
 
 import map.model.Team;
 import map.model.Tower;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +35,6 @@ public class TowersGenerator {
             array[i - 1][1] = y;
             array[i - 1][2] = totalWayDist;
         }
-
-        System.out.println(totalWayDist / 5);
         for (int i = 1; i < 5; i++) {
             for (int a = 0; a < xWayLenght - 1; a++) {
                 if (closeEnough(array[a][2], i * totalWayDist / 5)) {
@@ -46,13 +43,7 @@ public class TowersGenerator {
                 }
             }
         }
-
-
-        System.out.println(array);
-
         return towers;
-
-
     }
 
     private boolean closeEnough(double a, double b) {
@@ -66,13 +57,9 @@ public class TowersGenerator {
         for (int i = 0; i < xWayLenght - 1; i++) {
             totalWayDist += Math.sqrt(Math.pow(mapWidth / xWayLenght, 2) + Math.pow((wayMap[i + 1] - wayMap[i]), 2));
         }
-
         double disntanceBtwTowes = totalWayDist / 7;
-
-
         double totalWayMom = 0;
         int towerNr = 1;
-
         for (int i = 0; i < xWayLenght - 1; i++) {
             totalWayMom += Math.sqrt(Math.pow(mapWidth / xWayLenght, 2) + Math.pow((wayMap[i + 1] - wayMap[i]), 2));
 
@@ -86,8 +73,6 @@ public class TowersGenerator {
                 towerNr++;
             }
         }
-        System.out.println("total way lenght : " + totalWayDist);
-        System.out.println(blueTeamTowers);
         return blueTeamTowers;
     }
 }

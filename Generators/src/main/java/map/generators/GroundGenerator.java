@@ -13,7 +13,6 @@ public class GroundGenerator {
         double[][] map = simplexArrayGenerator.getSimplexMap();
         mapAndArray = MapVisualizationUtil.getGroundMapAndCampsSpots(map);
     }
-
     public MapAndArray getMapAndArray() {
         return mapAndArray;
     }

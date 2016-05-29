@@ -63,7 +63,6 @@ public class JungleCampsGenerator {
         return true;
     }
 
-
     private boolean checkIfAwayFromMapBoarders(Vector v, int range) {
         if (v.x < range || v.x > mapWidth - range || v.y < range || v.y > mapHight - range) {
             return false;
@@ -92,7 +91,6 @@ public class JungleCampsGenerator {
         }
         return true;
     }
-
     /**
      * check if far away from way
      *
@@ -149,24 +147,14 @@ public class JungleCampsGenerator {
     }
 
     private int getCampY(Random r, int wayY, int coef) {
-
         int q = wayMap.length / 6;
-
         int res = wayY + coef * q;
-
         res = res > wayMap.length ? res - wayMap.length : res;
-
         res = res + r.nextInt(20) - 10;
-
         res = res < 10 ? res + 10 : res;
         res = res > wayMap.length - 10 ? res - 10 : res;
-
-
         return res;
-
     }
-
-
     private int getWayYAtThisXPoint(int x) {
         for (int y = 0; y < wayMap.length; y++) {
             try {
@@ -186,12 +174,8 @@ public class JungleCampsGenerator {
         int q = wayMap.length / 6;
         int bossY = wayY + 3 * q;
         bossY = bossY > wayMap.length ? bossY - wayMap.length : bossY;
-
         bossY = bossY < 10 ? bossY + 10 : bossY;
         bossY = bossY > wayMap.length - 10 ? bossY - 10 : bossY;
-
         return new Vector(wayMap[0].length / 2, bossY);
     }
-
-
 }
