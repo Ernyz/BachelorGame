@@ -41,17 +41,17 @@ public class WorldRenderer {
 		
 //		for(int x = 0; x < match.getMap().length; x++) {
 //			for(int y = 0; y < match.getMap()[0].length; y++) {
-		for(int x = 0; x < 50; x++) {
-			for(int y = 0; y < 50; y++) {
-				if(match.getMap()[x][y] == '#') {
-					batch.draw(new Texture("tiles/wall.png"), x*10, y*10);
-				} else if(match.getMap()[x][y] == ' ') {
-					batch.draw(new Texture("tiles/grass.png"), x*10, y*10);
-				} else if(match.getMap()[x][y] == '.') {
-					batch.draw(new Texture("tiles/road.png"), x*10, y*10);
-				}
-			}
-		}
+//		for(int x = 0; x < 50; x++) {
+//			for(int y = 0; y < 50; y++) {
+//				if(match.getMap()[x][y] == '#') {
+//					batch.draw(new Texture("tiles/wall.png"), x*10, y*10);
+//				} else if(match.getMap()[x][y] == ' ') {
+//					batch.draw(new Texture("tiles/grass.png"), x*10, y*10);
+//				} else if(match.getMap()[x][y] == '.') {
+//					batch.draw(new Texture("tiles/road.png"), x*10, y*10);
+//				}
+//			}
+//		}
 		
 		for(Entity e : match.getPlayerEntities()) {
 			batch.draw(e.getTexture(), e.getX(), e.getY());

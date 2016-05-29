@@ -15,15 +15,6 @@ public class InputPacketManager {
 		
 	}
 	
-//	public HashMap<Integer, Array<UserInput>> tick() {
-//		frameCounter++;
-//		if(frameCounter >= frameInterval) {
-//			frameCounter = 0;
-//			
-//		}
-//		return dejitteredPackets;
-//	}
-	
 	public void addPacket(int connectionId, UserInput userInput) {
 		
 		if(packets.get(connectionId) != null) {

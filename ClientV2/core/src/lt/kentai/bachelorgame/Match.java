@@ -1,7 +1,9 @@
 package lt.kentai.bachelorgame;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
 
+import lt.kentai.bachelorgame.Network.UserInput;
 import lt.kentai.bachelorgame.model.Entity;
 
 /**
@@ -50,6 +52,23 @@ public class Match {
 		for(Entity e : playerEntities) {
 			e.setX(e.getX() + e.getSpeed() * e.getVelocity().x * delta);
 			e.setY(e.getY() + e.getSpeed() * e.getVelocity().y * delta);
+		}
+	}
+	
+	public void executeInput(UserInput userInput) {
+		if(userInput.input[Input.Keys.W]) {
+			player.getVelocity().y = 1;
+		} else if(userInput.input[Input.Keys.S]) {
+			player.getVelocity().y = -1;
+		} else {
+			player.getVelocity().y = 0;
+		}
+		if(userInput.input[Input.Keys.A]) {
+			player.getVelocity().x = -1;
+		} else if(userInput.input[Input.Keys.D]) {
+			player.getVelocity().x = 1;
+		} else {
+			player.getVelocity().x = 0;
 		}
 	}
 

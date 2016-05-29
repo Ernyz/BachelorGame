@@ -8,6 +8,8 @@ import lt.kentai.bachelorgame.Properties.Team;
 //TODO: Reorganize entity class hierarchy
 public class Entity {
 
+	public int lastProcessedPacket = 0;
+	
 	private String accountName;
 	private String championName;
 	/**

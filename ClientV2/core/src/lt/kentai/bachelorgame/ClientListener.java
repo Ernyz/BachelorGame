@@ -124,12 +124,11 @@ public class ClientListener extends Listener {
                 }
             });
         } else if(o instanceof PlayerStateUpdate) {
-        	//XXX: temporary test
         	final PlayerStateUpdate stateUpdate = (PlayerStateUpdate) o;
         	Gdx.app.postRunnable(new Runnable() {
 				@Override
 				public void run() {
-					Array<Entity> entities = GameClientV2.getScreenManager().getGameScreen().getMatch().getPlayerEntities();
+					/*Array<Entity> entities = GameClientV2.getScreenManager().getGameScreen().getMatch().getPlayerEntities();
 					for(int i = 0; i < entities.size; i++) {
 						for(int j = 0; j < stateUpdate.playerStates.size; j++) {
 							if(entities.get(i).connectionId == stateUpdate.playerStates.get(j).connectionId) {
@@ -137,7 +136,8 @@ public class ClientListener extends Listener {
 								entities.get(i).setY(stateUpdate.playerStates.get(j).y);
 							}
 						}
-					}
+					}*/
+					GameClientV2.getScreenManager().getGameScreen().getReceivedPlayerStateUpdate().add(stateUpdate);
 				}
 			});
         }

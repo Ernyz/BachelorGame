@@ -88,7 +88,7 @@ public class Network {
         public int playerId;
     }
 
-    public static class PlayerAFKCheckFail{
+    public static class PlayerAFKCheckFail {
         public int[] ids;
     }
 
@@ -183,12 +183,14 @@ public class Network {
 	
 	public static class PlayerState {
 		public int connectionId;
+		public int lastProcessedPacket;
 		public float x;
 		public float y;
 		public PlayerState() {
 		}
-		public PlayerState(int connectionid, float x, float y) {
+		public PlayerState(int connectionid, int lastProcessedPacket, float x, float y) {
 			this.connectionId = connectionid;
+			this.lastProcessedPacket = lastProcessedPacket;
 			this.x = x;
 			this.y = y;
 		}

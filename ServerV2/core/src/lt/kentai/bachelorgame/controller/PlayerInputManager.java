@@ -16,6 +16,7 @@ public class PlayerInputManager {
 		for(int i = 0; i < match.getChampions().size; i++) {
 			if(connectionId == match.getChampions().get(i).getConnectionId()) {
 				player = match.getChampions().get(i);
+				player.lastProcessedPacket = userInput.sequenceNumber;
 			}
 		}
 		

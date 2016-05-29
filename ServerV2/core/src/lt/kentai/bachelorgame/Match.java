@@ -36,7 +36,8 @@ public class Match {
 	private int seed;
 
 	private int frameCounter = 0;
-	private int timeStep = 6;
+//	private int timeStep = 6;
+	private int timeStep = 120;
 	
 	private float matchTimer = 0f;
 	private float accumulator = 0f;
@@ -86,20 +87,18 @@ public class Match {
 					HashMap<Integer, Array<UserInput>> inputs = inputPacketManager.getDejitteredPackets();
 					for(Entry<Integer, Array<UserInput>> entry : inputs.entrySet()) {
 						Array<UserInput> userInput = entry.getValue();
-						System.out.println(userInput.size);
 						for(int i = 0; i < userInput.size; i++) {
 							PlayerInputManager.applyInput(entry.getKey(), userInput.get(i), this);
 						}
 						userInput.clear();
 					}
+					System.out.println(inputPacketManager.getDejitteredPackets().get(1).size);
 					//Send updated positions to clients
 					Array<PlayerState> playerStates = new Array<PlayerState>();
 					for(int i = 0; i < champions.size; i++) {
-						playerStates.add(new PlayerState(champions.get(i).getConnectionId(), champions.get(i).getX(), champions.get(i).getY()));
+						playerStates.add(new PlayerState(champions.get(i).getConnectionId(), champions.get(i).lastProcessedPacket,
+								champions.get(i).getX(), champions.get(i).getY()));
 					}
-//					System.out.println(playerStates.get(0).x + " " + playerStates.get(0).y);
-//					System.out.println(playerStates.get(1).x + " " + playerStates.get(1).y);
-					System.out.println();
 					sendToAllUDP(new PlayerStateUpdate(playerStates));
 				}
 			}
@@ -117,7 +116,7 @@ public class Match {
                     public void run() {
                         Network.PlayerAFKCheckFail afkCheckFail = new Network.PlayerAFKCheckFail();
                         Array<Integer> l = new Array<Integer>();
-                        for (AccountConnection ac : getAllConnections()){
+                        for(AccountConnection ac : getAllConnections()){
                             if(!ac.lockedIn){
                                 l.add(ac.getID());
                             }
@@ -236,7 +235,6 @@ public class Match {
 	
 	private void initializeGame() {
 		//Create champion entities
-		//for(ChampionData c : championDataArray) {
 		for(int i = 0; i < championDataArray.size; i++) {
 			Entity e = new Entity(championDataArray.get(i).getAccountName(), championDataArray.get(i).getConnectionId(), championDataArray.get(i).getTeam(), championDataArray.get(i).getX(), championDataArray.get(i).getY());
 			e.setChampionName(championDataArray.get(i).getChampionName());/*TODO: move all this to a factory some day*/

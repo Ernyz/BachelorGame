@@ -1,17 +1,20 @@
 package lt.kentai.bachelorgame.screens;
 
+import java.util.Iterator;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Client;
 
 import lt.kentai.bachelorgame.GameClientV2;
 import lt.kentai.bachelorgame.Match;
-import lt.kentai.bachelorgame.Network;
 import lt.kentai.bachelorgame.Network.MatchInfo;
+import lt.kentai.bachelorgame.Network.PlayerStateUpdate;
 import lt.kentai.bachelorgame.Network.RequestForMatchInfo;
+import lt.kentai.bachelorgame.Network.UserInput;
 import lt.kentai.bachelorgame.Properties;
 import lt.kentai.bachelorgame.model.Entity;
 import lt.kentai.bachelorgame.model.server_data.ChampionData;
@@ -32,6 +35,9 @@ public class GameScreen implements Screen {
 	private SpriteBatch batch;
 	private Client client;
 	
+	private Array<UserInput> sentPackets = new Array<UserInput>();
+	private Array<PlayerStateUpdate> receivedPlayerStateUpdate = new Array<PlayerStateUpdate>();
+	
 	private float accumulator = 0f;
 	private int frameNumber = 0;  //TODO: make this uint
 	
@@ -51,14 +57,6 @@ public class GameScreen implements Screen {
 		client.sendTCP(requestInfo);
 	}
 
-//	public void movePlaya(float x, float y) {
-//		for(int i = 0; i < match.getPlayerEntities().size; i++) {
-//			if(!match.getPlayerEntities().get(i).equals(match.getPlayer())) {
-//				match.getPlayerEntities().get(i).moveBy(Gdx.graphics.getDeltaTime(), x, y);
-//			}
-//		}
-//	}
-
 	@Override
 	public void show() {
 		
@@ -72,34 +70,23 @@ public class GameScreen implements Screen {
 		while(accumulator >= Properties.FRAME_TIME) {
 			//TODO: Sample and execute input
 			boolean[] input = inputView.getInput();
-			if(input[Input.Keys.W]) {
-				match.getPlayer().getVelocity().y = 1;
-			} else if(input[Input.Keys.S]) {
-				match.getPlayer().getVelocity().y = -1;
-			} else {
-				match.getPlayer().getVelocity().y = 0;
-			}
-			if(input[Input.Keys.A]) {
-				match.getPlayer().getVelocity().x = -1;
-			} else if(input[Input.Keys.D]) {
-				match.getPlayer().getVelocity().x = 1;
-			} else {
-				match.getPlayer().getVelocity().x = 0;
-			}
+			UserInput userInput = new UserInput(matchId, frameNumber, input);
+			match.executeInput(userInput);
 			match.update(delta);
 			//TODO: Send input to server
-			
-			client.sendUDP(new Network.UserInput(matchId, frameNumber, input));
+			client.sendUDP(userInput);
+			sentPackets.add(userInput);
 			//TODO: Read received packets and update game state
+			applyServerState();
 			
 			accumulator -= Properties.FRAME_TIME;
 			
 			//XXX: Less jerky here
-			//worldRenderer.render(delta);
+			worldRenderer.render(delta);
 		}
 		
 		//XXX: Very jerky here
-		worldRenderer.render(delta);
+//		worldRenderer.render(delta);
 		
 		frameNumber++;//TODO: check if this is enough to handle wrap around
 		if(frameNumber < 0) {
@@ -130,6 +117,34 @@ public class GameScreen implements Screen {
 	@Override
 	public void dispose() {
 		
+	}
+	
+	private void applyServerState() {
+		//Update all the players so they match server state
+		if(receivedPlayerStateUpdate.size > 0) {
+			Array<Entity> entities = match.getPlayerEntities();
+			PlayerStateUpdate stateUpdate = receivedPlayerStateUpdate.removeIndex(0);
+			for(int i = 0; i < entities.size; i++) {
+				for(int j = 0; j < stateUpdate.playerStates.size; j++) {
+					if(entities.get(i).connectionId == stateUpdate.playerStates.get(j).connectionId) {
+						entities.get(i).setX(stateUpdate.playerStates.get(j).x);
+						entities.get(i).setY(stateUpdate.playerStates.get(j).y);
+						if(entities.get(i).connectionId == match.getPlayer().connectionId) {
+							//Re-apply player input which is not yet confirmed by the server
+							Iterator<UserInput> iterator = sentPackets.iterator();
+							while(iterator.hasNext()) {
+								UserInput sentPacket = iterator.next();
+								if(sentPacket.sequenceNumber <= stateUpdate.playerStates.get(j).lastProcessedPacket) {
+									iterator.remove();
+								} else {
+									match.executeInput(sentPacket);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public void initializeMatch(MatchInfo matchInfo) {
@@ -170,6 +185,10 @@ public class GameScreen implements Screen {
 
 	public Match getMatch() {
 		return match;
+	}
+
+	public Array<PlayerStateUpdate> getReceivedPlayerStateUpdate() {
+		return receivedPlayerStateUpdate;
 	}
 	
 }
