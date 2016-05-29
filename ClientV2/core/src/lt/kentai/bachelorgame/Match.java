@@ -19,8 +19,18 @@ public class Match {
 	
 	private Entity player;
 	private Array<Entity> playerEntities = new Array<Entity>();
+	private Entity[][] mapEntities;
+
 	private char[][] map;
-	
+
+	public Entity[][] getMapEntities() {
+		return mapEntities;
+	}
+
+	public void setMapEntities(Entity[][] mapEntities) {
+		this.mapEntities = mapEntities;
+	}
+
 	public Match(final int matchId) {
 		this.matchId = matchId;
 	}

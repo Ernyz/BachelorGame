@@ -92,7 +92,7 @@ public class Match {
 						}
 						userInput.clear();
 					}
-					System.out.println(inputPacketManager.getDejitteredPackets().get(1).size);
+					//System.out.println(inputPacketManager.getDejitteredPackets().get(1).size);
 					//Send updated positions to clients
 					Array<PlayerState> playerStates = new Array<PlayerState>();
 					for(int i = 0; i < champions.size; i++) {
