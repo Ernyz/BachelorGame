@@ -123,6 +123,7 @@ public class GameScreen implements Screen {
 	private void applyServerState() {
 		//Update all the players so they match server state
 		if(receivedPlayerStateUpdate.size > 0) {
+			System.out.println("received updates size " + receivedPlayerStateUpdate.size);
 			Array<Entity> entities = match.getPlayerEntities();
 			PlayerStateUpdate stateUpdate = receivedPlayerStateUpdate.removeIndex(0);
 			for(int i = 0; i < entities.size; i++) {
@@ -133,6 +134,7 @@ public class GameScreen implements Screen {
 						if(entities.get(i).connectionId == match.getPlayer().connectionId) {
 							//Re-apply player input which is not yet confirmed by the server
 							Iterator<UserInput> iterator = sentPackets.iterator();
+							System.out.println("Sent packets size " + sentPackets.size);
 							while(iterator.hasNext()) {
 								UserInput sentPacket = iterator.next();
 								if(sentPacket.sequenceNumber <= stateUpdate.playerStates.get(j).lastProcessedPacket) {
@@ -145,6 +147,7 @@ public class GameScreen implements Screen {
 					}
 				}
 			}
+			System.out.println();
 		}
 	}
 	

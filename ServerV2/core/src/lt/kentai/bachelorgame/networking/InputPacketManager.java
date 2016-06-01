@@ -16,7 +16,6 @@ public class InputPacketManager {
 	}
 	
 	public void addPacket(int connectionId, UserInput userInput) {
-		
 		if(packets.get(connectionId) != null) {
 			for(int i = 0; i < packets.get(connectionId).size; i++) {
 				if(isMoreRecent(userInput.sequenceNumber, packets.get(connectionId).get(i).sequenceNumber)) {

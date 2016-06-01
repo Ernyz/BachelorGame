@@ -54,19 +54,19 @@ public class WorldRenderer {
         int endY = py+range > match.getMap().length ? match.getMap().length : py+range;
         for(int y = startY; y <= endY; y++) {
         	for(int x = startX; x <= endX; x++) {
-        		if(match.getMap()[x][y] == Constants.MAIN_ROAD) {
+        		if(match.getMap()[y][x] == Constants.MAIN_ROAD) {
         			batch.draw(mainRoadTexture, x*10, y*10);
 	      		}
-	        		else if (match.getMap()[x][y] == Constants.WALL) {
+        		else if (match.getMap()[y][x] == Constants.WALL) {
 	      			batch.draw(wallTexture, x*10, y*10);
 	      		}
-	        		else if (match.getMap()[x][y] == Constants.TOWER) {
+        		else if (match.getMap()[y][x] == Constants.TOWER) {
 	      			batch.draw(towerTexture, x*10, y*10);
 	      		}
-	        		else if (match.getMap()[x][y] == Constants.DIRT) {
+        		else if (match.getMap()[y][x] == Constants.DIRT) {
 	      			batch.draw(grassTexture, x*10, y*10);
 	      		}
-	        		else {
+        		else {
 	      			batch.draw(grassTexture, x*10, y*10);
 	      		}
         	}
