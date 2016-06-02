@@ -56,6 +56,11 @@ public class Match {
 		}
 	}
 	
+	public void updatePlayer(float delta) {
+		player.setX(player.getX() + player.getSpeed() * player.getVelocity().x * delta);
+		player.setY(player.getY() + player.getSpeed() * player.getVelocity().y * delta);
+	}
+	
 	public void executeInput(UserInput userInput) {
 		if(userInput.input[Input.Keys.W]) {
 			player.getVelocity().y = 1;

@@ -36,8 +36,8 @@ public class Match {
 	private int seed;
 
 	private int frameCounter = 0;
-//	private int timeStep = 6;
-	private int timeStep = 120;  //For testing purposes
+	private int timeStep = 6;
+//	private int timeStep = 120;  //For testing purposes
 	
 	private float matchTimer = 0f;
 	private float accumulator = 0f;

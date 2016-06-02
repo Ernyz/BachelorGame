@@ -129,8 +129,8 @@ public class GameScreen implements Screen {
 			for(int i = 0; i < entities.size; i++) {
 				for(int j = 0; j < stateUpdate.playerStates.size; j++) {
 					if(entities.get(i).connectionId == stateUpdate.playerStates.get(j).connectionId) {
-						entities.get(i).setX(stateUpdate.playerStates.get(j).x);
-						entities.get(i).setY(stateUpdate.playerStates.get(j).y);
+//						entities.get(i).setX(stateUpdate.playerStates.get(j).x);
+//						entities.get(i).setY(stateUpdate.playerStates.get(j).y);
 						if(entities.get(i).connectionId == match.getPlayer().connectionId) {
 							//Re-apply player input which is not yet confirmed by the server
 							Iterator<UserInput> iterator = sentPackets.iterator();
@@ -141,6 +141,7 @@ public class GameScreen implements Screen {
 									iterator.remove();
 								} else {
 									match.executeInput(sentPacket);
+									match.updatePlayer(Properties.FRAME_TIME);
 								}
 							}
 						}
