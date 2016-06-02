@@ -13,7 +13,11 @@ public class ScreenManager {
 	private MainMenuScreen mainMenuScreen;
 	private LobbyScreen lobbyScreen;
 	private GameScreen gameScreen;
-	
+	private RegistrationScreen registrationScreen;
+	private HelpScreen helpScreen;
+	private HeroInfoScreen heroInfoScreen;
+	private SettingsScreen settings;
+
 	public ScreenManager(GameClientV2 mainClass) {
 		this.mainClass = mainClass;
 	}
@@ -28,7 +32,40 @@ public class ScreenManager {
 		}
 		mainClass.setScreen(loginScreen);
 	}
-	
+
+
+	public void switchToRegistrationScreen(){
+		registrationScreen = new RegistrationScreen();
+		if(mainClass.getScreen() != null) {
+			mainClass.getScreen().dispose();
+		}
+		mainClass.setScreen(registrationScreen);
+	}
+	public void swithcToHelpScreen(){
+		helpScreen = new HelpScreen();
+		if(mainClass.getScreen() != null) {
+			mainClass.getScreen().dispose();
+		}
+		mainClass.setScreen(helpScreen);
+
+	}
+	public void swithcToHeroInfoScreen(){
+		heroInfoScreen = new HeroInfoScreen();
+		if(mainClass.getScreen() != null) {
+			mainClass.getScreen().dispose();
+		}
+		mainClass.setScreen(heroInfoScreen);
+
+	}
+
+	public void swithcToSettingsScreen(){
+		settings = new SettingsScreen();
+		if(mainClass.getScreen() != null) {
+			mainClass.getScreen().dispose();
+		}
+		mainClass.setScreen(settings);
+	}
+
 	public void switchToMainMenuScreen(boolean placePlayerInMatchmaking) {
 //		if(mainMenuScreen != null) {
 //			mainMenuScreen.dispose();
@@ -65,7 +102,9 @@ public class ScreenManager {
 		}
 		mainClass.setScreen(gameScreen);
 	}
-	
+
+
+
 	public Screen getCurrentScreen() {
 		return mainClass.getScreen();
 	}

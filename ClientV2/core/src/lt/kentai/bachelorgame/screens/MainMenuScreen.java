@@ -33,9 +33,7 @@ public class MainMenuScreen implements Screen {
     public void show() {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-
         inMatchmaking = false;
-
         setupUI();
     }
 
@@ -88,8 +86,8 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-            stage.dispose();
-            skin.dispose();
+        stage.dispose();
+        skin.dispose();
     }
 
     private void setupUI() {
@@ -120,6 +118,34 @@ public class MainMenuScreen implements Screen {
         table.add(playStopBtn);
 
         table.row();
+        table.add(createBtn("Heroes info", new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameClientV2.getScreenManager().swithcToHeroInfoScreen();
+            }
+        }));
+        table.row();
+        table.add(createBtn("Help",new InputListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameClientV2.getScreenManager().swithcToHelpScreen();
+
+            }
+        }));
+        table.row();
+        table.add(createBtn("Settings", new InputListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameClientV2.getScreenManager().swithcToSettingsScreen();
+            }
+        }));
+        table.row();
         final TextButton exitBtn = new TextButton("Exit", skin);
         table.add(exitBtn);
         exitBtn.addListener(new InputListener() {
@@ -131,6 +157,12 @@ public class MainMenuScreen implements Screen {
                 Gdx.app.exit();
             }
         });
+    }
+
+    private TextButton createBtn(String title, InputListener inputListener) {
+        TextButton textButton = new TextButton(title, skin);
+        textButton.addListener(inputListener);
+        return textButton;
     }
 
 }

@@ -31,7 +31,8 @@ public class LoginScreen implements Screen {
 	public LoginScreen() {
 		this.client = GameClientV2.getNetworkingManager().getClient();
 	}
-	
+
+
 	@Override
 	public void show() {
 		stage = new Stage();
@@ -113,7 +114,7 @@ public class LoginScreen implements Screen {
 		table.add(passwordTextField);
 
 
-		table.row().colspan(2);
+		table.row();
 		final TextButton connectBtn = new TextButton("Connect!", skin);
 		connectBtn.addListener(new InputListener() {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -121,18 +122,25 @@ public class LoginScreen implements Screen {
 			}
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				//Try to connect
-
 				//check if user exists db
-
-
-
 				LoginRequest login = new LoginRequest();
 				login.username = usernameTextField.getText();
 				client.sendTCP(login);
 			}
 		});
 		table.add(connectBtn);
-		
+			final TextButton registerBtn = new TextButton("Register!", skin);
+		registerBtn.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				return true;
+			}
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				//Go to register screen
+				GameClientV2.getScreenManager().switchToRegistrationScreen();
+			}
+		});
+		table.add(registerBtn);
+
 		table.row().colspan(2);
 		final TextButton exitBtn = new TextButton("Exit", skin);
 		exitBtn.addListener(new InputListener() {
