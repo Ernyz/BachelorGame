@@ -38,8 +38,8 @@ public class Entity {
 		y = targetY;
 		targetX = tx;
 		targetY = ty;
-		dx = (targetX-x)/4;  //60FPS / 10 updates per second
-		dy = (targetY-y)/4;
+		dx = (targetX-x)/6;  //60FPS / 10 updates per second
+		dy = (targetY-y)/6;
 	}
 
 	public Texture getTexture() {
