@@ -2,6 +2,7 @@ package lt.kentai.bachelorgame.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import lt.kentai.bachelorgame.Match;
@@ -77,7 +78,7 @@ public class HeadsUpDisplay {
         top.add(getInfo());
         stage.addActor(top);
         Window skills = new Window("Info", skin);
-        skills.setWidth(250);
+        skills.setWidth(220);
         skills.setHeight(70);
         skills.setPosition(110,5);
         skills.add(getSkills());
@@ -91,22 +92,33 @@ public class HeadsUpDisplay {
     }
     private Table getInfo(){
         Table table = new Table(skin);
-        table.add(new TextField("match info",skin));
+        table.add(new Label("",skin));
         return table;
     }
     private Table getStatsTable() {
         Table table = new Table(skin);
         table.row();
-        table.addActor(new Label("Hp", skin));
-        table.addActor(new TextField("100", skin));
+        table.add(new Label("Hp", skin));
+        table.add(new Label("100", skin));
+        table.row();
+        table.add(new Label("Mana", skin));
+        table.add(new Label("250", skin));
         return table;
     }
     private Table getSkills() {
         Table table = new Table(skin);
         table.row();
-        table.addActor(new Label("1",skin));
-        table.addActor(new Label("2",skin));
-        table.addActor(new Label("3",skin));
+        table.add(getLabel("1", skin,50));
+        table.add(getLabel("2", skin,50));
+        table.add(getLabel("3", skin,50));
+        table.add(getLabel("4", skin,50));
         return table;
+    }
+
+    private Actor getLabel(String text, Skin skin, int width){
+        Container l = new Container(new Label(text,skin));
+        l.setHeight(60);
+        l.setWidth(width);
+        return l;
     }
 }
