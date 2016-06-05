@@ -10,6 +10,8 @@ import lt.kentai.bachelorgame.AccountConnection.ConnectionState;
 import lt.kentai.bachelorgame.controller.PlayerInputManager;
 import lt.kentai.bachelorgame.GameServerV2;
 import lt.kentai.bachelorgame.Match;
+import lt.kentai.bachelorgame.database_managment.dto.User;
+import lt.kentai.bachelorgame.database_managment.service.UserService;
 import lt.kentai.bachelorgame.networking.Network.ChampionSelect;
 import lt.kentai.bachelorgame.networking.Network.LockIn;
 import lt.kentai.bachelorgame.networking.Network.LoginRequest;
@@ -23,8 +25,11 @@ import lt.kentai.bachelorgame.screens.ServerScreen;
 
 public class ServerListener extends Listener {
 
+	private UserService userService;
+
 	public ServerListener() {
-		
+		userService = new UserService();
+
 	}
 	
 	@Override
@@ -167,6 +172,8 @@ public class ServerListener extends Listener {
 						getInputPacketManager().addPacket(connectionId, userInput);
 				}
 			});
+		}else if(o instanceof Network.RegistrationRequest){
+			userService.registerUser(new User(((Network.RegistrationRequest) o).username,((Network.RegistrationRequest) o).password,((Network.RegistrationRequest) o).email));
 		}
 	}
 	

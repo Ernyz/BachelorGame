@@ -45,6 +45,7 @@ public class Network {
         kryo.register(UserInput.class);
         kryo.register(PlayerState.class);
 		kryo.register(PlayerStateUpdate.class);
+        kryo.register(RegistrationRequest.class);
     }
 
     public static class LoginRequest {
@@ -203,4 +204,10 @@ public class Network {
 			this.playerStates = playerStates;
 		}
 	}
+
+    public static class RegistrationRequest{
+        public String username;
+        public String password;
+        public String email;
+    }
 }

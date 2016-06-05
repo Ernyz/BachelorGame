@@ -65,10 +65,8 @@ public class WayGenerator {
                 }
             }
         }
-        printListOfIntegers(listOfPoints);
         smoothenListOfWayPoints(listOfPoints, 3);
 
-        printListOfIntegers(listOfPoints);
         int[] points = new int[listOfPoints.size()];
         for (int i = 0; i < listOfPoints.size(); i++) {
             points[i] = listOfPoints.get(i);

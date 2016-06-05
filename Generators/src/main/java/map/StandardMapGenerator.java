@@ -20,12 +20,12 @@ public class StandardMapGenerator {
     final double PERSISTANCE;
     final int LARGEST_FUTURE;
 
-    public StandardMapGenerator(int MAP_WIDTH, int MAP_HEIGHT, int SEED, double PERSISTANCE, int LARGEST_FUTURE) {
+    public StandardMapGenerator(int MAP_WIDTH, int MAP_HEIGHT, int SEED, double PERSISTANCE, int LARGEST_FEATURE) {
         this.MAP_WIDTH = MAP_WIDTH;
         this.MAP_HEIGHT = MAP_HEIGHT;
         this.SEED = SEED;
         this.PERSISTANCE = PERSISTANCE;
-        this.LARGEST_FUTURE = LARGEST_FUTURE;
+        this.LARGEST_FUTURE = LARGEST_FEATURE;
     }
 
     public char[][] generateMap() {

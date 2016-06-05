@@ -1,12 +1,12 @@
 package lt.kentai.bachelorgame.database_managment.service;
 
+import com.mysql.jdbc.StringUtils;
 import lt.kentai.bachelorgame.database_managment.DBManager;
 import lt.kentai.bachelorgame.database_managment.dto.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.Calendar;
+import java.util.Random;
 import java.util.UUID;
 
 public class UserService {
@@ -14,9 +14,9 @@ public class UserService {
     public User registerUser(User user) {
         try {
             Connection connection = DBManager.createConnection();
-            String createUserQuery = "insert into user values(?,?,?,?)";
+            String createUserQuery = "insert into public.user values(?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(createUserQuery);
-            user.setId(UUID.randomUUID().timestamp());
+            user.setId(Calendar.getInstance().getTimeInMillis());
             connection.setAutoCommit(false);
             statement.setLong(1, user.getId());
             statement.setString(2, user.getUsername());
@@ -35,23 +35,32 @@ public class UserService {
     public boolean loginUser(User user) {
         try {
             Connection connection = DBManager.createConnection();
-            String createUserQuery = "SELECT from user where username = ? and password = ?";
-            PreparedStatement statement = connection.prepareStatement(createUserQuery);
-            connection.setAutoCommit(false);
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            ResultSet resultSet = statement.executeQuery();
+            String selectQ = "SELECT * from public.USER";
+            Statement statement = connection.createStatement();
+            ResultSet  resultSet= statement.executeQuery(selectQ);
+            System.out.println(resultSet);
+            while (resultSet.next()){
+                String u = resultSet.getString("name").trim();
+                String p = resultSet.getString("password").trim();
+                System.out.println(resultSet.getString(4));
+                if(user.getUsername().equals(u)){
+                    if(user.getPassword().equals(p)){
+                        closeConnection(connection,statement);
+                        return true;
+                    }
+                }
+            }
             connection.commit();
-            statement.close();
-            connection.close();
-            if (resultSet.next()) {
-                return true;
-            } else return false;
-
+            closeConnection(connection,statement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private void closeConnection(Connection connection, Statement statement) throws SQLException {
+        statement.close();
+        connection.close();
     }
 
 }

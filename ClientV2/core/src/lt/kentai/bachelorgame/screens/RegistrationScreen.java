@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.esotericsoftware.kryonet.Client;
 import lt.kentai.bachelorgame.GameClientV2;
+import lt.kentai.bachelorgame.Network;
 
 public class RegistrationScreen implements Screen {
 
@@ -63,6 +64,12 @@ public class RegistrationScreen implements Screen {
 
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 //TODO register
+                Network.RegistrationRequest registrationRequest = new Network.RegistrationRequest();
+                registrationRequest.username = usernameTextField.getText();
+                registrationRequest.password = pswTF.getText();
+                registrationRequest.email = emailTF.getText();
+                client.sendTCP(registrationRequest);
+                GameClientV2.getScreenManager().switchToLoginScreen();
             }
         });
         table.add(register);
@@ -74,7 +81,6 @@ public class RegistrationScreen implements Screen {
 
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 GameClientV2.getScreenManager().switchToLoginScreen();
-
             }
         });
         table.add(back);
