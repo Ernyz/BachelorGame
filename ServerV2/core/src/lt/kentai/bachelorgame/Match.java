@@ -77,7 +77,7 @@ public class Match {
 			while(accumulator >= Properties.FRAME_TIME) {
 				accumulator -= Properties.FRAME_TIME;
 				
-				entityUpdater.update(delta);
+				//entityUpdater.update();
 				
 				frameCounter++;
 				if(frameCounter >= timeStep) {
@@ -89,6 +89,7 @@ public class Match {
 						Array<UserInput> userInput = entry.getValue();
 						for(int i = 0; i < userInput.size; i++) {
 							PlayerInputManager.applyInput(entry.getKey(), userInput.get(i), this);
+							entityUpdater.update();
 						}
 						userInput.clear();
 					}

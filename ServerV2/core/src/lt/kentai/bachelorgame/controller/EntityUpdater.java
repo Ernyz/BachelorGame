@@ -2,6 +2,7 @@ package lt.kentai.bachelorgame.controller;
 
 import com.badlogic.gdx.utils.Array;
 
+import lt.kentai.bachelorgame.Properties;
 import lt.kentai.bachelorgame.model.Entity;
 
 public class EntityUpdater {
@@ -12,11 +13,11 @@ public class EntityUpdater {
 		this.players = players;
 	}
 	
-	public void update(float delta) {
+	public void update() {
 		//Move entities
 		for(int i = 0; i < players.size; i++) {
-			players.get(i).setX(players.get(i).getX() + delta * players.get(i).getSpeed() * players.get(i).getVelocity().x);
-			players.get(i).setY(players.get(i).getY() + delta * players.get(i).getSpeed() * players.get(i).getVelocity().y);
+			players.get(i).setX(players.get(i).getX() + Properties.FRAME_TIME * players.get(i).getSpeed() * players.get(i).getVelocity().x);
+			players.get(i).setY(players.get(i).getY() + Properties.FRAME_TIME * players.get(i).getSpeed() * players.get(i).getVelocity().y);
 		}
 	}
 	

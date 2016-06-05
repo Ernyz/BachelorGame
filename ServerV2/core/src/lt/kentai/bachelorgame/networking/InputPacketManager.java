@@ -16,7 +16,6 @@ public class InputPacketManager {
 	}
 	
 	public void addPacket(int connectionId, UserInput userInput) {
-		
 		if(packets.get(connectionId) != null) {
 			for(int i = 0; i < packets.get(connectionId).size; i++) {
 				if(isMoreRecent(userInput.sequenceNumber, packets.get(connectionId).get(i).sequenceNumber)) {
@@ -33,9 +32,9 @@ public class InputPacketManager {
 	
 	public HashMap<Integer, Array<UserInput>> getDejitteredPackets() {
 		HashMap<Integer, Array<UserInput>> dejitteredPackets = packets;
-		for(Entry<Integer, Array<UserInput>> entry : packets.entrySet()) {
+//		for(Entry<Integer, Array<UserInput>> entry : packets.entrySet()) {
 //			entry.getValue().clear();
-		}
+//		}
 		
 		return dejitteredPackets;
 	}
