@@ -167,7 +167,6 @@ public class GameScreen implements Screen {
 			e.connectionId = champion.getConnectionId();
 			e.championName = champion.getChampionName();
 			e.setSpeed(champion.getSpeed());
-			System.out.println("------------------Speed: " + e.getSpeed());
 			e.setTexture(new Texture(Gdx.files.internal("champions/"+e.championName+"/"+e.championName+".png")));
 			match.getPlayerEntities().add(e);
 		}

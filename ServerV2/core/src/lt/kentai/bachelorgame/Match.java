@@ -244,7 +244,6 @@ public class Match {
 			e.setChampionName(championDataArray.get(i).getChampionName());/*TODO: move all this to a factory some day*/
 			e.setSpeed(championDataArray.get(i).getSpeed());
 			champions.add(e);
-			System.out.println("------------------Speed: " + e.getSpeed());
 		}
 		//TODO: make tiles
 		
