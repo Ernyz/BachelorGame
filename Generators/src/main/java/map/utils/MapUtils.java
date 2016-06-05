@@ -83,11 +83,12 @@ public class MapUtils {
                     return campSpwnPlaces;
                 if(map[i][j]==MapComponents.b){
                     campSpwnPlaces.addBlueBaseVector(new Vector(j,i));
+                    System.out.println(j+":"+i);
                     map[i][j]= MapComponents.f;
                 }else if (map[i][j]==MapComponents.r){
+                    System.out.println(j+":"+i);
                     campSpwnPlaces.addRedBaseVector(new Vector(j,i));
                     map[i][j]= MapComponents.f;
-
                 }
             }
         }

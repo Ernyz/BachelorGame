@@ -56,7 +56,7 @@ public class WorldRenderer {
         int endY = py+range >= match.getMap().length ? match.getMap().length-1 : py+range;
         for(int y = startY; y <= endY; y++) {
         	for(int x = startX; x <= endX; x++) {
-        		if(match.getMap()[y][x] == Constants.MAIN_ROAD) {
+        		if(match.getMap()[y][x] == Constants.ROAD) {
         			System.out.println("roaad");
         			batch.draw(mainRoadTexture, x*10, y*10);
 	      		}
@@ -68,7 +68,9 @@ public class WorldRenderer {
 	      		}
         		else if (match.getMap()[y][x] == Constants.DIRT) {
 	      			batch.draw(grassTexture, x*10, y*10);
-	      		}
+	      		}else if(match.getMap()[y][x] == Constants.JUNGLE_CAMP){
+                    batch.draw(mainRoadTexture,x*10,y*10);
+                }
         		else {
 	      			batch.draw(grassTexture, x*10, y*10);
 	      		}
