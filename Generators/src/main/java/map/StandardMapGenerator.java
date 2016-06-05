@@ -54,7 +54,7 @@ public class StandardMapGenerator {
 
 
         MapUtils.surroundWithWalls(finalMap);
-        MapPrinter.printMapToFile("aaa",finalMap,true);
+//        MapPrinter.printMapToFile("aaa",finalMap,true);
         return finalMap;
     }
 }

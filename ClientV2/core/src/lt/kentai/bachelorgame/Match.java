@@ -53,8 +53,6 @@ public class Match {
 		
 		for(Entity e : playerEntities) {
 			if(e.connectionId != player.connectionId) {
-//				e.setX(e.getX() + (e.getTargetX()-e.getX())/Properties.FPS);
-//				e.setY(e.getY() + (e.getTargetY()-e.getY())/Properties.FPS);
 				e.setX(e.getX() + e.dx);
 				e.setY(e.getY() + e.dy);
 			} else {

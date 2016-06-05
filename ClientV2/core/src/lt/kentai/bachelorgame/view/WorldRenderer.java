@@ -45,8 +45,6 @@ public class WorldRenderer {
 
         batch.begin();
         
-        System.out.println(match.getMap()[0].length + " " + match.getMap().length);
-        
         int range = 45;
         int px = (int)Math.ceil(match.getPlayer().getX()/10);
         int py = (int)Math.ceil(match.getPlayer().getY()/10);
@@ -57,7 +55,6 @@ public class WorldRenderer {
         for(int y = startY; y <= endY; y++) {
         	for(int x = startX; x <= endX; x++) {
         		if(match.getMap()[y][x] == Constants.ROAD) {
-        			System.out.println("roaad");
         			batch.draw(mainRoadTexture, x*10, y*10);
 	      		}
         		else if (match.getMap()[y][x] == Constants.WALL) {
