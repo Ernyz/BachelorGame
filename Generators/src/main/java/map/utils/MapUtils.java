@@ -65,6 +65,8 @@ public class MapUtils {
         for (int j = 0; j < reverse.length; j++) {
             for (int i = 0; i < reverse[j].length / 2; i++) {
                 char temp = reverse[j][i];
+                if(temp == MapComponents.b)
+                    temp = MapComponents.r;
                 reverse[j][i] = reverse[j][reverse[j].length - i - 1];
                 reverse[j][reverse[j].length - i - 1] = temp;
             }
