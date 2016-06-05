@@ -1,6 +1,6 @@
 
 ChampionIcons.png
-size: 150,50
+size: 250,50
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
@@ -21,6 +21,20 @@ ChampionIcon_Empty
 ChampionIcon_Gorbag
   rotate: false
   xy: 100, 0
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+ChampionIcon_GorbagBlue
+  rotate: false
+  xy: 150, 0
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+ChampionIcon_GorbagRed
+  rotate: false
+  xy: 200, 0
   size: 50, 50
   orig: 50, 50
   offset: 0, 0

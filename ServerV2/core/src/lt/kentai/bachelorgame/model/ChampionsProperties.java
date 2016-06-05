@@ -11,7 +11,9 @@ public class ChampionsProperties {
 	
 	public static String[] championNames = {
 			Champion1.championName,
-			Champion2.championName
+			Champion2.championName,
+			Champion3.championName,
+			Champion4.championName
 	};
 	
 	//Blue one
@@ -23,6 +25,16 @@ public class ChampionsProperties {
 	//Red one
 	public static class Champion2 {
 		public static final String championName = "Gorbag";
+		public static final float speed = 60f;
+	}
+	
+	public static class Champion3 {
+		public static final String championName = "GorbagRed";
+		public static final float speed = 60f;
+	}
+	
+	public static class Champion4 {
+		public static final String championName = "GorbagBlue";
 		public static final float speed = 60f;
 	}
 	

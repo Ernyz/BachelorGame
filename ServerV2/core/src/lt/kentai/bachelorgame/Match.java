@@ -223,6 +223,10 @@ public class Match {
 			c.setSpeed(ChampionsProperties.Champion1.speed);
 		} else if(name.equals(ChampionsProperties.Champion2.championName)) {
 			c.setSpeed(ChampionsProperties.Champion2.speed);
+		} else if(name.equals(ChampionsProperties.Champion3.championName)) {
+			c.setSpeed(ChampionsProperties.Champion3.speed);
+		} else if(name.equals(ChampionsProperties.Champion4.championName)) {
+			c.setSpeed(ChampionsProperties.Champion4.speed);
 		}
 	}
 
@@ -240,6 +244,7 @@ public class Match {
 			e.setChampionName(championDataArray.get(i).getChampionName());/*TODO: move all this to a factory some day*/
 			e.setSpeed(championDataArray.get(i).getSpeed());
 			champions.add(e);
+			System.out.println("------------------Speed: " + e.getSpeed());
 		}
 		//TODO: make tiles
 		
