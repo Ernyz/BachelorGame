@@ -16,16 +16,19 @@ public class StandardMapGenerator {
 
     final int MAP_WIDTH;
     final int MAP_HEIGHT;
-    final int SEED;
+    private int SEED;
     final double PERSISTANCE;
     final int LARGEST_FUTURE;
 
-    public StandardMapGenerator(int MAP_WIDTH, int MAP_HEIGHT, int SEED, double PERSISTANCE, int LARGEST_FEATURE) {
+    public StandardMapGenerator(int MAP_WIDTH, int MAP_HEIGHT, double PERSISTANCE, int LARGEST_FEATURE) {
         this.MAP_WIDTH = MAP_WIDTH;
         this.MAP_HEIGHT = MAP_HEIGHT;
-        this.SEED = SEED;
         this.PERSISTANCE = PERSISTANCE;
         this.LARGEST_FUTURE = LARGEST_FEATURE;
+    }
+
+    public void setSEED(int seed){
+        SEED = seed;
     }
 
     public char[][] generateMap() {
@@ -51,7 +54,7 @@ public class StandardMapGenerator {
 
 
         MapUtils.surroundWithWalls(finalMap);
-
+        MapPrinter.printMapToFile("aaa",finalMap,true);
         return finalMap;
     }
 }

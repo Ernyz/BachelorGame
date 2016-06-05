@@ -22,8 +22,13 @@ public class LevelGenerator {
 	//private ForestMapGenerator forestMapGenerator;
 	
 	public LevelGenerator() {
-		standardMapGenerator = new StandardMapGenerator(300, 200, new Random(new Date().getTime()).nextInt(), 0.35, 300);
+		standardMapGenerator = new StandardMapGenerator(300, 200, 0.35, 300);
 	}
+
+	public void setSEED(int seed){
+		standardMapGenerator.setSEED(seed);
+	}
+
 
 	public char[][] generateLevel() {
 		map = MapComponents.base;

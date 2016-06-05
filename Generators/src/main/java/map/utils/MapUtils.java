@@ -1,5 +1,6 @@
 package map.utils;
 import map.components.MapComponents;
+import map.dto.CampSpwnPlaces;
 import map.model.Vector;
 
 import java.util.List;
@@ -72,6 +73,22 @@ public class MapUtils {
             }
         }
         return reverse;
+    }
+
+    public static CampSpwnPlaces getCampSpwnPlaces(char[][] map,int nrOfMembers){
+        CampSpwnPlaces campSpwnPlaces = new CampSpwnPlaces(nrOfMembers);
+        for (int i= 0; i<map.length;i++){
+            for (int j = 0; j < map[1].length; j++) {
+                if (campSpwnPlaces.full())
+                    return campSpwnPlaces;
+                if(map[i][j]==MapComponents.b){
+                    campSpwnPlaces.addBlueBaseVector(new Vector(j,i));
+                }else if (map[i][j]==MapComponents.r){
+                    campSpwnPlaces.addRedBaseVector(new Vector(j,i));
+                }
+            }
+        }
+        return campSpwnPlaces;
     }
 
     public static boolean inRange(int x1, int y1, int x2, int y2, double distance) {

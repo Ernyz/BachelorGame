@@ -1,6 +1,7 @@
 package lt.kentai.bachelorgame;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 
@@ -24,6 +25,9 @@ import lt.kentai.bachelorgame.networking.Network.MatchReady;
 import lt.kentai.bachelorgame.networking.Network.PlayerState;
 import lt.kentai.bachelorgame.networking.Network.PlayerStateUpdate;
 import lt.kentai.bachelorgame.networking.Network.UserInput;
+import map.dto.CampSpwnPlaces;
+import map.model.Vector;
+import map.utils.MapUtils;
 
 /**
  * Holds teams, map, minions, towers and all stuff related to a single match.
@@ -60,11 +64,10 @@ public class Match {
 
 	private char[][] map;
 
-	public Match(int matchId, Array<AccountConnection> matchmakedConnections) {
+	public Match(int matchId) {
 		seed = new Random().nextInt();
 		this.matchId = matchId;
 		matchState = MatchState.SELECTING_CHAMPIONS;
-		fillTeams(matchmakedConnections);
 	}
 
 	public void update(float delta) {
@@ -153,7 +156,7 @@ public class Match {
 		}
 	}
 
-	private void fillTeams(Array<AccountConnection> matchmakedConnections) {
+	public void fillTeams(Array<AccountConnection> matchmakedConnections) {
 		matchmakedConnections.shuffle();
 
 		for(int i=0; i<Properties.TeamSize; i++) {
@@ -163,9 +166,14 @@ public class Match {
 			connectionIds.put(redTeam.get(i).getID(), Team.RED);
 		}
 
+		CampSpwnPlaces campSpwnPlaces = MapUtils.getCampSpwnPlaces(map,Properties.TeamSize);
+		List<Vector> blueTeamSpawns = campSpwnPlaces.blueBaseVectors;
+		List<Vector> redTeamSpawns = campSpwnPlaces.redBaseVectors;
 		ChampionData champion;
 		for(AccountConnection c : blueTeam) {
-			champion = new ChampionData(c.connectionName, c.getID(), Team.BLUE, 0, 0);
+			Vector v = blueTeamSpawns.get(0);
+			blueTeamSpawns.remove(0);
+			champion = new ChampionData(c.connectionName, c.getID(), Team.BLUE, v.x*10, v.y*10);
 			championDataArray.add(champion);
 			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby(matchId);
 			acceptedToLobbyPacket.team = Team.BLUE;
@@ -174,7 +182,9 @@ public class Match {
 			c.sendTCP(acceptedToLobbyPacket);
 		}
 		for(AccountConnection c : redTeam) {
-			champion = new ChampionData(c.connectionName, c.getID(), Team.RED, 100, 0);
+			Vector v = redTeamSpawns.get(0);
+			redTeamSpawns.remove(0);
+			champion = new ChampionData(c.connectionName, c.getID(), Team.RED, v.x*10, v.y*10);
 			championDataArray.add(champion);
 			AcceptedToLobby acceptedToLobbyPacket = new AcceptedToLobby(matchId);
 			acceptedToLobbyPacket.team = Team.RED;

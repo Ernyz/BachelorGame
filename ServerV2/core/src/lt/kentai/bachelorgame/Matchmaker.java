@@ -57,10 +57,12 @@ public class Matchmaker {
 			matchmakedConnection.connectionState = ConnectionState.IN_CHAMPION_SELECT;
 			matchmakedConnections.add(matchmakedConnection);
 		}
-		
-		Match match = new Match(matchIdCounter, matchmakedConnections);
+		Match match = new Match(matchIdCounter);
+		levelGenerator.setSEED(match.getSeed());
+		char[][] map = levelGenerator.generateLevel();
+		match.setMap(map);
+		match.fillTeams(matchmakedConnections);
 		matchIdCounter++;
-		match.setMap(levelGenerator.generateLevel());
 		matchArray.add(match);
 	}
 	
