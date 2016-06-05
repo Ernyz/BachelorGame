@@ -89,7 +89,7 @@ public class ServerListener extends Listener {
 		if(o instanceof LoginRequest) {
 			final LoginRequest loginRequest = (LoginRequest) o;
 			Log.info(loginRequest.username + " is trying to connect.");
-			if(false){//TODO debug for demologin
+			if(true){//TODO debug for demologin
 				LoginResult loginResult = new LoginResult();
 				loginResult.success = true;
 				loginResult.message = "Login "+(loginResult.success?"successful!":"failed");
