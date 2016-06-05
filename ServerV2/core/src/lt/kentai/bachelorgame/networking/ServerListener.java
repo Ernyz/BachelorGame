@@ -93,6 +93,7 @@ public class ServerListener extends Listener {
 				LoginResult loginResult = new LoginResult();
 				loginResult.success = true;
 				loginResult.message = "Login "+(loginResult.success?"successful!":"failed");
+				accountConnection.sendTCP(loginResult);
 				accountConnection.connectionName = loginRequest.username;
 				accountConnection.connectionState = ConnectionState.IN_MAIN_MENU;
 				Gdx.app.postRunnable(new Runnable() {
