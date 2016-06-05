@@ -32,9 +32,9 @@ public class InputPacketManager {
 	
 	public HashMap<Integer, Array<UserInput>> getDejitteredPackets() {
 		HashMap<Integer, Array<UserInput>> dejitteredPackets = packets;
-		for(Entry<Integer, Array<UserInput>> entry : packets.entrySet()) {
+//		for(Entry<Integer, Array<UserInput>> entry : packets.entrySet()) {
 //			entry.getValue().clear();
-		}
+//		}
 		
 		return dejitteredPackets;
 	}

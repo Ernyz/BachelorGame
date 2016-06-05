@@ -1,6 +1,7 @@
 package lt.kentai.bachelorgame;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.utils.Array;
 
 import lt.kentai.bachelorgame.Network.UserInput;
@@ -47,18 +48,37 @@ public class Match {
 		this.player = player;
 	}
 	
-	public void update(float delta) {
-		matchTimer += delta;
+	public void update() {
+		matchTimer += Properties.FRAME_TIME;
 		
 		for(Entity e : playerEntities) {
-			e.setX(e.getX() + e.getSpeed() * e.getVelocity().x * delta);
-			e.setY(e.getY() + e.getSpeed() * e.getVelocity().y * delta);
+			if(e.connectionId != player.connectionId) {
+//				e.setX(e.getX() + (e.getTargetX()-e.getX())/Properties.FPS);
+//				e.setY(e.getY() + (e.getTargetY()-e.getY())/Properties.FPS);
+				e.setX(e.getX() + e.dx);
+				e.setY(e.getY() + e.dy);
+			} else {
+				e.setX(e.getX() + e.getSpeed() * e.getVelocity().x * Properties.FRAME_TIME);
+				e.setY(e.getY() + e.getSpeed() * e.getVelocity().y * Properties.FRAME_TIME);
+			}
 		}
 	}
 	
-	public void updatePlayer(float delta) {
-		player.setX(player.getX() + player.getSpeed() * player.getVelocity().x * delta);
-		player.setY(player.getY() + player.getSpeed() * player.getVelocity().y * delta);
+	public void updatePlayer(UserInput sentPacket) {
+		int velocityX = 0;
+		int velocityY = 0;
+		if(sentPacket.input[Keys.A]) {
+			velocityX = -1;
+		} else if(sentPacket.input[Keys.D]) {
+			velocityX = 1;
+		}
+		if(sentPacket.input[Keys.W]) {
+			velocityY = -1;
+		} else if(sentPacket.input[Keys.S]) {
+			velocityY = 1;
+		}
+		player.setX(player.getX() + player.getSpeed() * velocityX * Properties.FRAME_TIME);
+		player.setY(player.getY() + player.getSpeed() * velocityY * Properties.FRAME_TIME);
 	}
 	
 	public void executeInput(UserInput userInput) {
