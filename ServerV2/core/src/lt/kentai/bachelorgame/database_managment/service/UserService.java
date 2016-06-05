@@ -33,10 +33,12 @@ public class UserService {
     }
 
     public boolean loginUser(User user) {
+        Connection connection;
+        Statement statement;
         try {
-            Connection connection = DBManager.createConnection();
+            connection = DBManager.createConnection();
             String selectQ = "SELECT * from public.USER";
-            Statement statement = connection.createStatement();
+            statement = connection.createStatement();
             ResultSet  resultSet= statement.executeQuery(selectQ);
             System.out.println(resultSet);
             while (resultSet.next()){
@@ -45,22 +47,18 @@ public class UserService {
                 System.out.println(resultSet.getString(4));
                 if(user.getUsername().equals(u)){
                     if(user.getPassword().equals(p)){
-                        closeConnection(connection,statement);
+                        statement.close();
+                        connection.close();
                         return true;
                     }
                 }
             }
             connection.commit();
-            closeConnection(connection,statement);
+            statement.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
-
-    private void closeConnection(Connection connection, Statement statement) throws SQLException {
-        statement.close();
-        connection.close();
-    }
-
 }

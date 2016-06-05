@@ -7,6 +7,7 @@ import com.esotericsoftware.minlog.Log;
 
 import lt.kentai.bachelorgame.AccountConnection;
 import lt.kentai.bachelorgame.AccountConnection.ConnectionState;
+import lt.kentai.bachelorgame.Properties;
 import lt.kentai.bachelorgame.controller.PlayerInputManager;
 import lt.kentai.bachelorgame.GameServerV2;
 import lt.kentai.bachelorgame.Match;
@@ -88,13 +89,10 @@ public class ServerListener extends Listener {
 		if(o instanceof LoginRequest) {
 			final LoginRequest loginRequest = (LoginRequest) o;
 			Log.info(loginRequest.username + " is trying to connect.");
-			if(loginRequest.username != "" && loginRequest.username != null) {
-				//DB check if exists
-
+			if(false){//TODO debug for demologin
 				LoginResult loginResult = new LoginResult();
 				loginResult.success = true;
-				loginResult.message = "Login successful!";
-				accountConnection.sendTCP(loginResult);
+				loginResult.message = "Login "+(loginResult.success?"successful!":"failed");
 				accountConnection.connectionName = loginRequest.username;
 				accountConnection.connectionState = ConnectionState.IN_MAIN_MENU;
 				Gdx.app.postRunnable(new Runnable() {
@@ -102,11 +100,21 @@ public class ServerListener extends Listener {
 						GameServerV2.getServerScreen().addMessage(loginRequest.username + " has successfully connected!");
 					}
 				});
-			} else {
-				LoginResult loginResult = new LoginResult();
-				loginResult.success = false;
-				loginResult.message = "Invalid login data.";
-				accountConnection.sendTCP(loginResult);
+				return;
+			}
+			LoginResult loginResult = new LoginResult();
+			loginResult.success = userService.loginUser(new User(loginRequest.username,loginRequest.password));
+			loginResult.message = "Login "+(loginResult.success?"successful!":"failed");
+			accountConnection.sendTCP(loginResult);
+			if(loginResult.success){
+				accountConnection.connectionName = loginRequest.username;
+				accountConnection.connectionState = ConnectionState.IN_MAIN_MENU;
+				Gdx.app.postRunnable(new Runnable() {
+					public void run() {
+						GameServerV2.getServerScreen().addMessage(loginRequest.username + " has successfully connected!");
+					}
+				});
+			}else{
 				accountConnection.connectionState = ConnectionState.IN_LOGIN;
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
@@ -114,6 +122,33 @@ public class ServerListener extends Listener {
 					}
 				});
 			}
+//
+//
+//			if(loginRequest.username != "" && loginRequest.username != null) {
+//				//DB check if exists
+//				LoginResult loginResult = new LoginResult();
+//				loginResult.success = userService.loginUser(new User(loginRequest.username,loginRequest.password));
+//				loginResult.message = "Login "+(loginResult.success?"successful!":"failed");
+//				accountConnection.sendTCP(loginResult);
+//				accountConnection.connectionName = loginRequest.username;
+//				accountConnection.connectionState = ConnectionState.IN_MAIN_MENU;
+//				Gdx.app.postRunnable(new Runnable() {
+//					public void run() {
+//						GameServerV2.getServerScreen().addMessage(loginRequest.username + " has successfully connected!");
+//					}
+//				});
+//			} else {
+//				LoginResult loginResult = new LoginResult();
+//				loginResult.success = false;
+//				loginResult.message = "Invalid login data.";
+//				accountConnection.sendTCP(loginResult);
+//				accountConnection.connectionState = ConnectionState.IN_LOGIN;
+//				Gdx.app.postRunnable(new Runnable() {
+//					public void run() {
+//						GameServerV2.getServerScreen().addMessage(loginRequest.username + " did not connect.");
+//					}
+//				});
+//			}
 		} else if(o instanceof Matchmaking) {
 			Matchmaking matchmaking = (Matchmaking) o;
 			if(matchmaking.entering) {
