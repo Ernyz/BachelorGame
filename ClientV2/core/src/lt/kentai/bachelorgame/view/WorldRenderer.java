@@ -45,16 +45,19 @@ public class WorldRenderer {
 
         batch.begin();
         
+        System.out.println(match.getMap()[0].length + " " + match.getMap().length);
+        
         int range = 45;
         int px = (int)Math.ceil(match.getPlayer().getX()/10);
         int py = (int)Math.ceil(match.getPlayer().getY()/10);
         int startX = px-range < 0 ? 0 : px-range;
         int startY = py-range < 0 ? 0 : py-range;
-        int endX = px+range > match.getMap()[0].length ? match.getMap()[0].length : px+range;
-        int endY = py+range > match.getMap().length ? match.getMap().length : py+range;
+        int endX = px+range >= match.getMap()[0].length ? match.getMap()[0].length-1 : px+range;
+        int endY = py+range >= match.getMap().length ? match.getMap().length-1 : py+range;
         for(int y = startY; y <= endY; y++) {
         	for(int x = startX; x <= endX; x++) {
         		if(match.getMap()[y][x] == Constants.MAIN_ROAD) {
+        			System.out.println("roaad");
         			batch.draw(mainRoadTexture, x*10, y*10);
 	      		}
         		else if (match.getMap()[y][x] == Constants.WALL) {

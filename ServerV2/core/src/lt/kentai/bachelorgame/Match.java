@@ -233,6 +233,10 @@ public class Match {
 			c.setSpeed(ChampionsProperties.Champion1.speed);
 		} else if(name.equals(ChampionsProperties.Champion2.championName)) {
 			c.setSpeed(ChampionsProperties.Champion2.speed);
+		} else if(name.equals(ChampionsProperties.Champion3.championName)) {
+			c.setSpeed(ChampionsProperties.Champion3.speed);
+		} else if(name.equals(ChampionsProperties.Champion4.championName)) {
+			c.setSpeed(ChampionsProperties.Champion4.speed);
 		}
 	}
 

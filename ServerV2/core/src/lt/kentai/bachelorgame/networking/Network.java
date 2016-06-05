@@ -12,7 +12,7 @@ import lt.kentai.bachelorgame.model.ChampionData;
 import lt.kentai.bachelorgame.utils.UInt;
 
 public class Network {
-	public static final String serverIP = "127.0.0.1";
+	public static final String serverIP = "88.223.50.149";
 	public static final int tcpPort = 54555;
 	public static final int udpPort = 54777;
 	

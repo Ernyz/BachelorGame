@@ -127,16 +127,14 @@ public class GameScreen implements Screen {
             for (int i = 0; i < entities.size; i++) {
                 for (int j = 0; j < stateUpdate.playerStates.size; j++) {
                     if (entities.get(i).connectionId == stateUpdate.playerStates.get(j).connectionId) {
-//						entities.get(i).setX(stateUpdate.playerStates.get(j).x);
-//						entities.get(i).setY(stateUpdate.playerStates.get(j).y);
                         if (entities.get(i).connectionId != match.getPlayer().connectionId) {
                             entities.get(i).recalculateTargetPositions(stateUpdate.playerStates.get(j).x, stateUpdate.playerStates.get(j).y);
                         } else {
                             //if(entities.get(i).connectionId == match.getPlayer().connectionId) {
-                            System.out.println("Before snapping: " + match.getPlayer().getX() + " " + match.getPlayer().getY());
+//							System.out.println("Before snapping: " + match.getPlayer().getX() + " "+ match.getPlayer().getY());
                             match.getPlayer().setX(stateUpdate.playerStates.get(j).x);
                             match.getPlayer().setY(stateUpdate.playerStates.get(j).y);
-                            System.out.println("After snapping: " + match.getPlayer().getX() + " " + match.getPlayer().getY());
+//							System.out.println("After snapping: " + match.getPlayer().getX() + " "+ match.getPlayer().getY());
                             //Re-apply player input which is not yet confirmed by the server
                             Iterator<UserInput> iterator = sentPackets.iterator();
                             while (iterator.hasNext()) {
@@ -148,8 +146,8 @@ public class GameScreen implements Screen {
                                     match.updatePlayer(sentPacket);
                                 }
                             }
-                            System.out.println("After prediction: " + match.getPlayer().getX() + " " + match.getPlayer().getY());
-                            System.out.println();
+//							System.out.println("After prediction: " + match.getPlayer().getX() + " "+ match.getPlayer().getY());
+//							System.out.println();
                         }
                     }
                 }
