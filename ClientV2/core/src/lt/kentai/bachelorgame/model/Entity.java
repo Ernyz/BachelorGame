@@ -38,8 +38,9 @@ public class Entity {
 		y = targetY;
 		targetX = tx;
 		targetY = ty;
-		dx = (targetX-x)/6;  //60FPS / 10 updates per second
-		dy = (targetY-y)/6;
+		dx = (targetX-x)/4;  //60FPS / X updates per second
+		dy = (targetY-y)/4;
+		System.out.println("dx dy: " + dx + " " + dy);
 	}
 
 	public Texture getTexture() {

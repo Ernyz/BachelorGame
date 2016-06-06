@@ -79,6 +79,6 @@ public class WorldRenderer {
         }
         batch.end();
 
-        //headsUpDisplay.updateAndRender(delta);
+        headsUpDisplay.updateAndRender(delta);
     }
 }

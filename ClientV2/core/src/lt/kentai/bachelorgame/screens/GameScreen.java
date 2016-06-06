@@ -65,7 +65,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         if (!matchInitialized) return;
-        Log.set(Log.LEVEL_NONE);
+//        Log.set(Log.LEVEL_NONE);
         accumulator += delta;
         while (accumulator >= Properties.FRAME_TIME) {
             //Sample and execute input
@@ -130,7 +130,6 @@ public class GameScreen implements Screen {
                         if (entities.get(i).connectionId != match.getPlayer().connectionId) {
                             entities.get(i).recalculateTargetPositions(stateUpdate.playerStates.get(j).x, stateUpdate.playerStates.get(j).y);
                         } else {
-                            //if(entities.get(i).connectionId == match.getPlayer().connectionId) {
 //							System.out.println("Before snapping: " + match.getPlayer().getX() + " "+ match.getPlayer().getY());
                             match.getPlayer().setX(stateUpdate.playerStates.get(j).x);
                             match.getPlayer().setY(stateUpdate.playerStates.get(j).y);
@@ -147,7 +146,7 @@ public class GameScreen implements Screen {
                                 }
                             }
 //							System.out.println("After prediction: " + match.getPlayer().getX() + " "+ match.getPlayer().getY());
-//							System.out.println();
+							System.out.println();
                         }
                     }
                 }

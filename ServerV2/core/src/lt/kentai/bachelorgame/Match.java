@@ -40,7 +40,7 @@ public class Match {
 	private int seed;
 
 	private int frameCounter = 0;
-	private int timeStep = 6;
+	private int timeStep = 4;
 //	private int timeStep = 120;  //For testing purposes
 	
 	private float matchTimer = 0f;
@@ -73,7 +73,7 @@ public class Match {
 	public void update(float delta) {
 		matchTimer += delta;
 		
-		Log.set(Log.LEVEL_NONE);
+//		Log.set(Log.LEVEL_NONE);
 		
 		if(matchState == MatchState.IN_GAME) {
 			accumulator += delta;
