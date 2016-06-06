@@ -40,7 +40,7 @@ public class Match {
 	private int seed;
 
 	private int frameCounter = 0;
-	private int timeStep = 4;
+	private int timeStep = 2;
 //	private int timeStep = 120;  //For testing purposes
 	
 	private float matchTimer = 0f;

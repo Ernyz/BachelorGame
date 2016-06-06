@@ -3,7 +3,7 @@ package map.components;
 public class MapComponents {
 
     public static final char w = '#';
-    public static final char f = '.';
+    public static final char f = '=';
     public static final char o = 'O';
     public static final char b = 'B';
     public static final char r = 'R';

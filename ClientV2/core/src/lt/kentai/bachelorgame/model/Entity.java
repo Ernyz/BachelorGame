@@ -38,8 +38,8 @@ public class Entity {
 		y = targetY;
 		targetX = tx;
 		targetY = ty;
-		dx = (targetX-x)/4;  //60FPS / X updates per second
-		dy = (targetY-y)/4;
+		dx = (targetX-x)/2;  //60FPS / X updates per second
+		dy = (targetY-y)/2;
 		System.out.println("dx dy: " + dx + " " + dy);
 	}
 
