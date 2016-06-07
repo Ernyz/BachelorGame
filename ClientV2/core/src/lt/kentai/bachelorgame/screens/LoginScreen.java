@@ -125,6 +125,7 @@ public class LoginScreen implements Screen {
 				//check if user exists db
 				LoginRequest login = new LoginRequest();
 				login.username = usernameTextField.getText();
+				login.password = passwordTextField.getText();
 				client.sendTCP(login);
 			}
 		});

@@ -1,6 +1,5 @@
 package lt.kentai.bachelorgame.database_managment.service;
 
-import com.mysql.jdbc.StringUtils;
 import lt.kentai.bachelorgame.database_managment.DBManager;
 import lt.kentai.bachelorgame.database_managment.dto.User;
 
@@ -53,7 +52,6 @@ public class UserService {
                     }
                 }
             }
-            connection.commit();
             statement.close();
             connection.close();
         } catch (SQLException e) {

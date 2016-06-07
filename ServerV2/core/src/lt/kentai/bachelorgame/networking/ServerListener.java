@@ -89,20 +89,20 @@ public class ServerListener extends Listener {
 		if(o instanceof LoginRequest) {
 			final LoginRequest loginRequest = (LoginRequest) o;
 			Log.info(loginRequest.username + " is trying to connect.");
-			if(true){//TODO debug for demologin
-				LoginResult loginResult = new LoginResult();
-				loginResult.success = true;
-				loginResult.message = "Login "+(loginResult.success?"successful!":"failed");
-				accountConnection.sendTCP(loginResult);
-				accountConnection.connectionName = loginRequest.username;
-				accountConnection.connectionState = ConnectionState.IN_MAIN_MENU;
-				Gdx.app.postRunnable(new Runnable() {
-					public void run() {
-						GameServerV2.getServerScreen().addMessage(loginRequest.username + " has successfully connected!");
-					}
-				});
-				return;
-			}
+//			if(true){//TODO debug for demologin
+//				LoginResult loginResult = new LoginResult();
+//				loginResult.success = true;
+//				loginResult.message = "Login "+(loginResult.success?"successful!":"failed");
+//				accountConnection.sendTCP(loginResult);
+//				accountConnection.connectionName = loginRequest.username;
+//				accountConnection.connectionState = ConnectionState.IN_MAIN_MENU;
+//				Gdx.app.postRunnable(new Runnable() {
+//					public void run() {
+//						GameServerV2.getServerScreen().addMessage(loginRequest.username + " has successfully connected!");
+//					}
+//				});
+//				return;
+//			}
 			LoginResult loginResult = new LoginResult();
 			loginResult.success = userService.loginUser(new User(loginRequest.username,loginRequest.password));
 			loginResult.message = "Login "+(loginResult.success?"successful!":"failed");
